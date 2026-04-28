@@ -25,7 +25,7 @@ export const useGetMyInfo = () => {
     staleTime: 300000,
   });
 
-  console.log("myInfo", myInfo);
+  // console.log("myInfo", myInfo);
 
   return { myInfo, isMyInfoLoading, isMyInfoError };
 };

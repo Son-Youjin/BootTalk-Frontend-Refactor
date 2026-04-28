@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { axiosDefault } from "@/api/axiosInstance";
-import { END_POINT } from "@/constants/endPoint";
+import { useState, useRef } from "react";
 import clsx from "clsx";
 import { RotateCcw } from "lucide-react";
 import FilterButton from "@/components/common/FilterButton";
+import useFilterOptions from "@/hooks/reviews/useFilterOptions";
+import useOutsideClick from "@/hooks/useOutsideClick";
 
 interface FilterType {
   category?: string;
@@ -21,34 +21,15 @@ export default function ReviewFilterButtons({
   selectedFilters,
   onFilterChange,
 }: Props) {
-  const [jobRoles, setJobRoles] = useState<string[]>([]);
-  const [openDropdown, setOpenDropdown] = useState<"category" | "date" | null>(null);
-  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [openDropdown, setOpenDropdown] = useState<"category" | "date" | null>(
+    null,
+  );
+  const { jobRoles, isLoading, isError } = useFilterOptions();
 
-  useEffect(() => {
-    async function fetchJobRoles() {
-      try {
-        const res = await axiosDefault.get<string[]>(END_POINT.BOOTCAMP_JOB_ROLES);
-        setJobRoles(res.data);
-      } catch {
-        setJobRoles([]);
-      }
-    }
-    fetchJobRoles();
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        openDropdown &&
-        !dropdownRefs.current[openDropdown]?.contains(e.target as Node)
-      ) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [openDropdown]);
+  const dropdownRefs = useRef<HTMLDivElement | null>(null);
+  useOutsideClick(dropdownRefs, () => {
+    setOpenDropdown(null);
+  });
 
   const handleSelect = (key: "category" | "date", value: string) => {
     const newValue = selectedFilters[key] === value ? undefined : value;
@@ -65,12 +46,7 @@ export default function ReviewFilterButtons({
   return (
     <div className="flex flex-wrap gap-3 items-center">
       {/* 직무 필터 */}
-      <div
-        className="relative"
-        ref={(el: HTMLDivElement | null) => {
-          dropdownRefs.current["category"] = el;
-        }}
-      >
+      <div className="relative" ref={dropdownRefs}>
         <FilterButton
           label="직무"
           selectedValue={selectedFilters.category}
@@ -82,10 +58,23 @@ export default function ReviewFilterButtons({
         {openDropdown === "category" && (
           <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-44 sm:w-52 overflow-auto">
             <ul className="menu menu-compact p-2">
-              {jobRoles.length === 0 ? (
+              {/* TODO: 레이아웃 수정 */}
+              {isLoading ? (
                 <li>
                   <span className="text-sm text-gray-400 px-4 py-2">
-                    불러올 수 없습니다.
+                    로딩중...
+                  </span>
+                </li>
+              ) : isError ? (
+                <li>
+                  <span className="text-sm text-gray-400 px-4 py-2">
+                    에러 발생
+                  </span>
+                </li>
+              ) : jobRoles.length === 0 ? (
+                <li>
+                  <span className="text-sm text-gray-400 px-4 py-2">
+                    데이터 없음
                   </span>
                 </li>
               ) : (
@@ -107,12 +96,7 @@ export default function ReviewFilterButtons({
       </div>
 
       {/* 정렬 필터 */}
-      <div
-        className="relative"
-        ref={(el) => {
-          dropdownRefs.current["date"] = el;
-        }}
-      >
+      <div className="relative" ref={dropdownRefs}>
         <FilterButton
           label="정렬"
           selectedValue={selectedFilters.date}
@@ -132,7 +116,7 @@ export default function ReviewFilterButtons({
                     className={clsx(
                       "w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded",
                       selectedFilters.date === option &&
-                        "bg-amber-100 text-amber-900 font-semibold"
+                        "bg-amber-100 text-amber-900 font-semibold",
                     )}
                   >
                     {option}
