@@ -6,6 +6,7 @@ import { RotateCcw } from "lucide-react";
 import FilterButton from "@/components/common/FilterButton";
 import useFilterOptions from "@/hooks/reviews/useFilterOptions";
 import useOutsideClick from "@/hooks/useOutsideClick";
+import { reviewFilterStatus } from "@/constants/reviewFilterStatus";
 
 interface FilterType {
   category?: string;
@@ -31,6 +32,12 @@ export default function ReviewFilterButtons({
     setOpenDropdown(null);
   });
 
+  const renderStatus = (message: string) => (
+    <li>
+      <span className="text-sm text-gray-400 px-4 py-2">{message}</span>
+    </li>
+  );
+
   const handleSelect = (key: "category" | "date", value: string) => {
     const newValue = selectedFilters[key] === value ? undefined : value;
     onFilterChange(key, newValue);
@@ -46,86 +53,73 @@ export default function ReviewFilterButtons({
   return (
     <div className="flex flex-wrap gap-3 items-center">
       {/* 직무 필터 */}
-      <div className="relative" ref={dropdownRefs}>
-        <FilterButton
-          label="직무"
-          selectedValue={selectedFilters.category}
-          onClick={() =>
-            setOpenDropdown(openDropdown === "category" ? null : "category")
-          }
-          onClear={() => onFilterChange("category", undefined)}
-        />
-        {openDropdown === "category" && (
-          <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-44 sm:w-52 overflow-auto">
-            <ul className="menu menu-compact p-2">
-              {/* TODO: 레이아웃 수정 */}
-              {isLoading ? (
-                <li>
-                  <span className="text-sm text-gray-400 px-4 py-2">
-                    로딩중...
-                  </span>
-                </li>
-              ) : isError ? (
-                <li>
-                  <span className="text-sm text-gray-400 px-4 py-2">
-                    에러 발생
-                  </span>
-                </li>
-              ) : jobRoles.length === 0 ? (
-                <li>
-                  <span className="text-sm text-gray-400 px-4 py-2">
-                    데이터 없음
-                  </span>
-                </li>
-              ) : (
-                jobRoles.map((role) => (
-                  <li key={role}>
+      <div ref={dropdownRefs}>
+        <div className="relative">
+          <FilterButton
+            label="직무"
+            selectedValue={selectedFilters.category}
+            onClick={() =>
+              setOpenDropdown(openDropdown === "category" ? null : "category")
+            }
+            onClear={() => onFilterChange("category", undefined)}
+          />
+          {openDropdown === "category" && (
+            <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-44 sm:w-52 overflow-auto">
+              <ul className="menu menu-compact p-2">
+                {isLoading
+                  ? renderStatus(reviewFilterStatus.loading)
+                  : isError
+                    ? renderStatus(reviewFilterStatus.error)
+                    : jobRoles.length === 0
+                      ? renderStatus(reviewFilterStatus.empty)
+                      : jobRoles.map((role) => (
+                          <li key={role}>
+                            <button
+                              type="button"
+                              onClick={() => handleSelect("category", role)}
+                              className="w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded"
+                            >
+                              {role}
+                            </button>
+                          </li>
+                        ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        {/* 정렬 필터 */}
+        <div className="relative">
+          <FilterButton
+            label="정렬"
+            selectedValue={selectedFilters.date}
+            onClick={() =>
+              setOpenDropdown(openDropdown === "date" ? null : "date")
+            }
+            onClear={() => onFilterChange("date", undefined)}
+          />
+          {openDropdown === "date" && (
+            <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-40 overflow-auto">
+              <ul className="menu menu-compact p-2">
+                {["최신순", "오래된순"].map((option) => (
+                  <li key={option}>
                     <button
                       type="button"
-                      onClick={() => handleSelect("category", role)}
-                      className="w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded"
+                      onClick={() => handleSelect("date", option)}
+                      className={clsx(
+                        "w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded",
+                        selectedFilters.date === option &&
+                          "bg-amber-100 text-amber-900 font-semibold",
+                      )}
                     >
-                      {role}
+                      {option}
                     </button>
                   </li>
-                ))
-              )}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      {/* 정렬 필터 */}
-      <div className="relative" ref={dropdownRefs}>
-        <FilterButton
-          label="정렬"
-          selectedValue={selectedFilters.date}
-          onClick={() =>
-            setOpenDropdown(openDropdown === "date" ? null : "date")
-          }
-          onClear={() => onFilterChange("date", undefined)}
-        />
-        {openDropdown === "date" && (
-          <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-40 overflow-auto">
-            <ul className="menu menu-compact p-2">
-              {["최신순", "오래된순"].map((option) => (
-                <li key={option}>
-                  <button
-                    type="button"
-                    onClick={() => handleSelect("date", option)}
-                    className={clsx(
-                      "w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded",
-                      selectedFilters.date === option &&
-                        "bg-amber-100 text-amber-900 font-semibold",
-                    )}
-                  >
-                    {option}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 초기화 버튼 */}
