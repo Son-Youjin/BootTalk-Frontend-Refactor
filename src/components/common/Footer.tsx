@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="bg-base-200 w-full">
+    <div className="hidden md:block bg-base-200 w-full">
       <div className="max-w-[1200px] mx-auto px-4 md:px-6">
         <footer className="footer sm:footer-horizontal text-base-content py-10">
           <nav>

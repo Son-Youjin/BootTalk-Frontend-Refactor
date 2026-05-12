@@ -43,11 +43,13 @@ const MyPageLayout = ({
   return (
     <div className="container mx-auto p-4 max-w-6xl">
       {/* 페이지 제목 */}
-      <h1 className="text-2xl font-bold mb-6 flex items-center">마이페이지</h1>
+      <h1 className="hidden md:block text-2xl font-bold mb-6 flex items-center">
+        마이페이지
+      </h1>
 
       <div className="flex flex-col md:flex-row gap-8">
         {/* 왼쪽 사이드바 */}
-        <div className="md:w-80">
+        <div className="hidden md:block md:w-80">
           <div className="bg-base-100 rounded-xl shadow-md overflow-hidden border border-base-300">
             {/* 프로필 정보 */}
             <div className="p-6">

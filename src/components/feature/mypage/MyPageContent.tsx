@@ -6,6 +6,7 @@ import MyPageLayout from "@/components/feature/mypage/MyPageLayout";
 import MyReviews from "@/components/feature/mypage/MyReviews";
 import PointHistory from "@/components/feature/mypage/PointHistory";
 import ProfileEdit from "@/components/feature/mypage/ProfileEdit";
+import ServiceGuide from "@/components/feature/mypage/ServiceGuide";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -33,6 +34,8 @@ export default function MyPageContent() {
         return <PointHistory />;
       case "mentor":
         return <MentorProfile />;
+      case "service":
+        return <ServiceGuide />;
       default:
         return <ProfileEdit />;
     }

@@ -2,24 +2,36 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import toast from "react-hot-toast";
+
 import { Menu, MessageCircleCode } from "lucide-react";
-import MobileDrawerMenu from "@/components/common/MobileDrawerMenu";
+
 import { useDrawerScrollLock } from "@/hooks/useDrawerScrollLock";
-import NotificationDropdown from "../notification/NotificationDropdown";
 import { useUserStore } from "@/store/useUserStore";
 import { useGetMyInfo } from "@/hooks/my-page/useGetMyInfo";
 import { END_POINT } from "@/constants/endPoint";
 import { axiosDefault } from "@/api/axiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { headerNavItems } from "@/constants/headerNavItem";
 
-const navItems = [
-  { label: "부트캠프", href: "/" },
-  { label: "리뷰", href: "/review" },
-  { label: "커피챗", href: "/coffee-chat" },
-];
+const MobileDrawerMenu = dynamic(
+  () => import("@/components/mobile/MobileDrawerMenu"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
+
+const NotificationDropdown = dynamic(
+  () => import("@/components/notification/NotificationDropdown"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 const Header = () => {
   const { user, logout, isAuthenticated, setUser } = useUserStore();
@@ -74,19 +86,14 @@ const Header = () => {
 
           <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
             <Link href="/">
-              <Image
-                src="https://boottalk-bucket.s3.amazonaws.com/uploads/1745316038167_logo.PNG"
-                alt="로고"
-                width={160}
-                height={20}
-              />
+              <Image src="/logo.PNG" alt="로고" width={160} height={20} />
             </Link>
           </div>
 
           <nav className="hidden md:block text-md">
             <div className="max-w-screen-xl mx-auto px-4">
               <ul className="flex justify-around gap-12 py-3">
-                {navItems.map((item) => (
+                {headerNavItems.map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
@@ -114,7 +121,7 @@ const Header = () => {
                   </div>
                   <Link
                     href="/chat"
-                    className="btn btn-ghost btn-circle"
+                    className="hidden btn btn-ghost btn-circle"
                     aria-label="채팅"
                   >
                     <MessageCircleCode size={18} />
@@ -158,7 +165,7 @@ const Header = () => {
 
       <div className="drawer-side z-100 md:hidden fixed">
         <label htmlFor="mobile-drawer" className="drawer-overlay"></label>
-        <MobileDrawerMenu navItems={navItems} pathname={pathname} />
+        <MobileDrawerMenu pathname={pathname} />
       </div>
     </>
   );
