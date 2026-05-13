@@ -1,41 +1,20 @@
-import { axiosDefault } from "@/api/axiosInstance";
 import Modal from "@/components/common/modal/CommonModal";
-import { END_POINT } from "@/constants/endPoint";
-import { useUserStore } from "@/store/useUserStore";
-import { useMutation } from "@tanstack/react-query";
+import { useDeleteAccount } from "@/hooks/useDeleteAccount";
 import { LogOut } from "lucide-react";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
-const WithdrawalButton = () => {
+interface WithdrawalButtonProps {
+  className?: string;
+}
+
+const WithdrawalButton = ({ className }: WithdrawalButtonProps) => {
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
-  const router = useRouter();
-  const logout = useUserStore((state) => state.logout);
-
-  const withdrawalMutation = useMutation({
-    mutationFn: async () => {
-      return await axiosDefault.delete(END_POINT.MY_INFO);
-    },
-    onSuccess: () => {
-      logout();
-      router.push("/");
-    },
-    onError: (error) => {
-      console.error("회원탈퇴 실패:", error);
-      toast.error("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
-    },
-  });
-
-  const handleWithdrawal = () => {
-    withdrawalMutation.mutate();
-  };
+  const deleteAccount = useDeleteAccount();
 
   return (
     <>
       <button
-        className="flex items-center gap-2 px-4 py-2 w-full text-gray-500 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 border border-transparent hover:border-red-100"
-        onClick={() => setIsWithdrawalModalOpen(true)}
+        className={`flex items-center gap-2 transition-colors ${className ?? ""}`}
       >
         <LogOut size={18} />
         <span>회원탈퇴</span>
@@ -62,10 +41,10 @@ const WithdrawalButton = () => {
             </button>
             <button
               className="btn btn-neutral"
-              onClick={handleWithdrawal}
-              disabled={withdrawalMutation.isPending}
+              onClick={() => deleteAccount.mutate()}
+              disabled={deleteAccount.isPending}
             >
-              {withdrawalMutation.isPending ? "처리 중..." : "탈퇴하기"}
+              {deleteAccount.isPending ? "처리 중..." : "탈퇴하기"}
             </button>
           </div>
         </div>
