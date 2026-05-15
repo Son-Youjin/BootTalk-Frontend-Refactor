@@ -2,51 +2,26 @@
 
 import Link from "next/link";
 import { useUserStore } from "@/store/useUserStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosDefault } from "@/api/axiosInstance";
-import { END_POINT } from "@/constants/endPoint";
 import Image from "next/image";
 import { useGetMyInfo } from "@/hooks/my-page/useGetMyInfo";
-import toast from "react-hot-toast";
 import { mobileDrawerProfileItems } from "@/constants/mobileDrawerMenu";
 import { CircleAlert, MessageCircle } from "lucide-react";
 import WithdrawalButton from "../feature/mypage/WithdrawalButton";
+import { useLogout } from "@/hooks/useLogout";
 
 interface MobileDrawerMenuProps {
   pathname: string;
+  closeDrawer: () => void;
 }
 
-const MobileDrawerMenu = ({ pathname }: MobileDrawerMenuProps) => {
-  const { logout, isAuthenticated } = useUserStore();
-  const queryClient = useQueryClient();
-
+const MobileDrawerMenu = ({ pathname, closeDrawer }: MobileDrawerMenuProps) => {
+  const { isAuthenticated } = useUserStore();
   const { myInfo, isMyInfoLoading, isMyInfoError } = useGetMyInfo();
-
-  const closeDrawer = () => {
-    const drawerCheckbox = document.getElementById(
-      "mobile-drawer",
-    ) as HTMLInputElement;
-    if (drawerCheckbox) {
-      drawerCheckbox.checked = false;
-    }
-  };
-
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      await axiosDefault.post(END_POINT.LOGOUT);
-    },
-    onSuccess: () => {
-      logout();
-      queryClient.invalidateQueries({ queryKey: ["myInfo"] });
-    },
-    onError: (error) => {
-      console.error("로그아웃 실패:", error);
-      toast.error("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요");
-    },
-  });
+  const logout = useLogout();
 
   const handleLogout = () => {
-    logoutMutation.mutate();
+    logout.mutate();
+    closeDrawer();
   };
 
   return (
@@ -132,10 +107,7 @@ const MobileDrawerMenu = ({ pathname }: MobileDrawerMenuProps) => {
         {isAuthenticated && myInfo ? (
           <button
             className="w-full rounded-xl bg-gray-100 py-3 font-medium"
-            onClick={() => {
-              handleLogout();
-              closeDrawer();
-            }}
+            onClick={handleLogout}
             disabled={isMyInfoLoading || isMyInfoError}
           >
             로그아웃

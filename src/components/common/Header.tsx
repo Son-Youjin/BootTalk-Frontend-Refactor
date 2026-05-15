@@ -3,19 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import toast from "react-hot-toast";
 
 import { Menu, MessageCircleCode } from "lucide-react";
-
 import { useDrawerScrollLock } from "@/hooks/useDrawerScrollLock";
 import { useUserStore } from "@/store/useUserStore";
 import { useGetMyInfo } from "@/hooks/my-page/useGetMyInfo";
-import { END_POINT } from "@/constants/endPoint";
-import { axiosDefault } from "@/api/axiosInstance";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { headerNavItems } from "@/constants/headerNavItem";
+import { useLogout } from "@/hooks/useLogout";
 
 const MobileDrawerMenu = dynamic(
   () => import("@/components/mobile/MobileDrawerMenu"),
@@ -34,9 +30,10 @@ const NotificationDropdown = dynamic(
 );
 
 const Header = () => {
-  const { user, logout, isAuthenticated, setUser } = useUserStore();
-  const queryClient = useQueryClient();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { user, isAuthenticated, setUser } = useUserStore();
   const pathname = usePathname();
+  const logout = useLogout();
 
   useDrawerScrollLock();
 
@@ -48,40 +45,24 @@ const Header = () => {
     }
   }, [myInfo, isMyInfoLoading, isMyInfoError, setUser]);
 
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      await axiosDefault.post(END_POINT.LOGOUT);
-    },
-    onSuccess: () => {
-      logout();
-      queryClient.invalidateQueries({ queryKey: ["myInfo"] });
-
-      document.cookie =
-        "Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    },
-    onError: (error) => {
-      console.error("로그아웃 실패:", error);
-      toast.error("로그아웃 중 오류가 발생했습니다. 다시 시도해주세요");
-    },
-  });
-
-  const handleLogout = () => {
-    logoutMutation.mutate();
-  };
-
   return (
     <>
       <input
         id="mobile-drawer"
         type="checkbox"
         className="drawer-toggle hidden"
+        checked={isDrawerOpen}
+        onChange={(e) => setIsDrawerOpen(e.target.checked)}
       />
       <header className="sticky top-0 z-60 shadow-m bg-base-100 shadow-md">
         <div className="navbar max-w-[1200px] mx-auto px-4 md:px-6 relative justify-between">
           <div className="flex md:hidden items-center">
-            <label htmlFor="mobile-drawer" className="btn btn-ghost">
+            <button
+              className="btn btn-ghost"
+              onClick={() => setIsDrawerOpen(true)}
+            >
               <Menu size={24} />
-            </label>
+            </button>
           </div>
 
           <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
@@ -142,7 +123,7 @@ const Header = () => {
 
                   <button
                     className="btn bg-base-100 border-none text-sm hover:text-amber-950 transition-colors"
-                    onClick={handleLogout}
+                    onClick={() => logout.mutate()}
                     disabled={isMyInfoLoading || isMyInfoError}
                   >
                     로그아웃
@@ -164,8 +145,14 @@ const Header = () => {
       </header>
 
       <div className="drawer-side z-100 md:hidden fixed">
-        <label htmlFor="mobile-drawer" className="drawer-overlay"></label>
-        <MobileDrawerMenu pathname={pathname} />
+        <label
+          className="drawer-overlay"
+          onClick={() => setIsDrawerOpen(false)}
+        />
+        <MobileDrawerMenu
+          pathname={pathname}
+          closeDrawer={() => setIsDrawerOpen(false)}
+        />
       </div>
     </>
   );
