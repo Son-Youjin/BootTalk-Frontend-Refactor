@@ -12,7 +12,9 @@ interface NotificationDropdownProps {
   isInDrawer?: boolean;
 }
 
-const NotificationDropdown = ({ isInDrawer = false }: NotificationDropdownProps) => {
+const NotificationDropdown = ({
+  isInDrawer = false,
+}: NotificationDropdownProps) => {
   const [isOpen, setIsOpen] = useState(isInDrawer);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { notifications, setHasOpened } = useNotificationStore();
@@ -61,30 +63,49 @@ const NotificationDropdown = ({ isInDrawer = false }: NotificationDropdownProps)
   }, [isOpen, handleCloseDropdown, isInDrawer]);
 
   return (
-    <div className={`relative z-[99] ${isInDrawer ? "w-full" : ""}`} ref={dropdownRef}>
-      {!isInDrawer && (
-        <div onClick={() => setIsOpen((prev) => !prev)}>
-          <NotificationBell isActive={isOpen} />
-        </div>
-      )}
-
-      {isOpen && (
+    <>
+      {isOpen && !isInDrawer && (
         <div
-          className={`${
-            isInDrawer ? "static mt-0 w-full" : "absolute top-full right-0 mt-2 w-96"
-          } max-h-[400px] bg-white rounded-2xl shadow-2xl z-[50] overflow-y-auto scrollbar-thin pr-1`}
-        >
-          <div className="sticky top-0 p-4 text-lg font-bold text-left bg-gray-100 text-gray-700 border-b border-gray-300 z-10">
-            알림
-          </div>
-
-          <NotificationList
-            notifications={notifications}
-            onClose={handleCloseDropdown}
-          />
-        </div>
+          className="fixed inset-0 z-[40] bg-black/20"
+          onClick={handleCloseDropdown}
+        />
       )}
-    </div>
+
+      <div
+        className={`relative z-[99] ${isInDrawer ? "w-full" : ""}`}
+        ref={dropdownRef}
+      >
+        {!isInDrawer && (
+          <div onClick={() => setIsOpen((prev) => !prev)}>
+            <NotificationBell isActive={isOpen} />
+          </div>
+        )}
+
+        {isOpen && (
+          <div
+            className={`${
+              isInDrawer
+                ? "mt-4 w-full"
+                : "absolute right-0 top-[calc(100%+12px)] w-[19rem] sm:w-[22rem]"
+            }
+          overflow-hidden rounded-2xl border border-gray-100
+          bg-white shadow-xl
+        `}
+          >
+            <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+              <h2 className="text-base font-semibold text-gray-800">알림</h2>
+            </div>
+
+            <div className="max-h-[420px] overflow-y-auto">
+              <NotificationList
+                notifications={notifications}
+                onClose={handleCloseDropdown}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
