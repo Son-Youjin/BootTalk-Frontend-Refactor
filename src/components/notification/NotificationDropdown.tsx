@@ -52,13 +52,13 @@ const NotificationDropdown = ({
       }
     };
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("pointerdown", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", handleClickOutside);
     };
   }, [isOpen, handleCloseDropdown, isInDrawer]);
 
@@ -67,7 +67,10 @@ const NotificationDropdown = ({
       {isOpen && !isInDrawer && (
         <div
           className="fixed inset-0 z-[40] bg-black/20"
-          onClick={handleCloseDropdown}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleCloseDropdown();
+          }}
         />
       )}
 
@@ -76,7 +79,12 @@ const NotificationDropdown = ({
         ref={dropdownRef}
       >
         {!isInDrawer && (
-          <div onClick={() => setIsOpen((prev) => !prev)}>
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen((prev) => !prev);
+            }}
+          >
             <NotificationBell isActive={isOpen} />
           </div>
         )}
