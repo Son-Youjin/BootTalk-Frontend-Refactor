@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { CoffeeChat } from "@/types/response";
 import Modal from "@/components/common/modal/CommonModal";
-import { getStatusBadge } from "./getStatusBadge";
+import getStatusBadge from "./getStatusBadge";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale/ko";
 
@@ -49,7 +49,7 @@ const CoffeeChatDetailModal: React.FC<CoffeeChatDetailModalProps> = ({
         <div className="flex items-center">
           <AlertCircle size={18} className="mr-2 " />
           <span className="mr-2 font-medium">상태:</span>
-          {getStatusBadge(coffeeChat.status)}
+          {getStatusBadge({ status: coffeeChat.status })}
         </div>
 
         {/* 신청자/주최자 정보 */}

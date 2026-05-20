@@ -6,7 +6,7 @@ import { CoffeeChat } from "@/types/response";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
-import { getStatusBadge } from "./getStatusBadge";
+import getStatusBadge from "./getStatusBadge";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import { format } from "date-fns";
@@ -100,7 +100,7 @@ const ReceivedListTab = () => {
                     : received.content}
                 </h4>
                 {received.status !== "PENDING" &&
-                  getStatusBadge(received.status)}
+                  getStatusBadge({ status: received.status })}
               </div>
               <div className="flex items-center text-xs text-gray-500 gap-4 mb-2">
                 <p>신청자: {received.menteeName}</p>
@@ -136,7 +136,7 @@ const ReceivedListTab = () => {
                         handleCancel(
                           received.coffeeChatAppId,
                           received.coffeeChatStartTime,
-                          e
+                          e,
                         )
                       }
                     >

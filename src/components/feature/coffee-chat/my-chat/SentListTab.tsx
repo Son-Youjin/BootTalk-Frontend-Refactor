@@ -6,7 +6,7 @@ import { CoffeeChat } from "@/types/response";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
-import { getStatusBadge } from "./getStatusBadge";
+import getStatusBadge from "./getStatusBadge";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import { format } from "date-fns";
@@ -90,7 +90,7 @@ const SentListTab = () => {
                     ? sent.content.substring(0, 30) + "..."
                     : sent.content}
                 </h4>
-                {getStatusBadge(sent.status)}
+                {getStatusBadge({ status: sent.status })}
               </div>
               <div className="flex items-center text-xs text-gray-500 gap-4 mb-2">
                 <p>멘토: {sent.mentorName}</p>
@@ -105,7 +105,7 @@ const SentListTab = () => {
                     handleCancel(
                       sent.coffeeChatAppId,
                       sent.coffeeChatStartTime,
-                      e
+                      e,
                     )
                   }
                 >
