@@ -98,9 +98,10 @@ const MobileDrawerMenu = ({ pathname, closeDrawer }: MobileDrawerMenuProps) => {
               <span>피드백 보내기</span>
             </a>
           </li>
+          <li>
+            <WithdrawalButton className="flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-rose-500 hover:bg-gray-100" />
+          </li>
         </ul>
-
-        <WithdrawalButton className="flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-rose-500 hover:bg-gray-100" />
       </div>
 
       <div className="shrink-0 border-t border-gray-200 p-6">
