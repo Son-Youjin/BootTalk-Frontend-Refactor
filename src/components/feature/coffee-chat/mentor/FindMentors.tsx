@@ -83,7 +83,7 @@ const FindMentors = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {mentorList?.map((mentor) => (
             <div
-              key={mentor.mentorUserId}
+              key={`${mentor.mentorUserId}-${mentor.mentorName}`}
               className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"
             >
               <div className="flex justify-between">
@@ -112,8 +112,8 @@ const FindMentors = () => {
                     {mentor.mentorType === "PROFESSIONAL"
                       ? 3
                       : mentor.mentorType === "GRADUATE"
-                      ? 2
-                      : 1}{" "}
+                        ? 2
+                        : 1}{" "}
                     포인트
                   </span>
                 </p>
