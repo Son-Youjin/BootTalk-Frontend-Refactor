@@ -1,26 +1,26 @@
 export const STATUS_BADGE = {
   APPROVED: {
-    bgColor: "bg-emerald-100",
-    textColor: "text-emerald-700",
+    bgColor: "bg-orange-100",
+    textColor: "text-stone-700",
     text: "승인",
   },
   PENDING: {
     bgColor: "bg-sky-100",
-    textColor: "text-sky-700",
+    textColor: "text-slate-700",
     text: "대기",
   },
   REJECTED: {
-    bgColor: "bg-rose-100",
-    textColor: "text-rose-700",
+    bgColor: "bg-neutral-200",
+    textColor: "text-stone-700",
     text: "거절",
   },
   CANCELED: {
-    bgColor: "bg-gray-100",
+    bgColor: "bg-neutral-200",
     textColor: "text-gray-500",
     text: "취소",
   },
   default: {
-    bgColor: "bg-gray-100",
+    bgColor: "bg-neutral-200",
     textColor: "text-gray-500",
     text: "종료",
   },

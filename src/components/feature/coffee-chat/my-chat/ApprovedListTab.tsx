@@ -77,7 +77,7 @@ const ApprovedListTab = () => {
             >
               <div className="flex justify-between items-center mb-2">
                 <h4 className="font-medium text-sm">{approved.content}</h4>
-                <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap bg-emerald-100 text-emerald-700">
+                <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap bg-orange-100 text-stone-7000">
                   승인
                 </span>
               </div>
