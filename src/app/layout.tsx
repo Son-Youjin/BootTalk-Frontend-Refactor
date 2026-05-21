@@ -6,6 +6,7 @@ import QueryProvider from "@/provider/QueryProvider";
 import Header from "@/components/common/Header";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/common/Footer";
+import MobileBottomNav from "@/components/mobile/MobileBottomNav";
 
 export const metadata: Metadata = {
   title: "Boot Talk App",
@@ -23,8 +24,12 @@ export default function RootLayout({
         <MSWProvider>
           <QueryProvider>
             <Header />
-            <main className="flex-grow min-h-[800px]">{children}</main>
+            <main className="flex-grow min-h-[800px] pb-20 md:pb-0">
+              {children}
+            </main>
             <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+            <MobileBottomNav />
+
             <Footer />
           </QueryProvider>
         </MSWProvider>
