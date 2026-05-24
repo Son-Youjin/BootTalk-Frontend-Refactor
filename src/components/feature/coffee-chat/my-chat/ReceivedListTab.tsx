@@ -4,13 +4,11 @@ import { axiosDefault } from "@/api/axiosInstance";
 import { END_POINT } from "@/constants/endPoint";
 import { CoffeeChat } from "@/types/response";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
-import getStatusBadge from "./getStatusBadge";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale/ko";
+import ReceivedCoffeeChatCard from "./tabsActions/ReceivedCoffeeChatCard";
 
 const ReceivedListTab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,14 +49,6 @@ const ReceivedListTab = () => {
     setIsModalOpen(false);
   };
 
-  // 날짜 포맷 헬퍼 함수
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return format(date, "yyyy-MM-dd HH:mm", { locale: ko });
-  };
-
-  const isNow = new Date();
-
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -88,63 +78,14 @@ const ReceivedListTab = () => {
       {receivedList && receivedList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {receivedList.map((received) => (
-            <div
+            <ReceivedCoffeeChatCard
               key={received.coffeeChatAppId}
-              className="p-3 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer"
-              onClick={() => handleCoffeeChatClick(received)}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="font-medium text-sm truncate max-w-xs">
-                  {received.content.length > 30
-                    ? received.content.substring(0, 30) + "..."
-                    : received.content}
-                </h4>
-                {received.status !== "PENDING" &&
-                  getStatusBadge({ status: received.status })}
-              </div>
-              <div className="flex items-center text-xs text-gray-500 gap-4 mb-2">
-                <p>신청자: {received.menteeName}</p>
-                <p>신청일: {formatDate(received.coffeeChatStartTime)}</p>
-              </div>
-
-              {/* 승인/거절 버튼 (PENDING 상태일 때만 표시) */}
-              <div className="flex mt-2 space-x-2">
-                {received.status === "PENDING" && (
-                  <>
-                    <button
-                      className="btn btn-sm btn-active bg-amber-900 text-white"
-                      onClick={(e) =>
-                        handleApprove(received.coffeeChatAppId, e)
-                      }
-                    >
-                      승인하기
-                    </button>
-                    <button
-                      className="btn btn-sm btn-active"
-                      onClick={(e) => handleReject(received.coffeeChatAppId, e)}
-                    >
-                      거절하기
-                    </button>
-                  </>
-                )}
-
-                {received.status === "APPROVED" &&
-                  isNow < new Date(received.coffeeChatStartTime) && (
-                    <button
-                      className="btn btn-sm btn-active"
-                      onClick={(e) =>
-                        handleCancel(
-                          received.coffeeChatAppId,
-                          received.coffeeChatStartTime,
-                          e,
-                        )
-                      }
-                    >
-                      취소하기
-                    </button>
-                  )}
-              </div>
-            </div>
+              received={received}
+              handleCoffeeChatClick={handleCoffeeChatClick}
+              handleApprove={handleApprove}
+              handleReject={handleReject}
+              handleCancel={handleCancel}
+            />
           ))}
         </div>
       ) : (
