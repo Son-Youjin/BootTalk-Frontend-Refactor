@@ -24,3 +24,14 @@ export const useReceivedCoffeeChats = () => {
     staleTime: 0,
   });
 };
+
+export const useApprovedCoffeeChats = () => {
+  return useQuery<CoffeeChat[]>({
+    queryKey: ["approvedList"],
+    queryFn: async () => {
+      const response = await axiosDefault.get(END_POINT.APPROVED_COFFEE_CHATS);
+      return response.data.data;
+    },
+    staleTime: 0,
+  });
+};
