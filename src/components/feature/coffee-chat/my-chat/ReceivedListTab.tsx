@@ -1,32 +1,21 @@
 "use client";
 
-import { axiosDefault } from "@/api/axiosInstance";
-import { END_POINT } from "@/constants/endPoint";
 import { CoffeeChat } from "@/types/response";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import ReceivedCoffeeChatCard from "./tabsActions/ReceivedCoffeeChatCard";
+import Loading from "./tabsActions/Loading";
+import ErrorReload from "./tabsActions/ErrorReload";
+import { useReceivedCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
 
 const ReceivedListTab = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCoffeeChat, setSelectedCoffeeChat] =
     useState<CoffeeChat | null>(null);
 
-  const {
-    data: receivedList,
-    isLoading,
-    isError,
-  } = useQuery<CoffeeChat[]>({
-    queryKey: ["receivedList"],
-    queryFn: async () => {
-      const response = await axiosDefault.get(END_POINT.RECEIVED_COFFEE_CHATS);
-      return response.data.data;
-    },
-    staleTime: 0,
-  });
+  const { data: receivedList, isLoading, isError } = useReceivedCoffeeChats();
 
   const {
     handleApprove,
@@ -50,27 +39,11 @@ const ReceivedListTab = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    <Loading />;
   }
 
   if (isError) {
-    return (
-      <div className="mt-4 p-4 bg-red-50 rounded-lg text-center">
-        <p className="text-red-500">
-          데이터를 불러오는 중 오류가 발생했습니다.
-        </p>
-        <button
-          className="mt-2 text-sm text-blue-500 hover:underline"
-          onClick={() => window.location.reload()}
-        >
-          새로고침
-        </button>
-      </div>
-    );
+    <ErrorReload />;
   }
 
   return (
