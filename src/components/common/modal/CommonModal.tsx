@@ -14,7 +14,7 @@ const Modal: React.FC<CommonModalProps> = ({
   const sizeClasses = {
     xs: "max-w-xs",
     sm: "max-w-sm",
-    md: "max-w-md",
+    md: "max-w-[420px]",
     lg: "max-w-lg",
     xl: "max-w-xl",
     "2xl": "max-w-2xl",
@@ -92,7 +92,7 @@ const Modal: React.FC<CommonModalProps> = ({
             )}
 
             {/* 모달 콘텐츠 */}
-            <div className="p-4 overflow-y-auto max-h-[70vh]">{children}</div>
+            <div className="overflow-y-auto max-h-[70vh]">{children}</div>
           </div>
         </div>
       </div>
