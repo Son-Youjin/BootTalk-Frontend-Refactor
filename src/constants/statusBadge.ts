@@ -14,7 +14,7 @@ export const STATUS_BADGE = {
     textColor: "text-stone-700",
     text: "거절",
   },
-  CANCELED: {
+  CANCEL: {
     bgColor: "bg-neutral-200",
     textColor: "text-gray-500",
     text: "취소",
@@ -22,6 +22,6 @@ export const STATUS_BADGE = {
   default: {
     bgColor: "bg-neutral-200",
     textColor: "text-gray-500",
-    text: "종료",
+    text: "",
   },
 } as const;
