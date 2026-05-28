@@ -1,5 +1,6 @@
 import { axiosDefault } from "@/api/axiosInstance";
 import { END_POINT } from "@/constants/endPoint";
+import { formatDate } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -11,6 +12,8 @@ interface ModalState {
   actionType: ActionType;
   coffeeChatAppId: string;
   isPenalty: boolean;
+  targetName?: string;
+  coffeeChatStartTime?: string;
 }
 
 export const useCoffeeChatActions = (userRole: UserRole = "MENTOR") => {
@@ -84,7 +87,7 @@ export const useCoffeeChatActions = (userRole: UserRole = "MENTOR") => {
       } else {
         const url = END_POINT.STATUS_CHATS(coffeeChatAppId);
         return await axiosDefault.put(url, {
-          changeStatus: "CANCELED",
+          changeStatus: "CANCEL",
         });
       }
     },
@@ -128,13 +131,20 @@ export const useCoffeeChatActions = (userRole: UserRole = "MENTOR") => {
   };
 
   // 승인 처리 핸들러
-  const handleApprove = (coffeeChatAppId: string, e?: React.MouseEvent) => {
+  const handleApprove = (
+    coffeeChatAppId: string,
+    targetName: string,
+    coffeeChatStartTime: string,
+    e?: React.MouseEvent,
+  ) => {
     e?.stopPropagation();
     setModalState({
       isOpen: true,
       actionType: "APPROVE",
       coffeeChatAppId,
       isPenalty: false,
+      targetName,
+      coffeeChatStartTime: formatDate(coffeeChatStartTime),
     });
   };
 
@@ -153,7 +163,8 @@ export const useCoffeeChatActions = (userRole: UserRole = "MENTOR") => {
   const handleCancel = (
     coffeeChatAppId: string,
     coffeeChatStartTime: string,
-    e?: React.MouseEvent
+    targetName: string,
+    e?: React.MouseEvent,
   ) => {
     e?.stopPropagation();
 
@@ -168,6 +179,8 @@ export const useCoffeeChatActions = (userRole: UserRole = "MENTOR") => {
       actionType: "CANCEL",
       coffeeChatAppId,
       isPenalty,
+      targetName,
+      coffeeChatStartTime: formatDate(coffeeChatStartTime),
     });
   };
 

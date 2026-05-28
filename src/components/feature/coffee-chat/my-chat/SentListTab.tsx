@@ -1,33 +1,24 @@
 "use client";
 
-import { CoffeeChat } from "@/types/response";
-import { useState } from "react";
-import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import SentCoffeeChatCard from "./tabsActions/SentCoffeeChatCard";
 import { useSentCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
 import Loading from "./tabsActions/Loading";
 import ErrorReload from "./tabsActions/ErrorReload";
+import { useCoffeeChatCardAction } from "@/hooks/coffee-chat/useCoffeeChatCardAction";
 
 const SentListTab = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCoffeeChat, setSelectedCoffeeChat] =
-    useState<CoffeeChat | null>(null);
-
   const { data: sentList, isLoading, isError } = useSentCoffeeChats();
 
   const { handleCancel, isCanceling, modalState, closeModal, confirmAction } =
     useCoffeeChatActions("MENTEE");
 
-  const handleCoffeeChatClick = (coffeechat: CoffeeChat) => {
-    setSelectedCoffeeChat(coffeechat);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const { handleCardClick } = useCoffeeChatCardAction({
+    userRole: "MENTEE",
+    handleApprove: () => {},
+    handleCancel,
+  });
 
   if (isLoading) {
     <Loading />;
@@ -45,7 +36,7 @@ const SentListTab = () => {
             <SentCoffeeChatCard
               key={sent.coffeeChatAppId}
               sent={sent}
-              onClick={handleCoffeeChatClick}
+              onClick={handleCardClick}
               onCancel={handleCancel}
               isCanceling={isCanceling}
             />
@@ -57,14 +48,6 @@ const SentListTab = () => {
         </div>
       )}
 
-      {/* 커피챗 상세 정보 모달 */}
-      <CoffeeChatDetailModal
-        isSent={true}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        coffeeChat={selectedCoffeeChat}
-      />
-
       {/* 확인 모달 렌더링 */}
       <CoffeeChatActionModal
         isOpen={modalState.isOpen}
@@ -74,6 +57,8 @@ const SentListTab = () => {
         onConfirm={confirmAction}
         isLoading={isCanceling}
         userRole="MENTEE"
+        targetName={modalState.targetName}
+        coffeeChatStartTime={modalState.coffeeChatStartTime}
       />
     </div>
   );

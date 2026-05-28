@@ -10,7 +10,8 @@ interface SentCoffeeChatCardProps {
   onCancel: (
     coffeeChatAppId: string,
     coffeeChatStartTime: string,
-    e: React.MouseEvent<HTMLButtonElement>,
+    mentorName: string,
+    e?: React.MouseEvent,
   ) => void;
   isCanceling: boolean;
 }
@@ -18,15 +19,7 @@ interface SentCoffeeChatCardProps {
 export default function SentCoffeeChatCard({
   sent,
   onClick,
-  onCancel,
-  isCanceling,
 }: SentCoffeeChatCardProps) {
-  const isNow = new Date();
-
-  const canCancel =
-    sent.status === "APPROVED" ||
-    (sent.status === "PENDING" && isNow < new Date(sent.coffeeChatStartTime));
-
   return (
     <div
       className="p-3 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer"
@@ -46,17 +39,6 @@ export default function SentCoffeeChatCard({
         <p>멘토: {sent.mentorName}</p>
         <p>신청일: {formatDate(sent.coffeeChatStartTime)}</p>
       </div>
-
-      {canCancel && (
-        <button
-          className="btn btn-soft btn-sm"
-          onClick={(e) =>
-            onCancel(sent.coffeeChatAppId, sent.coffeeChatStartTime, e)
-          }
-        >
-          {isCanceling ? "처리 중..." : "취소하기"}
-        </button>
-      )}
     </div>
   );
 }
