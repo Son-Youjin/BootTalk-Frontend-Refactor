@@ -1,6 +1,4 @@
 import { CoffeeChat } from "@/types/response";
-import ReceivedPendingActions from "./ReceivedPendingActions";
-import ReceivedApprovedActions from "./ReceivedApprovedActions";
 import getStatusBadge from "../getStatusBadge";
 import { formatDate } from "@/lib/utils";
 
@@ -19,6 +17,7 @@ interface ReceivedCoffeeChatCardProps {
   handleCancel: (
     coffeeChatAppId: string,
     coffeeChatStartTime: string,
+    menteeName: string,
     e?: React.MouseEvent,
   ) => void;
 }
@@ -26,12 +25,7 @@ interface ReceivedCoffeeChatCardProps {
 export default function ReceivedCoffeeChatCard({
   received,
   handleCoffeeChatClick,
-  handleApprove,
-  handleReject,
-  handleCancel,
 }: ReceivedCoffeeChatCardProps) {
-  const isNow = new Date();
-
   return (
     <div
       className="p-3 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer"
@@ -43,31 +37,12 @@ export default function ReceivedCoffeeChatCard({
             ? received.content.substring(0, 30) + "..."
             : received.content}
         </h4>
-        {received.status !== "PENDING" &&
-          getStatusBadge({ status: received.status })}
+
+        {getStatusBadge({ status: received.status })}
       </div>
       <div className="flex items-center text-xs text-gray-500 gap-4 mb-2">
         <p>신청자: {received.menteeName}</p>
         <p>신청일: {formatDate(received.coffeeChatStartTime)}</p>
-      </div>
-
-      {/* 승인/거절 버튼 (PENDING 상태일 때만 표시) */}
-      <div className="flex mt-2 space-x-2">
-        {received.status === "PENDING" && (
-          <ReceivedPendingActions
-            received={received}
-            handleApprove={handleApprove}
-            handleReject={handleReject}
-          />
-        )}
-
-        {received.status === "APPROVED" && (
-          <ReceivedApprovedActions
-            received={received}
-            isNow={isNow}
-            handleCancel={handleCancel}
-          />
-        )}
       </div>
     </div>
   );

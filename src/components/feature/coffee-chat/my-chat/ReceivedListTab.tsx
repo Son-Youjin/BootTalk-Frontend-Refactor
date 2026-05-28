@@ -1,20 +1,14 @@
 "use client";
 
-import { CoffeeChat } from "@/types/response";
-import { useState } from "react";
-import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
 import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import ReceivedCoffeeChatCard from "./tabsActions/ReceivedCoffeeChatCard";
 import Loading from "./tabsActions/Loading";
 import ErrorReload from "./tabsActions/ErrorReload";
 import { useReceivedCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
+import { useCoffeeChatCardAction } from "@/hooks/coffee-chat/useCoffeeChatCardAction";
 
 const ReceivedListTab = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCoffeeChat, setSelectedCoffeeChat] =
-    useState<CoffeeChat | null>(null);
-
   const { data: receivedList, isLoading, isError } = useReceivedCoffeeChats();
 
   const {
@@ -29,14 +23,12 @@ const ReceivedListTab = () => {
     confirmAction,
   } = useCoffeeChatActions("MENTOR");
 
-  const handleCoffeeChatClick = (coffeechat: CoffeeChat) => {
-    setSelectedCoffeeChat(coffeechat);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const { handleCardClick } = useCoffeeChatCardAction({
+    userRole: "MENTOR",
+    handleApprove,
+    handleReject,
+    handleCancel,
+  });
 
   if (isLoading) {
     <Loading />;
@@ -54,7 +46,7 @@ const ReceivedListTab = () => {
             <ReceivedCoffeeChatCard
               key={received.coffeeChatAppId}
               received={received}
-              handleCoffeeChatClick={handleCoffeeChatClick}
+              handleCoffeeChatClick={handleCardClick}
               handleApprove={handleApprove}
               handleReject={handleReject}
               handleCancel={handleCancel}
@@ -67,13 +59,6 @@ const ReceivedListTab = () => {
         </div>
       )}
 
-      {/* 커피챗 상세 정보 모달 */}
-      <CoffeeChatDetailModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        coffeeChat={selectedCoffeeChat}
-      />
-
       {/* 확인 모달 렌더링 */}
       <CoffeeChatActionModal
         isOpen={modalState.isOpen}
@@ -83,6 +68,8 @@ const ReceivedListTab = () => {
         onConfirm={confirmAction}
         isLoading={isApproving || isRejecting || isCanceling}
         userRole="MENTOR"
+        targetName={modalState.targetName}
+        coffeeChatStartTime={modalState.coffeeChatStartTime}
       />
     </div>
   );

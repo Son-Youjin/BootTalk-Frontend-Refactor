@@ -5,6 +5,7 @@ interface ApprovedListTabProps {
   isNow: Date;
   handleCancel: (
     coffeeChatAppId: string,
+    menteeName: string,
     coffeeChatStartTime: string,
     e: React.MouseEvent<HTMLButtonElement>,
   ) => void;
@@ -23,6 +24,7 @@ export default function ReceivedApprovedActions({
           handleCancel(
             received.coffeeChatAppId,
             received.coffeeChatStartTime,
+            received.menteeName,
             e,
           )
         }
