@@ -1,35 +1,23 @@
 "use client";
 
-import { CoffeeChat } from "@/types/response";
-import { useState } from "react";
-import CoffeeChatDetailModal from "./CoffeeChatDetailModal";
 import Loading from "./tabsActions/Loading";
 import ErrorReload from "./tabsActions/ErrorReload";
 import { useApprovedCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
 import ApprovedCard from "./tabsActions/ApprovedCard";
+import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
+import CoffeeChatActionModal from "./CoffeeChatActionModal";
 
 const ApprovedListTab = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCoffeeChat, setSelectedCoffeeChat] =
-    useState<CoffeeChat | null>(null);
-
   const { data: approvedList, isLoading, isError } = useApprovedCoffeeChats();
-
-  const handleCoffeeChatClick = (coffeechat: CoffeeChat) => {
-    setSelectedCoffeeChat(coffeechat);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const { handleCancel, isCanceling, modalState, closeModal, confirmAction } =
+    useCoffeeChatActions();
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (isError) {
-    <ErrorReload />;
+    return <ErrorReload />;
   }
 
   return (
@@ -40,7 +28,16 @@ const ApprovedListTab = () => {
             <ApprovedCard
               key={approved.coffeeChatAppId}
               approved={approved}
-              onClick={handleCoffeeChatClick}
+              onCancel={(coffeeChat) =>
+                // TODO: 취소 모달 대상자를 mentor로 임시 처리
+                // CoffeeChat 응답에 멘토 || 멘티 구분 정보가 없어,
+                // 추후 API 응답 구조 개선 시 역할에 따라 대상자명 분기 필요.
+                handleCancel(
+                  coffeeChat.coffeeChatAppId,
+                  coffeeChat.coffeeChatStartTime,
+                  coffeeChat.mentorName,
+                )
+              }
             />
           ))}
         </div>
@@ -50,11 +47,17 @@ const ApprovedListTab = () => {
         </div>
       )}
 
-      {/* 커피챗 상세 정보 모달 */}
-      <CoffeeChatDetailModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        coffeeChat={selectedCoffeeChat}
+      {/* 확인 모달 렌더링 */}
+      <CoffeeChatActionModal
+        isOpen={modalState.isOpen}
+        actionType={modalState.actionType}
+        isPenalty={modalState.isPenalty}
+        onClose={closeModal}
+        onConfirm={confirmAction}
+        isLoading={isCanceling}
+        userRole="MENTEE"
+        targetName={modalState.targetName}
+        coffeeChatStartTime={modalState.coffeeChatStartTime}
       />
     </div>
   );

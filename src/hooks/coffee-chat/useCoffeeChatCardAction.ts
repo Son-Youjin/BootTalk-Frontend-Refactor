@@ -51,8 +51,11 @@ export const useCoffeeChatCardAction = ({
         break;
 
       case "REJECTED":
+        toast.error("이미 거절된 커피챗입니다.");
+        break;
+
       case "CANCEL":
-        toast("이미 처리된 커피챗입니다.");
+        toast.error("취소된 커피챗입니다.");
         break;
     }
   };

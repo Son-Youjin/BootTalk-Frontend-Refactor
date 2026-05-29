@@ -4,10 +4,13 @@ import { differenceInDays } from "date-fns";
 
 interface ApprovedCardProps {
   approved: CoffeeChat;
-  onClick: (coffeeChat: CoffeeChat) => void;
+  onCancel: (coffeeChat: CoffeeChat) => void;
 }
 
-export default function ApprovedCard({ approved, onClick }: ApprovedCardProps) {
+export default function ApprovedCard({
+  approved,
+  onCancel,
+}: ApprovedCardProps) {
   const startDate = new Date(approved.coffeeChatStartTime);
   const diffDays = differenceInDays(startDate, new Date());
 
@@ -20,7 +23,7 @@ export default function ApprovedCard({ approved, onClick }: ApprovedCardProps) {
 
   return (
     <div
-      onClick={() => onClick(approved)}
+      onClick={() => onCancel(approved)}
       className="bg-white border border-gray-200 rounded-2xl px-5 py-4 cursor-pointer hover:shadow-md transition-all"
     >
       <div className="flex items-center justify-between gap-3">
