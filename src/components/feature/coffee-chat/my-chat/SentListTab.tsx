@@ -21,11 +21,11 @@ const SentListTab = () => {
   });
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (isError) {
-    <ErrorReload />;
+    return <ErrorReload />;
   }
 
   return (
@@ -37,8 +37,6 @@ const SentListTab = () => {
               key={sent.coffeeChatAppId}
               sent={sent}
               onClick={handleCardClick}
-              onCancel={handleCancel}
-              isCanceling={isCanceling}
             />
           ))}
         </div>

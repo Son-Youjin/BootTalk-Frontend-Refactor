@@ -7,13 +7,6 @@ import { formatDate } from "@/lib/utils";
 interface SentCoffeeChatCardProps {
   sent: CoffeeChat;
   onClick: (coffeeChat: CoffeeChat) => void;
-  onCancel: (
-    coffeeChatAppId: string,
-    coffeeChatStartTime: string,
-    mentorName: string,
-    e?: React.MouseEvent,
-  ) => void;
-  isCanceling: boolean;
 }
 
 export default function SentCoffeeChatCard({

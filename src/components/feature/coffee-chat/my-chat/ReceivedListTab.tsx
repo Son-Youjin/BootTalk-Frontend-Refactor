@@ -13,7 +13,6 @@ const ReceivedListTab = () => {
 
   const {
     handleApprove,
-    handleReject,
     handleCancel,
     isApproving,
     isRejecting,
@@ -26,16 +25,15 @@ const ReceivedListTab = () => {
   const { handleCardClick } = useCoffeeChatCardAction({
     userRole: "MENTOR",
     handleApprove,
-    handleReject,
     handleCancel,
   });
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
 
   if (isError) {
-    <ErrorReload />;
+    return <ErrorReload />;
   }
 
   return (
@@ -47,9 +45,6 @@ const ReceivedListTab = () => {
               key={received.coffeeChatAppId}
               received={received}
               handleCoffeeChatClick={handleCardClick}
-              handleApprove={handleApprove}
-              handleReject={handleReject}
-              handleCancel={handleCancel}
             />
           ))}
         </div>

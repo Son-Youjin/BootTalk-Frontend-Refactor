@@ -5,21 +5,6 @@ import { formatDate } from "@/lib/utils";
 interface ReceivedCoffeeChatCardProps {
   received: CoffeeChat;
   handleCoffeeChatClick: (received: CoffeeChat) => void;
-
-  handleApprove: (
-    coffeeChatAppId: string,
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => void;
-  handleReject: (
-    coffeeChatAppId: string,
-    e: React.MouseEvent<HTMLButtonElement>,
-  ) => void;
-  handleCancel: (
-    coffeeChatAppId: string,
-    coffeeChatStartTime: string,
-    menteeName: string,
-    e?: React.MouseEvent,
-  ) => void;
 }
 
 export default function ReceivedCoffeeChatCard({
