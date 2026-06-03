@@ -16,7 +16,7 @@ export default function MentorsList({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {mentorList.map((mentor) => (
         <MentorCard
-          key={mentor.mentorUserId}
+          key={mentor.userId}
           mentor={mentor}
           userId={userId}
           onChatRequest={onChatRequest}

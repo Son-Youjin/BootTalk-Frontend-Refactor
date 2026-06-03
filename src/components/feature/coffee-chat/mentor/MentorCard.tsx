@@ -57,7 +57,7 @@ export default function MentorCard({
 
       <button
         onClick={() => onChatRequest(mentor)}
-        disabled={mentor.mentorUserId === userId}
+        disabled={mentor.userId === userId}
         className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#E6D1C8] text-sm font-semibold text-gray-900 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Image src="/talk.png" alt="talk" width={18} height={18} />
