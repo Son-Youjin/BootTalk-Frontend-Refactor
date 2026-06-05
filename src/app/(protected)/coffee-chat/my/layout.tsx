@@ -2,10 +2,18 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const MyChatLayout = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      router.replace("/coffee-chat");
+    }
+  }, [router]);
 
   const tabs = [
     { id: "approved", label: "커피챗 확정", path: "/coffee-chat/my" },
