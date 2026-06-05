@@ -27,7 +27,7 @@ export interface CoffeeChat {
 
 export interface Mentor {
   coffeeChatInfoId: number;
-  mentorUserId: number;
+  userId: number;
   mentorName: string;
   mentorType: string;
   jobType: string;
@@ -148,7 +148,7 @@ export interface Certification {
   status: string;
 }
 
-export interface NotificationItem { 
+export interface NotificationItem {
   notificationId: number;
   message: string;
   createdAt: string;
@@ -171,7 +171,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   markAsReadById: (id) =>
     set((s) => ({
       notifications: s.notifications.map((n) =>
-        n.notificationId === id ? { ...n, checked: true } : n
+        n.notificationId === id ? { ...n, checked: true } : n,
       ),
     })),
   addNotification: (item) =>
@@ -181,7 +181,7 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   markAllAsReadBefore: (time) =>
     set((s) => ({
       notifications: s.notifications.map((n) =>
-        n.createdAt <= time ? { ...n, checked: true } : n
+        n.createdAt <= time ? { ...n, checked: true } : n,
       ),
     })),
 }));
