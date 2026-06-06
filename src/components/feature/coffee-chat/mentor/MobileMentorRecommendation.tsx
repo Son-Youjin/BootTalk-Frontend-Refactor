@@ -56,7 +56,7 @@ export default function MobileMentorRecommendation() {
 
         <button
           type="button"
-          onClick={() => router.push("/coffee-chat/mentors")}
+          onClick={() => router.push("/mentors")}
           className="flex items-center gap-0.5 text-[12px] font-medium text-gray-500"
         >
           더보기
