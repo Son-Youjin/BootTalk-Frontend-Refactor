@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import MobileHeader from "@/components/mobile/MobileHeader";
 
 const CoffeeChatHeader: React.FC = () => {
   const router = useRouter();
@@ -23,8 +24,10 @@ const CoffeeChatHeader: React.FC = () => {
       </div>
 
       <div className="flex-col md:hidden mb-6">
-        <h1 className="text-2xl font-bold">내 커피챗을 한눈에</h1>
-        <h2>신청 · 확정된 커피챗을 관리하세요.</h2>
+        <MobileHeader
+          title="내 커피챗을 한눈에"
+          subTitle="신청 · 확정된 커피챗을 관리하세요."
+        />
       </div>
     </>
   );
