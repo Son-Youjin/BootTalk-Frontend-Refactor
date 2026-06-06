@@ -4,8 +4,8 @@ import { Mentor } from "@/types/response";
 import ChatRequestModal from "./ChatRequestModal";
 import { useUserStore } from "@/store/useUserStore";
 import MentorsList from "./MentorsList";
-import { jobFilterOptions } from "@/constants/jobCategory";
 import useMentorFilter from "@/hooks/coffee-chat/useMentorFilter";
+import MentorJobFilter from "./MentorJobFilter";
 
 const FindMentors = () => {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
@@ -37,20 +37,11 @@ const FindMentors = () => {
     <>
       <div className="mt-4">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
-          <h3 className="text-lg font-semibold">멘토 리스트</h3>
-          <div className="flex flex-wrap gap-2">
-            {/* 기타 옵션은 필요 시 추가 예정 */}
-            <select
+          <div className="mb-6">
+            <MentorJobFilter
               value={jobTypeFilter}
               onChange={handleFilterChange}
-              className="select rounded-lg text-base"
-            >
-              {jobFilterOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            />
           </div>
         </div>
 
