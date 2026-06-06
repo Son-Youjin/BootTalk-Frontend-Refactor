@@ -7,7 +7,7 @@ import ApprovedListTab from "@/components/feature/coffee-chat/my-chat/ApprovedLi
 import SentListTab from "@/components/feature/coffee-chat/my-chat/SentListTab";
 import ReceivedListTab from "@/components/feature/coffee-chat/my-chat/ReceivedListTab";
 import FindMentorsButton from "./mentor/FindMentorsButton";
-import FindMentors from "./mentor/FindMentors";
+import MobileMentorRecommendation from "./mentor/MobileMentorRecommendation";
 
 type TabType = "approved" | "sent" | "received";
 
@@ -95,7 +95,7 @@ const MobileCoffeeChat = () => {
 
       {!activeTab && (
         <div className="mt-6">
-          <FindMentors />
+          <MobileMentorRecommendation />
         </div>
       )}
     </>

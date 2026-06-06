@@ -3,8 +3,8 @@ import MentorCard from "./MentorCard";
 
 interface MentorsListProps {
   mentorList: Mentor[];
-  userId: number;
-  onChatRequest: (mentor: Mentor) => void;
+  userId?: number;
+  onChatRequest?: (mentor: Mentor) => void;
 }
 
 export default function MentorsList({
@@ -18,8 +18,8 @@ export default function MentorsList({
         <MentorCard
           key={mentor.userId}
           mentor={mentor}
-          userId={userId}
-          onChatRequest={onChatRequest}
+          userId={userId ?? 0}
+          onChatRequest={onChatRequest ?? (() => {})}
         />
       ))}
     </div>
