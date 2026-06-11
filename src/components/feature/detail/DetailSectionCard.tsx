@@ -7,14 +7,15 @@ interface DetailSectionCardProps {
 
 const DetailSectionCard = ({ title, children }: DetailSectionCardProps) => {
   return (
-    <section className="mb-10" aria-labelledby={`${title}-section`}>
-      {/* 섹션 제목 */}
-      <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
+    <section className="mb-8" aria-labelledby={`${title}-section`}>
+      <h2
+        id={`${title}-section`}
+        className="mb-3 text-lg font-bold text-gray-900"
+      >
+        {title}
+      </h2>
 
-      {/* 내용 카드 */}
-      <div className="bg-white border border-gray-100 rounded-xl shadow-md">
-        <div className="p-5">{children}</div>
-      </div>
+      <div className="rounded-2xl bg-white p-5 shadow-sm">{children}</div>
     </section>
   );
 };

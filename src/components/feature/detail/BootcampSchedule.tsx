@@ -1,9 +1,3 @@
-import {
-  CalendarDays,
-  Users,
-  Repeat,
-  DollarSign,
-} from "lucide-react";
 import type { BootcampDetail } from "@/types/response";
 import DetailSectionCard from "./DetailSectionCard";
 
@@ -23,39 +17,38 @@ export default function BootcampSchedule({
   bootcampDegree,
   bootcampCost,
 }: BootcampScheduleProps) {
-
-  const iconClass = "w-5 h-5 text-gray-500";
-  const textClass = "text-base text-gray-800 font-medium"
-  const valueClass = "text-gray-600";
+  const scheduleItems = [
+    {
+      label: "훈련 기간",
+      value: `${bootcampStartDate} ~ ${bootcampEndDate}`,
+    },
+    {
+      label: "총 정원",
+      value: `${bootcampCapacity}명`,
+    },
+    {
+      label: "개설 회차",
+      value: `${bootcampDegree}회차`,
+    },
+    {
+      label: "교육비",
+      value: bootcampCost ? "유료" : "무료",
+    },
+  ];
 
   return (
     <DetailSectionCard title="일정 & 훈련 정보">
-      <div className="space-y-4 text-sm sm:text-base">
-        <div className="flex items-center gap-3">
-          <CalendarDays className={iconClass} />
-          <span className={textClass}>훈련 기간:</span>
-          <span className={valueClass}>{bootcampStartDate} ~ {bootcampEndDate}</span>
-        </div>
+      <div className="space-y-4">
+        {scheduleItems.map(({ label, value }) => (
+          <div key={label} className="flex items-start">
+            <span className="w-20 shrink-0 text-sm font-medium text-gray-800">
+              {label}
+            </span>
 
-        <div className="flex items-center gap-3">
-          <Users className={iconClass} />
-          <span className={textClass}>총 정원:</span>
-          <span className={valueClass}>{bootcampCapacity}명</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Repeat className={iconClass} />
-          <span className={textClass}>개설 회차:</span> 
-          <span className={valueClass}>{bootcampDegree}회차</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <DollarSign className={iconClass} />
-          <span className={textClass}>교육비:</span>
-          <span className={valueClass}>{bootcampCost ? "유료" : "무료"}</span>
-        </div>
+            <span className="break-word text-sm text-gray-600">{value}</span>
+          </div>
+        ))}
       </div>
     </DetailSectionCard>
-
   );
 }
