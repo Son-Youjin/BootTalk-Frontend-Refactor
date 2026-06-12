@@ -5,7 +5,8 @@ import BootcampDetailInfo from "@/components/feature/detail/BootcampDetailInfo";
 import BootcampSchedule from "@/components/feature/detail/BootcampSchedule";
 import BootcampReview from "@/components/feature/detail/BootcampReview";
 import BootcampIntro from "./BootcampIntro";
-import clsx from "clsx";
+import BootcampSummary from "./BootcampSummary";
+import { getBootcampDuration, getReviewSummary } from "@/lib/utils";
 interface Props {
   id: string;
 }
@@ -21,23 +22,35 @@ const BootcampDetailClient = ({ id }: Props) => {
         데이터를 불러오지 못했습니다.
       </p>
     );
+
+  const duration = getBootcampDuration(
+    data.bootcampStartDate,
+    data.bootcampEndDate,
+  );
+
+  const { averageRating, reviewCount } = getReviewSummary(data.reviews);
+
   return (
     <>
       <main className="mx-auto max-w-screen-xl px-5 py-8 sm:px-6 sm:py-10">
         {/* 제목 영역 */}
         <div className="mb-8 mt-6 overflow-hidden">
-          <h1
-            className={clsx(
-              "text-2xl font-semibold text-amber-950 max-w-full",
-              "break-words",
-              "sm:line-clamp-2 sm:break-keep",
-              "lg:truncate",
-            )}
-          >
+          <h1 className="text-2xl font-bold leading-snug text-amber-950">
             {data.bootcampName}
           </h1>
+
+          <BootcampSummary
+            rating={averageRating}
+            reviewsCount={reviewCount}
+            region={data.bootcampRegion}
+            duration={duration}
+            isFree={!data.bootcampCost}
+            jobCategory={data.bootcampCategory}
+          />
+
           <div className="border-t border-amber-600 mt-4" />
         </div>
+
         {/* 상세 정보 카드 */}
         <BootcampDetailInfo
           trainingCenterName={data.trainingCenterName}
