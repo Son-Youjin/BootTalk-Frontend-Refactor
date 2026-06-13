@@ -39,6 +39,8 @@ const BootcampDetailClient = ({ id }: Props) => {
             {data.bootcampName}
           </h1>
 
+          <div className="border-t border-amber-600 mt-4 mb-3" />
+
           <BootcampSummary
             rating={averageRating}
             reviewsCount={reviewCount}
@@ -47,8 +49,6 @@ const BootcampDetailClient = ({ id }: Props) => {
             isFree={!data.bootcampCost}
             jobCategory={data.bootcampCategory}
           />
-
-          <div className="border-t border-amber-600 mt-4" />
         </div>
 
         {/* 상세 정보 카드 */}
