@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import type { Review } from "@/types/response";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,4 +23,33 @@ export const shuffleArray = <T>(array: T[]): T[] => {
   }
 
   return shuffled;
+};
+
+export const getReviewSummary = (reviews: Review[]) => {
+  const reviewCount = reviews.length;
+
+  if (reviewCount === 0) {
+    return {
+      averageRating: 0,
+      reviewCount: 0,
+    };
+  }
+
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+
+  return {
+    averageRating: Number((totalRating / reviewCount).toFixed(1)),
+    reviewCount,
+  };
+};
+
+export const getBootcampDuration = (startDate: string, endDate: string) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const diffDays = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+
+  const weeks = Math.ceil(diffDays / 7);
+
+  return `${weeks}주`;
 };
