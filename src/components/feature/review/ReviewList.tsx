@@ -3,20 +3,20 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 import ReviewItem from "./ReviewItem";
-import ReviewFilterButtons from "@/components/feature/review/ReviewFilterButtons";
 import type { Review as ResponseReview } from "@/types/response";
-
+import SelectJob from "./SelectJob";
+import ReviewFilterButtons from "./ReviewFilterButtons";
+import useFilterOptions from "@/hooks/reviews/useFilterOptions";
+import { Search } from "lucide-react";
 
 export default function ReviewList() {
-  const [filters, setFilters] = useState<{ category?: string; date?: string }>({});
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-  } = useGetReviews(filters);
+  const [filters, setFilters] = useState<{ category?: string; date?: string }>(
+    {},
+  );
+
+  const { jobRoles, isLoading, isError } = useFilterOptions();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetReviews(filters);
 
   const observerRef = useRef<HTMLDivElement | null>(null);
   const loadingRef = useRef(false);
@@ -32,7 +32,7 @@ export default function ReviewList() {
           fetchNextPage();
         }
       },
-      { rootMargin: "300px", threshold: 0.1 }
+      { rootMargin: "300px", threshold: 0.1 },
     );
 
     observer.observe(target);
@@ -46,7 +46,9 @@ export default function ReviewList() {
   const totalCount = useMemo(() => allReviews.length, [allReviews]);
 
   if (isError) {
-    return <p className="text-center text-red-500">리뷰를 불러오지 못했습니다.</p>;
+    return (
+      <p className="text-center text-red-500">리뷰를 불러오지 못했습니다.</p>
+    );
   }
 
   if (isLoading) {
@@ -54,30 +56,53 @@ export default function ReviewList() {
   }
 
   return (
-    <section className="space-y-4">
-      <div className="flex justify-between items-center flex-wrap gap-2 mt-10">
-        <span className="text-sm text-gray-500 whitespace-nowrap mt-2 sm:mt-0">
-          총 {totalCount}개
-        </span>
-        <div className="flex items-center gap-2 flex-wrap">
-          <ReviewFilterButtons selectedFilters={filters}
-            onFilterChange={(key, value) =>
-              setFilters(prev => ({ ...prev, [key]: value }))
-        } />
-        </div>
+    <section className="space-y-6">
+      <div className="mt-8">
+        <SelectJob
+          value={filters.category}
+          jobRoles={jobRoles}
+          isLoading={isLoading}
+          isError={isError}
+          onChange={(value) => {
+            setFilters((prev) => ({
+              ...prev,
+              category: value,
+            }));
+          }}
+        />
       </div>
+
+      <ReviewFilterButtons
+        totalCount={totalCount}
+        selectedFilters={filters}
+        onFilterChange={(key, value) =>
+          setFilters((prev) => ({ ...prev, [key]: value }))
+        }
+      />
 
       {allReviews.length > 0 ? (
         (allReviews as ResponseReview[]).map((review, idx) => (
           <ReviewItem key={`${review.reviewId}-${idx}`} review={review} />
         ))
       ) : (
-        <p className="text-center py-4">등록된 리뷰가 없습니다.</p>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <Search className="mb-3 text-gray-500" size={28} />
+
+          <p className="font-semibold text-gray-800">
+            해당 키워드와 일치하는 리뷰가 없어요.
+          </p>
+
+          <p className="text-sm text-gray-500">
+            다른 키워드로 다시 시도해주세요.
+          </p>
+        </div>
       )}
 
       <div ref={observerRef} className="h-32" />
       {isFetchingNextPage && (
-        <p className="text-center py-4">더 많은 리뷰를 불러오는 중...</p>
+        <p className="text-center py-4 text-sm text-gray-500">
+          더 많은 리뷰를 불러오는 중...
+        </p>
       )}
     </section>
   );

@@ -1,12 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import clsx from "clsx";
-import { RotateCcw } from "lucide-react";
-import FilterButton from "@/components/common/FilterButton";
-import useFilterOptions from "@/hooks/reviews/useFilterOptions";
-import useOutsideClick from "@/hooks/useOutsideClick";
-import { reviewFilterStatus } from "@/constants/reviewFilterStatus";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 interface FilterType {
   category?: string;
@@ -14,122 +8,42 @@ interface FilterType {
 }
 
 interface Props {
+  totalCount: number;
   selectedFilters: FilterType;
   onFilterChange: (key: "category" | "date", value?: string) => void;
 }
 
 export default function ReviewFilterButtons({
+  totalCount,
   selectedFilters,
   onFilterChange,
 }: Props) {
-  const [openDropdown, setOpenDropdown] = useState<"category" | "date" | null>(
-    null,
-  );
-  const { jobRoles, isLoading, isError } = useFilterOptions();
+  const isLatest = selectedFilters.date !== "오래된순";
 
-  const dropdownRefs = useRef<HTMLDivElement | null>(null);
-  useOutsideClick(dropdownRefs, () => {
-    setOpenDropdown(null);
-  });
+  const handleToggleSort = () => {
+    const nextValue = isLatest ? "오래된순" : "최신순";
 
-  const renderStatus = (message: string) => (
-    <li>
-      <span className="text-sm text-gray-400 px-4 py-2">{message}</span>
-    </li>
-  );
-
-  const handleSelect = (key: "category" | "date", value: string) => {
-    const newValue = selectedFilters[key] === value ? undefined : value;
-    onFilterChange(key, newValue);
-    setOpenDropdown(null);
-  };
-
-  const clearFilters = () => {
-    onFilterChange("category", undefined);
-    onFilterChange("date", undefined);
-    setOpenDropdown(null);
+    onFilterChange("date", nextValue);
   };
 
   return (
-    <div className="flex flex-wrap gap-3 items-center">
-      {/* 직무 필터 */}
-      <div ref={dropdownRefs}>
-        <div className="relative">
-          <FilterButton
-            label="직무"
-            selectedValue={selectedFilters.category}
-            onClick={() =>
-              setOpenDropdown(openDropdown === "category" ? null : "category")
-            }
-            onClear={() => onFilterChange("category", undefined)}
-          />
-          {openDropdown === "category" && (
-            <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-44 sm:w-52 overflow-auto">
-              <ul className="menu menu-compact p-2">
-                {isLoading
-                  ? renderStatus(reviewFilterStatus.loading)
-                  : isError
-                    ? renderStatus(reviewFilterStatus.error)
-                    : jobRoles.length === 0
-                      ? renderStatus(reviewFilterStatus.empty)
-                      : jobRoles.map((role) => (
-                          <li key={role}>
-                            <button
-                              type="button"
-                              onClick={() => handleSelect("category", role)}
-                              className="w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded"
-                            >
-                              {role}
-                            </button>
-                          </li>
-                        ))}
-              </ul>
-            </div>
-          )}
-        </div>
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-gray-500 whitespace-nowrap mt-2 sm:mt-0">
+        총 {totalCount}개
+      </span>
 
-        {/* 정렬 필터 */}
-        <div className="relative">
-          <FilterButton
-            label="정렬"
-            selectedValue={selectedFilters.date}
-            onClick={() =>
-              setOpenDropdown(openDropdown === "date" ? null : "date")
-            }
-            onClear={() => onFilterChange("date", undefined)}
-          />
-          {openDropdown === "date" && (
-            <div className="absolute top-full left-0 mt-1 shadow-lg bg-white rounded-lg z-50 max-h-60 w-40 overflow-auto">
-              <ul className="menu menu-compact p-2">
-                {["최신순", "오래된순"].map((option) => (
-                  <li key={option}>
-                    <button
-                      type="button"
-                      onClick={() => handleSelect("date", option)}
-                      className={clsx(
-                        "w-full text-left text-sm py-2 px-4 hover:bg-gray-100 rounded",
-                        selectedFilters.date === option &&
-                          "bg-amber-100 text-amber-900 font-semibold",
-                      )}
-                    >
-                      {option}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* 초기화 버튼 */}
       <button
         type="button"
-        onClick={clearFilters}
-        className="p-2 border border-gray-300 rounded-full hover:bg-gray-100"
-        aria-label="전체 필터 초기화"
+        onClick={handleToggleSort}
+        className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-black transition-colors"
       >
-        <RotateCcw className="w-4 h-4 text-black" />
+        <span>정렬</span>
+
+        {isLatest ? (
+          <ArrowDown className="w-3.5 h-3.5" />
+        ) : (
+          <ArrowUp className="w-3.5 h-3.5" />
+        )}
       </button>
     </div>
   );

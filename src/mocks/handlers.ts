@@ -34,7 +34,7 @@ export const handlers = [
     }
 
     const filteredCourses = DB.courses.filter((course) =>
-      course.courseName.toLowerCase().includes(query.toLowerCase())
+      course.courseName.toLowerCase().includes(query.toLowerCase()),
     );
 
     return HttpResponse.json(filteredCourses);
@@ -45,7 +45,7 @@ export const handlers = [
     if (!courseId || !fileUrl) {
       return HttpResponse.json(
         { message: "코스 ID와 파일 URL은 필수입니다." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +54,7 @@ export const handlers = [
         courseId,
         fileUrl,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -75,7 +75,7 @@ export const handlers = [
       if (!profileImage || !desiredCareer) {
         return HttpResponse.json(
           { error: "필수 입력값이 누락되었습니다." },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -84,7 +84,7 @@ export const handlers = [
           { error: "사용자를 찾을 수 없습니다." },
           {
             status: 404,
-          }
+          },
         );
       }
 
@@ -102,7 +102,7 @@ export const handlers = [
       console.log(error);
       return HttpResponse.json(
         { error: "서버 오류가 발생했습니다." },
-        { status: 500 }
+        { status: 500 },
       );
     }
   }),
@@ -115,7 +115,7 @@ export const handlers = [
       if (!(file instanceof File)) {
         return HttpResponse.json(
           { error: "유효한 파일이 제공되지 않았습니다." },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -129,13 +129,13 @@ export const handlers = [
         {
           fileUrl: fileUrl,
         },
-        { status: 200 }
+        { status: 200 },
       );
     } catch (error) {
       console.error("파일 업로드 오류:", error);
       return HttpResponse.json(
         { error: "서버 오류가 발생했습니다." },
-        { status: 500 }
+        { status: 500 },
       );
     }
   }),
@@ -150,7 +150,7 @@ export const handlers = [
         {
           message: "필수 입력 항목이 누락되었습니다.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -160,7 +160,7 @@ export const handlers = [
         {
           message: "가능한 시간대를 하나 이상 입력해주세요.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -169,7 +169,7 @@ export const handlers = [
         info,
         time,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -233,7 +233,7 @@ export const handlers = [
     let filteredMentors = DB.mentorList.data;
     if (jobType && jobType !== "all") {
       filteredMentors = filteredMentors.filter(
-        (mentor) => mentor.jobType === jobType
+        (mentor) => mentor.jobType === jobType,
       );
     }
 
@@ -241,7 +241,7 @@ export const handlers = [
       {
         data: filteredMentors,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -252,7 +252,7 @@ export const handlers = [
       console.log(coffeeChatInfoId);
 
       return HttpResponse.json(DB.mentorApplicationTime, {});
-    }
+    },
   ),
 
   http.get(END_POINT.APPROVED_COFFEE_CHATS, () => {
@@ -279,7 +279,7 @@ export const handlers = [
         coffeeChatStartTime,
         content,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -294,7 +294,7 @@ export const handlers = [
       {
         changeStatus: changeStatus,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -306,15 +306,15 @@ export const handlers = [
     if (!bootcamp) {
       return HttpResponse.json(
         { error: "부트캠프를 찾을 수 없습니다." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     const center = DB.trainingCenters.find(
-      (c) => c.trainingCenterName === bootcamp.trainingCenterName
+      (c) => c.trainingCenterName === bootcamp.trainingCenterName,
     );
     const reviews = DB.reviews.filter(
-      (r) => r.trainingCenterName === bootcamp.trainingCenterName
+      (r) => r.trainingCenterName === bootcamp.trainingCenterName,
     );
 
     return HttpResponse.json({
@@ -348,12 +348,27 @@ export const handlers = [
     const page = Number(url.searchParams.get("page") || "0");
     const size = Number(url.searchParams.get("size") || "10");
 
-    const start = page * size;
+    const start = (page - 1) * size;
     const end = start + size;
+    const sort = url.searchParams.get("sort");
+    const category = url.searchParams.get("category");
 
-    const totalItems = DB.reviews.length;
+    let reviews = [...DB.reviews];
+
+    if (category) {
+      reviews = reviews.filter(
+        (review) => review.bootcampCategory === category,
+      );
+    }
+
+    if (sort === "latest") {
+      reviews.reverse();
+    }
+
+    const totalItems = reviews.length;
     const totalPages = Math.ceil(totalItems / size);
-    const pagedData = DB.reviews.slice(start, end);
+    const pagedData = reviews.slice(start, end);
+    console.log("pagedData", pagedData);
 
     return HttpResponse.json({
       content: pagedData,
@@ -399,7 +414,7 @@ export const handlers = [
     if (!timeParam) {
       return HttpResponse.json(
         { message: "time 파라미터가 필요합니다." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -411,7 +426,7 @@ export const handlers = [
 
     return HttpResponse.json(
       { message: "알림을 확인하였습니다." },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 
@@ -427,7 +442,7 @@ export const handlers = [
     if (!chatRoom) {
       return HttpResponse.json(
         { error: "채팅방을 찾을 수 없습니다." },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -447,7 +462,7 @@ export const handlers = [
     const status = url.searchParams.get("status");
 
     const target = DB.certifications.find(
-      (cert) => cert.certificationId === Number(id)
+      (cert) => cert.certificationId === Number(id),
     );
     if (target && status) {
       target.status = status;
@@ -468,7 +483,7 @@ export const handlers = [
     if (!job) {
       return HttpResponse.json(
         { message: "직무 선택은 필수입니다" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -485,7 +500,7 @@ export const handlers = [
         message: "회원가입 완료",
         data: newUser,
       },
-      { status: 200 }
+      { status: 200 },
     );
   }),
 

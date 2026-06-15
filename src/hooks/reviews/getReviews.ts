@@ -33,7 +33,7 @@ export const getReviews = async ({
 
   const res = await axiosDefault.get(`${END_POINT.REVIEWS}?${queryParams}`);
   return {
-    data: res.data.data ?? [],
+    data: res.data.content ?? [],
     pagination: res.data.pagination ?? { currentPage: page, totalPages: 1 },
   };
 };
