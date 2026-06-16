@@ -403,6 +403,7 @@ export const DB = {
       createdAt: "2024-03-01",
       trainingProgramId: 101,
       trainingCenterName: "강남 그린컴퓨터아카데미",
+      bootcampCategory: "디지털비즈니스지원서비스",
     },
     {
       reviewId: 2,
@@ -412,6 +413,7 @@ export const DB = {
       createdAt: "2024-03-04",
       trainingProgramId: 102,
       trainingCenterName: "강남 그린컴퓨터아카데미",
+      bootcampCategory: "반도체개발",
     },
     {
       reviewId: 3,
@@ -421,6 +423,7 @@ export const DB = {
       createdAt: "2024-03-04",
       trainingProgramId: 103,
       trainingCenterName: "수원인재기술학원",
+      bootcampCategory: "클라우드인프라스트럭쳐엔지니어링",
     },
     {
       reviewId: 4,
@@ -430,6 +433,7 @@ export const DB = {
       createdAt: "2024-03-04",
       trainingProgramId: 104,
       trainingCenterName: "연세IT미래교육원(구.연세직업전문학교)",
+      bootcampCategory: "빅데이터플랫폼구축",
     },
     {
       reviewId: 5,
@@ -439,6 +443,7 @@ export const DB = {
       createdAt: "2024-03-07",
       trainingProgramId: 105,
       trainingCenterName: "강남 그린컴퓨터아카데미",
+      bootcampCategory: "빅데이터플랫폼구축",
     },
     {
       reviewId: 6,
@@ -448,6 +453,7 @@ export const DB = {
       createdAt: "2024-03-07",
       trainingProgramId: 106,
       trainingCenterName: "하이미디어아카데미",
+      bootcampCategory: "DB엔지니어링",
     },
     {
       reviewId: 7,
@@ -457,6 +463,7 @@ export const DB = {
       createdAt: "2024-03-10",
       trainingProgramId: 107,
       trainingCenterName: "하이미디어아카데미",
+      bootcampCategory: "DB엔지니어링",
     },
     {
       reviewId: 8,
@@ -466,6 +473,7 @@ export const DB = {
       createdAt: "2024-03-13",
       trainingProgramId: 108,
       trainingCenterName: "라인원격평생교육원",
+      bootcampCategory: "UX엔지니어링",
     },
     {
       reviewId: 9,
@@ -475,6 +483,7 @@ export const DB = {
       createdAt: "2024-03-16",
       trainingProgramId: 109,
       trainingCenterName: "라인원격평생교육원",
+      bootcampCategory: "전자응용기기하드웨어개발",
     },
     {
       reviewId: 10,
@@ -484,6 +493,7 @@ export const DB = {
       createdAt: "2024-03-19",
       trainingProgramId: 110,
       trainingCenterName: "코멘토 원격 평생교육시설",
+      bootcampCategory: "인공지능서비스구현",
     },
     {
       reviewId: 11,
@@ -493,6 +503,7 @@ export const DB = {
       createdAt: "2024-03-22",
       trainingProgramId: 111,
       trainingCenterName: "하이미디어IT인재개발학원",
+      bootcampCategory: "인공지능서비스구현",
     },
     {
       reviewId: 12,
@@ -502,6 +513,7 @@ export const DB = {
       createdAt: "2024-03-25",
       trainingProgramId: 112,
       trainingCenterName: "하이미디어IT인재개발학원",
+      bootcampCategory: "SW제품기획",
     },
     {
       userName: "갈길이멀다",
@@ -511,6 +523,7 @@ export const DB = {
       createdAt: "2024-03-28",
       trainingProgramId: 113,
       trainingCenterName: "한국직업전문학교 1캠퍼스",
+      bootcampCategory: "정보보호관리·운영",
     },
     {
       reviewId: 14,
@@ -521,6 +534,7 @@ export const DB = {
       createdAt: "2025-04-04T01:50:33.945196",
       trainingProgramId: 114,
       trainingCenterName: "한국직업전문학교 1캠퍼스",
+      bootcampCategory: "스마트설비설계",
     },
     {
       reviewId: 15,
@@ -531,6 +545,7 @@ export const DB = {
       createdAt: "2025-04-04T01:50:17.656716",
       trainingProgramId: 115,
       trainingCenterName: "동성인재개발교육원",
+      bootcampCategory: "응용SW엔지니어링",
     },
     {
       reviewId: 16,
@@ -541,6 +556,7 @@ export const DB = {
       createdAt: "2025-04-04T01:49:55.407069",
       trainingProgramId: 116,
       trainingCenterName: "동성인재개발교육원",
+      bootcampCategory: "응용SW엔지니어링",
     },
   ],
 
@@ -685,7 +701,7 @@ export const DB = {
         mentorName: "변백현",
         status: "APPROVED",
         content: "백엔드 개발에 대해 커피챗 신청합니다!",
-        coffeeChatStartTime: "2025-04-04T02:00:00",
+        coffeeChatStartTime: "2026-08-04T02:00:00",
         coffeeChatEndTime: "2025-04-04T02:30:00",
       },
       {
@@ -696,7 +712,7 @@ export const DB = {
         mentorName: "황희찬",
         status: "APPROVED",
         content: "프론트엔드 개발에 대해 커피챗 신청합니다!",
-        coffeeChatStartTime: "2025-04-05T04:00:00",
+        coffeeChatStartTime: "2026-08-05T04:00:00",
         coffeeChatEndTime: "2025-04-05T04:30:00",
       },
       {
@@ -721,7 +737,7 @@ export const DB = {
         menteeName: "양은명",
         mentorName: "양금명",
         applierUserId: 1,
-        coffeeChatStartTime: "2025-04-04T02:09:07",
+        coffeeChatStartTime: "2025-04-04T02:00:00",
         status: "PENDING",
         content: "백엔드 커리어 상담을 받고 싶습니다.",
       },
@@ -731,7 +747,7 @@ export const DB = {
         menteeName: "박충수",
         mentorName: "최양임",
         applierUserId: 2,
-        coffeeChatStartTime: "2025-04-05T02:09:07",
+        coffeeChatStartTime: "2025-04-05T02:00:00",
         status: "APPROVED",
         content: "프론트엔드 개발 학습 방법에 대해 듣고 싶습니다.",
       },
@@ -741,8 +757,8 @@ export const DB = {
         menteeName: "염병철",
         mentorName: "나민옥",
         applierUserId: 3,
-        coffeeChatStartTime: "2025-04-06T02:09:07",
-        status: "REJECTED",
+        coffeeChatStartTime: "2025-04-06T02:00:00",
+        status: "CANCEL",
         content: "프론트엔드 개발에 대해 조언을 받고 싶습니다.",
       },
     ],
@@ -789,9 +805,9 @@ export const DB = {
         menteeName: "전광례",
         mentorName: "염병철",
         applierUserId: 4,
-        status: "CANCELED",
+        status: "APPROVED",
         content: "백엔드 개발에 대해 조언을 받고 싶습니다.",
-        coffeeChatStartTime: "2025-03-25T15:00:00",
+        coffeeChatStartTime: "2026-06-27T15:00:00",
         updatedAt: null,
       },
     ],
