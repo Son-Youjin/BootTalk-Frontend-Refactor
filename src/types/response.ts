@@ -74,6 +74,7 @@ export interface Review {
   trainingProgramId: string;
   userName: string;
   bootcampCategory: string;
+  trainingCenterName: string;
 }
 
 export interface ReviewBootcamp {
