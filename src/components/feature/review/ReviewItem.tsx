@@ -2,12 +2,17 @@
 
 import { Star } from "lucide-react";
 import type { Review } from "@/types/response";
+import toast from "react-hot-toast";
 
 interface ReviewItemProps {
   review: Review;
 }
 
 export default function ReviewItem({ review }: ReviewItemProps) {
+  const handleReport = () => {
+    toast("신고 기능은 추후 제공될 예정입니다.");
+  };
+
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
@@ -20,24 +25,33 @@ export default function ReviewItem({ review }: ReviewItemProps) {
   };
 
   return (
-    <div className="relative bg-white p-4 rounded-lg shadow border border-gray-200 hover:bg-gray-50 transition-colors">
-      <button className="absolute top-3 right-4 text-xs text-gray-400 hover:text-gray-600">
-        신고하기
-      </button>
+    <div className="bg-white rounded-2xl px-5 py-4 shadow-sm ">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="flex gap-0.5 shrink-0">
+          {renderStars(review.rating)}
+        </div>
 
-      <h2 className="text-sm font-semibold text-gray-800 leading-snug mb-1 pr-14 line-clamp-2 break-keep">
-        {review.courseName}
-      </h2>
-
-      <p className="text-xs text-gray-500 mb-2">{review.userName}</p>
-
-      <div className="flex items-center gap-1 mb-2">
-        {renderStars(review.rating)}
+        <h3 className="text-sm font-medium text-gray-900 truncate">
+          {review.trainingCenterName}
+        </h3>
       </div>
 
-      <p className="text-sm text-gray-700 whitespace-pre-wrap break-keep">
+      <p className="text-sm font-medium text-gray-800 line-clamp-2 break-keep mb-3">
         {review.content}
       </p>
+
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-gray-400 truncate">
+          {review.userName} | {review.createdAt}ㄴ
+        </p>
+
+        <button
+          onClick={handleReport}
+          className="shrink-0 px-2 py-1 text-sm text-gray-400"
+        >
+          신고
+        </button>
+      </div>
     </div>
   );
 }
