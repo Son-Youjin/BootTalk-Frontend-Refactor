@@ -1,7 +1,6 @@
 "use client";
 
 import { axiosDefault } from "@/api/axiosInstance";
-import AuthCard from "@/components/common/AuthCard";
 import { useRouter } from "next/navigation";
 import { END_POINT } from "@/constants/endPoint";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -11,14 +10,6 @@ import { useState } from "react";
 const SocialRegister = () => {
   const [job, setJob] = useState("");
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     router.replace("/login");
-  //   } else if (token && user) {
-  //     router.replace("/");
-  //   }
-  // }, [token, user, router]);
 
   const { data: jobRoles = [] } = useQuery({
     queryKey: ["jobRoles"],
@@ -50,7 +41,7 @@ const SocialRegister = () => {
 
   const handleSave = () => {
     if (!job) {
-      toast.error("필수 정보가 누락되었습니다.");
+      toast.error("관심 직무를 선택해주세요.");
       return;
     }
 
@@ -58,41 +49,41 @@ const SocialRegister = () => {
   };
 
   return (
-    <AuthCard>
-      <div className="flex flex-col items-center gap-4 w-full">
-        <h1 className="text-xl font-bold mb-2">회원 정보</h1>
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text font-medium text-black mb-1">
-              관심 직무<span className="text-error ml-1">*</span>
-            </span>
-          </label>
-          <select
-            className="select select-bordered w-full focus:outline-none"
-            value={job}
-            onChange={(e) => setJob(e.target.value)}
-          >
-            <option value="" disabled hidden>
-              직무를 선택하세요
+    <main className="mx-auto flex w-full max-w-lg flex-col items-center px-6 pt-24 md:pt-28">
+      <h1 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+        관심 직무를 선택해주세요
+      </h1>
+
+      <p className="mt-3 max-w-sm text-center text-sm leading-6 text-gray-500 md:text-base">
+        가입을 완료하기 위해 관심 직무를 선택해주세요.
+      </p>
+
+      <div className="mt-10 w-full">
+        <select
+          value={job}
+          onChange={(e) => setJob(e.target.value)}
+          className="h-14 w-full rounded-2xl border border-gray-200 bg-white px-4 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5c4033]/20"
+        >
+          <option value="" disabled hidden>
+            직무를 선택하세요
+          </option>
+
+          {jobRoles.map((role) => (
+            <option key={role} value={role}>
+              {role}
             </option>
-            {jobRoles.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="w-full flex justify-end">
-          <button
-            className="btn btn-neutral btn-outline"
-            disabled={!job}
-            onClick={handleSave}
-          >
-            저장
-          </button>
-        </div>
+          ))}
+        </select>
       </div>
-    </AuthCard>
+
+      <button
+        onClick={handleSave}
+        disabled={!job || updateUserMutation.isPending}
+        className="mt-8 h-14 w-full rounded-2xl bg-[#5c4033] text-base font-semibold text-white transition-all disabled:cursor-not-allowed disabled:bg-gray-300 active:scale-[0.98]"
+      >
+        시작하기
+      </button>
+    </main>
   );
 };
 
