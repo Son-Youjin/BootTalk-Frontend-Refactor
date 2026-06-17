@@ -20,13 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen bg-[#F8F7F5]">
         <MSWProvider>
           <QueryProvider>
             <Header />
-            <main className="flex-grow min-h-[800px] pb-20 md:pb-0">
-              {children}
-            </main>
+            <main className="flex-grow  pb-20 md:pb-0">{children}</main>
             <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
             <MobileBottomNav />
 
