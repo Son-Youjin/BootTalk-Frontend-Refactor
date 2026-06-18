@@ -8,7 +8,7 @@ const MobileBottomNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 mx-auto max-w-[768px] z-50 w-full border-t border-gray-200 bg-white md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 mx-auto max-w-[768px] z-50 w-full border-t border-gray-200 bg-[#F8F7F5] md:hidden">
       <ul className="flex h-16 items-center justify-around">
         {mobileBottomNavItems.map((item) => {
           const Icon = item.icon;

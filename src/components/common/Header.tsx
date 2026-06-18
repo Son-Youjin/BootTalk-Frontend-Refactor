@@ -54,7 +54,7 @@ const Header = () => {
         checked={isDrawerOpen}
         onChange={(e) => setIsDrawerOpen(e.target.checked)}
       />
-      <header className="sticky top-0 z-60 shadow-m bg-base-100 shadow-md">
+      <header className="sticky top-0 z-60 shadow-m bg-[#F8F7F5] shadow-md">
         <div className="navbar max-w-[1200px] mx-auto px-4 md:px-6 items-center justify-between">
           <div className="w-12 flex items-center md:w-auto">
             <button
@@ -129,7 +129,7 @@ const Header = () => {
                     </span>
 
                     <button
-                      className="btn bg-base-100 border-none text-sm hover:text-amber-950 transition-colors"
+                      className="btn bg=[#F8F7F5] border-none text-sm hover:text-amber-950 transition-colors "
                       onClick={() => logout.mutate()}
                       disabled={isMyInfoLoading || isMyInfoError}
                     >
