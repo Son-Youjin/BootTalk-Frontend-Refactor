@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-// import { END_POINT } from "@/constants/endPoint";
-import { useSearchSuggestions, BootcampSuggestion } from "@/hooks/useSerchSuggestions";
+import {
+  useSearchSuggestions,
+  BootcampSuggestion,
+} from "@/hooks/useSerchSuggestions";
 import clsx from "clsx";
 
 const SearchSection = () => {
@@ -30,14 +32,14 @@ const SearchSection = () => {
     router.push(`/bootcamps/${suggestion.bootcampId}`);
     setIsOpen(false);
   };
-  
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && suggestions.length > 0) {
       router.push(`/bootcamps/${suggestions[0].bootcampId}`);
       setQuery("");
       setIsOpen(false);
     }
-  };  
+  };
 
   if (!mounted) return null;
 
@@ -46,30 +48,32 @@ const SearchSection = () => {
       className={clsx(
         "w-full flex justify-center relative transition-all duration-300",
         "pt-40 pb-20",
-        "lg:pt-36 lg:pb-16",
-        "md:pt-28 md:pb-14",
+        "md:pt-36 md:pb-16",
         "sm:pt-20 sm:pb-10",
         "pt-10 pb-8",
-        "bg-[url('/main-search-bg.jpg')] bg-cover bg-center"
+        "bg-[url('/main-search-bg.jpg')] bg-cover bg-center",
       )}
     >
       <div className="relative w-full max-w-sm px-4 sm:max-w-xl sm:px-0">
-        <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-700" size={20} />
+        <Search
+          className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-700"
+          size={20}
+        />
         <input
-            ref={inputRef}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => query.trim().length > 0 && setIsOpen(true)}
-            onKeyDown={handleKeyDown}
-            type="text"
-            placeholder="부트캠프명 또는 키워드를 검색해보세요"
-            className={clsx(
-              "w-full bg-white border border-gray-300 shadow-md focus:outline-none",
-              "text-xs sm:text-sm md:text-base",
-              "py-2 sm:py-3 md:py-4",
-              "pl-11 pr-4",
-              isOpen ? "rounded-t-2xl rounded-b-none" : "rounded-full"
-            )}
+          ref={inputRef}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => query.trim().length > 0 && setIsOpen(true)}
+          onKeyDown={handleKeyDown}
+          type="text"
+          placeholder="부트캠프명 또는 키워드를 검색해보세요"
+          className={clsx(
+            "w-full bg-white border border-gray-300 shadow-md focus:outline-none",
+            "text-xs sm:text-sm md:text-base",
+            "py-2 sm:py-3 md:py-4",
+            "pl-11 pr-4",
+            isOpen ? "rounded-t-2xl rounded-b-none" : "rounded-full",
+          )}
         />
 
         {isOpen && (
@@ -85,8 +89,8 @@ const SearchSection = () => {
               <ul>
                 {suggestions.map((suggestion) => (
                   <li
-                  key={suggestion.bootcampId}
-                  onClick={() => handleSuggestionClick(suggestion)}
+                    key={suggestion.bootcampId}
+                    onClick={() => handleSuggestionClick(suggestion)}
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-left truncate"
                   >
                     {suggestion.bootcampName}

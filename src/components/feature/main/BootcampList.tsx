@@ -21,7 +21,7 @@ const BootcampList = ({ filters }: BootcampListProps) => {
           fetchNextPage();
         }
       },
-      { threshold: 0.1, rootMargin: "100px" }
+      { threshold: 0.1, rootMargin: "100px" },
     );
 
     if (observerRef.current) {
@@ -45,22 +45,14 @@ const BootcampList = ({ filters }: BootcampListProps) => {
     return <div className="text-center py-8">검색 결과가 없습니다.</div>;
 
   return (
-    <section className="max-w-[1200px] mx-auto px-4 md:px-6">
-      <div className="hidden lg:grid grid-cols-6 gap-4 px-4 py-2 font-semibold text-sm text-gray-600 border-b border-t border-slate-300 bg-slate-50">
+    <section className="max-w-[1200px] mx-auto ">
+      <div className="hidden md:grid grid-cols-6 gap-4 px-4 py-2 font-semibold text-sm text-gray-600 border-b border-t border-slate-300 bg-slate-50">
         <span>교육과정 명</span>
         <span className="flex justify-start pl-4">학습기간</span>
         <span className="flex justify-start pl-10">프로그램 과정</span>
         <span className="flex justify-start pl-16">지역</span>
         <span className="flex justify-start pl-10">정원</span>
         <span>평점 및 리뷰</span>
-      </div>
-
-      {/* 모바일 전용 */}
-      <div className="sm:hidden px-4 pt-4 pb-2 border-b border-gray-300 mb-4">
-        <h1 className="text-gray-800 text-2xl font-bold">교육과정 리스트</h1>
-        <p className="text-gray-600 text-sm mt-1">
-          나에게 맞는 부트캠프를 비교하고 찾아보세요.
-        </p>
       </div>
 
       <ul>
