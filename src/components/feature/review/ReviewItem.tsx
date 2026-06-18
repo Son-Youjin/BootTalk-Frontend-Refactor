@@ -42,7 +42,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
 
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-400 truncate">
-          {review.userName} | {review.createdAt}ㄴ
+          {review.userName} | {review.createdAt}
         </p>
 
         <button
