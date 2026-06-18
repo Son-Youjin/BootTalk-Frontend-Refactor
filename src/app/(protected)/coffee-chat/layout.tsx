@@ -7,7 +7,7 @@ export default function CoffeeChatLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="max-w-[1200px] mx-auto bg-white p-6 rounded-lg">
+    <div className="max-w-[1200px]  rounded-lg">
       <CoffeeChatHeader />
       {children}
     </div>
