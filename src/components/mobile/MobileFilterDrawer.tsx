@@ -21,12 +21,7 @@ export default function MobileFilterDrawer({
   setSelectedFilters,
   categoryOptions,
 }: MobileFilterDrawerProps) {
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    region: true,
-    duration: true,
-    minRating: true,
-    category: true,
-  });
+  const [openSection, setOpenSection] = useState<string>("category");
 
   useEffect(() => {
     if (isOpen) {
@@ -74,60 +69,49 @@ export default function MobileFilterDrawer({
     });
   };
 
-  const toggleSection = (key: string) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
-
   const clearFilters = () => {
     setSelectedFilters({});
   };
-  // TODO: 모바일 사이즈 확인
 
   return (
     <>
       {/* Overlay */}
       <div className="fixed inset-0 z-[100] bg-black/40" onClick={onClose} />
 
-      {/* Bottom Sheet */}
       <div
-        className="fixed inset-x-0 bottom-0 z-[101] rounded-t-3xl bg-white"
+        className="fixed inset-x-0 bottom-0 z-[101] flex h-[70vh] flex-col rounded-t-3xl bg-white shadow-xl py-3"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Handle */}
-        <div className="flex justify-center py-3">
-          <div className="h-1 w-12 rounded-full bg-gray-300" />
-        </div>
-
-        <div className="max-h-[75vh] overflow-y-auto px-6 pb-6">
+        {/* 스크롤 */}
+        <div className="flex-1 overflow-y-auto px-6 pb-4">
           {allFilters.map((filter) => {
-            const isSectionOpen = openSections[filter.key];
+            const isSectionOpen = openSection === filter.key;
 
             return (
               <section
                 key={filter.key}
-                className="border-b border-gray-100 py-5"
+                className="border-b border-gray-100 py-4 last:border-none"
               >
                 <button
                   type="button"
-                  onClick={() => toggleSection(filter.key)}
-                  className="flex w-full items-center justify-between"
+                  onClick={() =>
+                    setOpenSection(isSectionOpen ? "" : filter.key)
+                  }
+                  className="flex w-full items-center justify-between py-1"
                 >
                   <h3 className="font-semibold text-gray-900">
                     {filter.label}
                   </h3>
 
                   {isSectionOpen ? (
-                    <ChevronDown size={18} />
+                    <ChevronDown size={18} className="text-gray-500" />
                   ) : (
-                    <ChevronRight size={18} />
+                    <ChevronRight size={18} className="text-gray-500" />
                   )}
                 </button>
 
                 {isSectionOpen && (
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-4 flex flex-wrap gap-2 pb-2">
                     {filter.options.map((option) => {
                       const selected =
                         selectedFilters[filter.key] === option.value;
@@ -137,10 +121,10 @@ export default function MobileFilterDrawer({
                           key={option.value}
                           type="button"
                           onClick={() => handleSelect(filter.key, option.value)}
-                          className={`rounded-full border px-3 py-1.5 text-xs transition ${
+                          className={`rounded-full border px-3 py-2 text-sm font-medium transition ${
                             selected
                               ? "border-[#E3CDC3] bg-[#F4E4DE] text-gray-900"
-                              : "border-gray-200 bg-white text-gray-600"
+                              : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                           }`}
                         >
                           {option.label}
@@ -152,24 +136,25 @@ export default function MobileFilterDrawer({
               </section>
             );
           })}
+        </div>
 
-          <div className="mt-6 flex gap-3">
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="h-12 flex-1 rounded-xl bg-gray-100 font-medium"
-            >
-              초기화
-            </button>
+        {/* 하단 고정 버튼 영역 */}
+        <div className="flex gap-3 border-t border-gray-100 bg-white px-6 py-4 pb-6 flex-shrink-0">
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="h-12 flex-1 rounded-xl bg-gray-100 font-medium text-gray-600 active:bg-gray-200 transition"
+          >
+            초기화
+          </button>
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="h-12 flex-1 rounded-xl bg-[#E3CDC3] font-medium"
-            >
-              적용하기
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-12 flex-[2] rounded-xl bg-[#E3CDC3] text-base font-semibold text-gray-900 active:opacity-90 transition shadow-sm"
+          >
+            적용하기
+          </button>
         </div>
       </div>
     </>
