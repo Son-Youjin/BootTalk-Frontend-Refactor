@@ -43,7 +43,11 @@ const getTransformedFilters = (filters: Record<string, string>) => {
   return result;
 };
 
-const applyFilters = (data: Bootcamp[], filters: Record<string, string>) => {
+const applyFilters = (
+  data: Bootcamp[],
+  filters: Record<string, string>,
+  searchKeyword: string,
+) => {
   const getWeeksBetween = (start: string, end: string) => {
     const diff = new Date(end).getTime() - new Date(start).getTime();
     return Math.ceil(diff / (1000 * 60 * 60 * 24 * 7));
@@ -52,6 +56,12 @@ const applyFilters = (data: Bootcamp[], filters: Record<string, string>) => {
   return data.filter((bootcamp) => {
     const { region, duration, minRating, category } = filters;
 
+    if (
+      searchKeyword &&
+      !bootcamp.bootcampName.toLowerCase().includes(searchKeyword.toLowerCase())
+    ) {
+      return false;
+    }
     if (region && !bootcamp.bootcampRegion.includes(region)) return false;
     if (category && bootcamp.bootcampCategory !== category) return false;
 
@@ -69,7 +79,7 @@ const applyFilters = (data: Bootcamp[], filters: Record<string, string>) => {
     if (duration) {
       const weeks = getWeeksBetween(
         bootcamp.bootcampStartDate,
-        bootcamp.bootcampEndDate
+        bootcamp.bootcampEndDate,
       );
 
       if (duration === "1" && weeks >= 4) return false;
@@ -81,11 +91,14 @@ const applyFilters = (data: Bootcamp[], filters: Record<string, string>) => {
   });
 };
 
-export const useGetBootcamps = (filters: Record<string, string>) => {
+export const useGetBootcamps = (
+  filters: Record<string, string>,
+  searchKeyword: string,
+) => {
   const PAGE_SIZE = 10;
 
   const result = useInfiniteQuery<BootcampResponse>({
-    queryKey: ["bootcamps", filters],
+    queryKey: ["bootcamps", filters, searchKeyword],
     initialPageParam: 0,
     queryFn: async ({ pageParam }) => {
       const page = pageParam as number;
@@ -96,19 +109,23 @@ export const useGetBootcamps = (filters: Record<string, string>) => {
         queryParams.set(key, transformFilterValue(key, value));
       });
 
+      if (searchKeyword.trim()) {
+        queryParams.set("keyword", searchKeyword);
+      }
+
       queryParams.set("page", page.toString());
       queryParams.set("size", PAGE_SIZE.toString());
       queryParams.set("sort", JSON.stringify(["string"]));
 
       const res = await axiosDefault.get(
-        `${END_POINT.BOOTCAMPS}?${queryParams.toString()}`
+        `${END_POINT.BOOTCAMPS}?${queryParams.toString()}`,
       );
 
       const data = res.data?.data || [];
 
       const isMock = process.env.NEXT_PUBLIC_USE_MOCK === "true";
       const filtered = isMock
-        ? applyFilters(data, getTransformedFilters(filters))
+        ? applyFilters(data, getTransformedFilters(filters), searchKeyword)
         : data;
 
       return {

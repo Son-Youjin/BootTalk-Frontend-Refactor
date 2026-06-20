@@ -8,13 +8,17 @@ interface MobileHomeSearchProps {
     React.SetStateAction<Record<string, string>>
   >;
   categoryOptions: string[];
+
+  searchKeyword: string;
+  setSearchKeyword: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// TODO: 모바일 사이즈 확인
 export default function MobileHomeSearch({
   selectedFilters,
   setSelectedFilters,
   categoryOptions,
+  searchKeyword,
+  setSearchKeyword,
 }: MobileHomeSearchProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -25,23 +29,25 @@ export default function MobileHomeSearch({
   return (
     <section className="mb-6">
       <div className="relative mt-5">
-        <div className="flex h-12 items-center rounded-full border border-gray-200 bg-white px-4 shadow-sm">
-          <Search className="h-4 w-4 text-gray-400" />
+        <div className="flex h-14 items-center rounded-full border border-gray-200 bg-white px-4 shadow-sm">
+          <Search className="h-5 w-5 text-gray-400" />
 
           <input
             type="text"
-            placeholder="부트캠프명 또는 키워드를 검색해보세요"
-            className="ml-3 flex-1 bg-transparent text-sm outline-none placeholder:text-gray-400"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            placeholder="키워드를 검색해보세요."
+            className="ml-3 flex-1 bg-transparent text-base outline-none placeholder:text-gray-400 text-sm"
           />
 
           <button
             type="button"
-            className="relative ml-2 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100"
+            className="relative ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100"
             onClick={() => setIsFilterOpen(true)}
           >
-            <Settings2 className="h-4 w-4 text-gray-600" />
+            <Settings2 className="h-5 w-5 text-gray-600" />
             {activeFilterCount > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
                 {activeFilterCount}
               </span>
             )}

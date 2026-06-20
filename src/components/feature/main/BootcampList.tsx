@@ -3,14 +3,16 @@
 import { useEffect, useRef } from "react";
 import { useGetBootcamps } from "@/hooks/main-page/useGetBootcamps";
 import BootcampCard from "./BootcampCard";
+import { Search } from "lucide-react";
 
 interface BootcampListProps {
   filters: Record<string, string>;
+  searchKeyword: string;
 }
 
-const BootcampList = ({ filters }: BootcampListProps) => {
+const BootcampList = ({ filters, searchKeyword }: BootcampListProps) => {
   const { bootcamps, fetchNextPage, hasNextPage, isLoading, isError } =
-    useGetBootcamps(filters);
+    useGetBootcamps(filters, searchKeyword);
 
   const observerRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +44,19 @@ const BootcampList = ({ filters }: BootcampListProps) => {
       </div>
     );
   if (!bootcamps || bootcamps.length === 0)
-    return <div className="text-center py-8">검색 결과가 없습니다.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <Search className="mb-3 text-gray-500" size={28} />
+
+        <p className="font-semibold text-gray-800">
+          해당 키워드와 일치하는 부트캠프가 없어요.
+        </p>
+
+        <p className="text-sm text-gray-500">
+          다른 키워드로 다시 시도해주세요.
+        </p>
+      </div>
+    );
 
   return (
     <section className="max-w-[1200px] mx-auto ">

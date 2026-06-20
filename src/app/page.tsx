@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import SearchSection from "@/components/common/SearchSection";
 import FilterButtons from "@/components/feature/main/FilterButtons";
 import BootcampList from "@/components/feature/main/BootcampList";
@@ -12,9 +12,18 @@ export default function Home() {
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const { data: categories = [] } = useGetBootcampCategories();
 
-  // TODO: 모바일 사이즈 확인
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedKeyword(searchKeyword);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchKeyword]);
+
   return (
     <main>
       <Suspense fallback={<p>검색어 로딩 중...</p>}>
@@ -38,10 +47,15 @@ export default function Home() {
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
             categoryOptions={categories}
+            searchKeyword={searchKeyword}
+            setSearchKeyword={setSearchKeyword}
           />
         </div>
       </Suspense>
-      <BootcampList filters={selectedFilters} />
+      <BootcampList
+        filters={selectedFilters}
+        searchKeyword={debouncedKeyword}
+      />
     </main>
   );
 }
