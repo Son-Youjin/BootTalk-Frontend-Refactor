@@ -41,7 +41,7 @@ const MyPageLayout = ({
   console.log("레이아웃 이미지", myInfo?.profileImage);
 
   return (
-    <div className="container mx-auto p-4 max-w-6xl">
+    <div className="w-full md:max-w-6xl md:mx-auto">
       {/* 페이지 제목 */}
       <h1 className="hidden md:block text-2xl font-bold mb-6 flex items-center">
         마이페이지
@@ -103,7 +103,7 @@ const MyPageLayout = ({
 
         {/* 오른쪽 컨텐츠 영역 */}
         <div className="flex-1">
-          <div className="bg-base-100 rounded-xl shadow-md p-6 border border-base-300 min-h-156">
+          <div className="p-6 bg-base-100 rounded-xl shadow-sm md:shadow-md border border-base-300 min-h-156">
             <h2 className="text-xl font-bold mb-6 pb-3 border-b border-gray-200">
               {tabs.find((tab) => tab.id === activeTab)?.label || ""}
             </h2>

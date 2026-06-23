@@ -73,8 +73,10 @@ const ProfileEdit = () => {
       />
 
       {/* 관심 직무 섹션 */}
-      <div className="mb-6">
-        <h3 className="mb-3 font-semibold text-base-content">관심 직무</h3>
+      <div className="mb-5 md:mb-6">
+        <h3 className="mb-2 md:mb-3 font-semibold text-base-content">
+          관심 직무
+        </h3>
         <FormSelect
           options={careerCategory}
           value={desiredCareer}
@@ -86,9 +88,11 @@ const ProfileEdit = () => {
       </div>
 
       {/* 네이버 계정 정보 섹션 */}
-      <div className="mb-6">
-        <h3 className="font-semibold mb-3 text-base-content">계정 정보</h3>
-        <div className="p-3 rounded-md shadow-sm">
+      <div className="mb-5 md:mb-6">
+        <h3 className="mb-2 md:mb-3 font-semibold text-base-content">
+          계정 정보
+        </h3>
+        <div className="p-4 rounded-xl border border-stone-200 bg-white">
           <div className="flex items-center">
             <div>
               <p className="text-sm text-base-content">{myInfo?.name}</p>
@@ -99,15 +103,18 @@ const ProfileEdit = () => {
       </div>
 
       {/* 수료한 부트캠프 */}
-      <div className="mb-6">
-        <h3 className="mb-3 text-base-content">수료한 부트캠프</h3>
+      <div className="mb-5 md:mb-6">
+        <h3 className="mb-2 md:mb-3 text-base-content">수료한 부트캠프</h3>
         <div className="rounded-md space-y-3">
           {myInfo?.certifications && myInfo?.certifications.length > 0 ? (
             myInfo?.certifications.map((camp, idx) => (
-              <div key={idx} className="card bg-white shadow-sm">
-                <div className="card-body p-3 flex-row items-center justify-between">
+              <div
+                key={idx}
+                className="rounded-xl border border-stone-200 bg-white transition-colors"
+              >
+                <div className="p-4">
                   <div>
-                    <h2 className="card-title text-sm text-base-content">
+                    <h2 className="text-sm font-semibold text-base-content">
                       {camp.courseName}
                     </h2>
                     <p className="text-sm text-gray-500">{camp.categoryName}</p>
@@ -116,7 +123,7 @@ const ProfileEdit = () => {
               </div>
             ))
           ) : (
-            <div className="p-3 text-sm text-gray-500 shadow-sm">
+            <div className="p-4 rounded-xl border border-dashed border-stone-300 text-sm text-gray-500 bg-white">
               수료한 부트캠프가 없습니다.
             </div>
           )}
@@ -124,10 +131,10 @@ const ProfileEdit = () => {
       </div>
 
       {/* 저장 버튼 */}
-      <div className="flex justify-end">
+      <div className="flex justify-end pt-2">
         <button
           type="submit"
-          className="btn bg-amber-900 hover:bg-amber-950 text-white"
+          className="btn min-w-24 bg-amber-900 hover:bg-amber-950 text-white"
           disabled={updateProfileMutation.isPending}
         >
           {updateProfileMutation.isPending ? "저장 중..." : "저장"}

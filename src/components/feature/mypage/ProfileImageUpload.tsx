@@ -14,7 +14,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(
-    initialImageUrl || null
+    initialImageUrl || null,
   );
 
   const { uploadFileAsync, isPending } = useFileUpload();
@@ -43,12 +43,10 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center mb-3">
+    <div className="flex flex-col items-center mb-5 md:mb-6">
       <div className="relative mb-2">
         <div
-          className={`w-32 h-32 rounded-full overflow-hidden shadow-lg${
-            isPending ? "opacity-70" : ""
-          }`}
+          className={`w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border border-stone-200 bg-white shadow-sm ${isPending ? "opacity-70" : ""}`}
         >
           <Image
             src={previewUrl || "/profile-default.png"}
@@ -64,12 +62,12 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
           )}
         </div>
         <button
-          className="absolute bottom-0 right-0 bg-amber-900 text-white p-2 rounded-full shadow-md cursor-pointer"
+          className="absolute bottom-0 right-0 bg-amber-900 text-white p-1.5 md:p-2 rounded-full shadow-md cursor-pointer"
           type="button"
           onClick={handleImageClick}
           disabled={isPending}
         >
-          <Pencil size={18} />
+          <Pencil size={16} />
         </button>
       </div>
       <input
@@ -80,7 +78,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
         className="hidden"
         disabled={isPending}
       />
-      <p className="text-sm text-gray-500">
+      <p className="mt-1 text-xs md:text-sm text-gray-500">
         {isPending ? "업로드 중..." : "클릭하여 프로필 사진 변경"}
       </p>
     </div>
