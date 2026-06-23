@@ -37,7 +37,7 @@ export default function MobileHomeSearch({
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             placeholder="키워드를 검색해보세요."
-            className="ml-3 flex-1 bg-transparent text-base outline-none placeholder:text-gray-400 text-sm"
+            className="ml-3 flex-1 bg-transparent text-base outline-none placeholder:text-gray-400"
           />
 
           <button

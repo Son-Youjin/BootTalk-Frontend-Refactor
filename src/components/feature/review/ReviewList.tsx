@@ -7,7 +7,7 @@ import type { Review as ResponseReview } from "@/types/response";
 import SelectJob from "./SelectJob";
 import ReviewFilterButtons from "./ReviewFilterButtons";
 import useFilterOptions from "@/hooks/reviews/useFilterOptions";
-import { Search } from "lucide-react";
+import EmptyState from "@/components/common/EmptyState";
 
 export default function ReviewList() {
   const [filters, setFilters] = useState<{ category?: string; date?: string }>(
@@ -85,17 +85,10 @@ export default function ReviewList() {
           <ReviewItem key={`${review.reviewId}-${idx}`} review={review} />
         ))
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
-          <Search className="mb-3 text-gray-500" size={28} />
-
-          <p className="font-semibold text-gray-800">
-            해당 키워드와 일치하는 리뷰가 없어요.
-          </p>
-
-          <p className="text-sm text-gray-500">
-            다른 키워드로 다시 시도해주세요.
-          </p>
-        </div>
+        <EmptyState
+          title="해당 키워드와 일치하는 리뷰가 없어요."
+          subTitle="다른 키워드로 다시 시도해주세요."
+        />
       )}
 
       <div ref={observerRef} className="h-32" />
