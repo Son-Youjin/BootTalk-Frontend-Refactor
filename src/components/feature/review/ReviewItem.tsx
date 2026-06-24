@@ -6,9 +6,19 @@ import toast from "react-hot-toast";
 
 interface ReviewItemProps {
   review: Review;
+  showUserName?: boolean;
+  actionType?: "report" | "manage";
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export default function ReviewItem({ review }: ReviewItemProps) {
+export default function ReviewItem({
+  review,
+  showUserName = true,
+  actionType = "report",
+  onEdit,
+  onDelete,
+}: ReviewItemProps) {
   const handleReport = () => {
     toast("신고 기능은 추후 제공될 예정입니다.");
   };
@@ -42,15 +52,35 @@ export default function ReviewItem({ review }: ReviewItemProps) {
 
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-400 truncate">
-          {review.userName} | {review.createdAt}
+          {showUserName
+            ? `${review.userName} | ${review.createdAt}`
+            : review.createdAt}
         </p>
 
-        <button
-          onClick={handleReport}
-          className="shrink-0 px-2 py-1 text-sm text-gray-400"
-        >
-          신고
-        </button>
+        {actionType === "report" ? (
+          <button
+            onClick={handleReport}
+            className="shrink-0 px-2 py-1 text-sm text-gray-400 hover:text-red-400"
+          >
+            신고
+          </button>
+        ) : (
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={onEdit}
+              className="text-sm text-gray-500 hover:text-amber-900"
+            >
+              수정
+            </button>
+
+            <button
+              onClick={onDelete}
+              className="text-sm text-gray-500 hover:text-red-500"
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

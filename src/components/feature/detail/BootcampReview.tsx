@@ -2,7 +2,7 @@
 
 import type { Review } from "@/types/response";
 import DetailSectionCard from "./DetailSectionCard";
-import ReviewItem from "./ReviewItem";
+import ReviewItem from "../review/ReviewItem";
 
 interface BootcampReviewProps {
   reviews: Review[];
