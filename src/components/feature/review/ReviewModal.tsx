@@ -93,51 +93,53 @@ export default function ReviewModal({
       title={mode === "edit" ? "리뷰 수정" : "리뷰 작성"}
       size="lg"
     >
-      <div className="space-y-4 text-gray-700">
-        <div className="grid grid-cols-2 gap-4">
-          <input
-            className="input input-bordered w-full"
-            disabled
-            value={bootcamp.courseName}
-          />
-          <input
-            className="input input-bordered w-full"
-            disabled
-            value={bootcamp.userName}
-          />
-        </div>
+      <div className="space-y-5 p-5">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="mb-2 flex items-start gap-1">
+            <span className="text-sm font-medium text-gray-500 shrink-0">
+              부트캠프 :
+            </span>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">별점</span>
-          <RatingSelector value={rating} onChange={setRating} />
+            <p className="text-sm font-semibold text-gray-900 leading-5 break-words break-keep">
+              {bootcamp.courseName}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-500 shrink-0">
+              별점 :
+            </span>
+
+            <RatingSelector value={rating} onChange={setRating} />
+          </div>
         </div>
 
         <div>
           <textarea
-            placeholder="후기를 작성해주세요."
+            placeholder="수강 경험과 느낀 점을 자유롭게 작성해주세요."
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={500}
-            className="textarea textarea-bordered w-full h-28 resize-none focus:outline-none"
+            className="w-full h-36 resize-none rounded-xl border border-gray-300 bg-white p-4 text-base leading-6 transition-colors placeholder:text-gray-400 focus:border-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-100"
           />
-          <div className="text-right text-sm text-gray-400">
-            {content.length}/500
+          <div className="mt-2 text-right text-xs text-gray-400">
+            {content.length} / 500
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 mt-4">
+        <div className="flex gap-3 pt-2">
           <button
-            className="btn btn-outline border-gray-400 rounded-lg"
+            className="flex-1 h-12 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium transition hover:bg-gray-50"
             onClick={onCloseAction}
           >
             취소
           </button>
           <button
-            className="btn bg-amber-900 text-white rounded-lg"
+            className="flex-1 h-12 rounded-xl bg-amber-900 text-white font-semibold transition-colors hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {mode === "edit" ? "수정" : "작성"}
+            {mode === "edit" ? "수정하기" : "작성하기"}
           </button>
         </div>
       </div>
