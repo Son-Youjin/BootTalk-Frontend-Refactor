@@ -31,9 +31,13 @@ export default function MyReviews() {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
-    if (!deleteTargetId) return;
+    if (!deleteTargetId || isDeleting) return;
+
+    setIsDeleting(true);
+
     try {
       await axiosDefault.delete(END_POINT.DELETE_REVIEW(deleteTargetId));
       toast.success("리뷰가 삭제되었습니다.");
@@ -41,11 +45,15 @@ export default function MyReviews() {
     } catch (err: unknown) {
       const error = err as AxiosError;
 
-      if (error.response?.status === 403) toast.error("삭제 권한이 없습니다.");
-      else if (error.response?.status === 400)
+      if (error.response?.status === 403) {
+        toast.error("삭제 권한이 없습니다.");
+      } else if (error.response?.status === 400) {
         toast.error("잔여 포인트가 부족합니다.");
-      else toast.error("리뷰 삭제 중 오류가 발생했습니다.");
+      } else {
+        toast.error("리뷰 삭제 중 오류가 발생했습니다.");
+      }
     } finally {
+      setIsDeleting(false);
       setIsDeleteModalOpen(false);
       setDeleteTargetId(null);
     }
@@ -119,20 +127,33 @@ export default function MyReviews() {
         title="리뷰 삭제"
         size="sm"
       >
-        <div className="text-gray-700 py-4">리뷰를 삭제하시겠습니까?</div>
-        <div className="flex justify-end gap-2">
-          <button
-            onClick={() => setIsDeleteModalOpen(false)}
-            className="btn btn-outline border-gray-400 rounded-lg"
-          >
-            취소
-          </button>
-          <button
-            onClick={handleDelete}
-            className="btn rounded-lg border border-gray-400 text-gray-600 hover:bg-red-50 hover:text-red-600 hover:border-red-200"
-          >
-            삭제
-          </button>
+        <div className="space-y-6 p-5">
+          <div className="text-center">
+            <p className="text-base font-semibold text-gray-900">
+              리뷰를 삭제하시겠습니까?
+            </p>
+
+            <p className="mt-2 text-sm text-gray-500">
+              삭제한 리뷰는 다시 복구할 수 없습니다.
+            </p>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => setIsDeleteModalOpen(false)}
+              className="flex-1 h-12 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium transition-colors hover:bg-gray-50"
+            >
+              취소
+            </button>
+
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="flex-1 h-12 rounded-xl bg-red-50 border border-red-200 text-red-600 font-semibold shadow-sm transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isDeleting ? "삭제 중..." : "삭제"}
+            </button>
+          </div>
         </div>
       </Modal>
     </div>
