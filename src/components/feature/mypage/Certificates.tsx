@@ -105,12 +105,15 @@ const Certificates = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <div className="relative">
-          <h3 className="mb-3 text-base-content">코스명</h3>
-          <label className="input flex items-center gap-2">
-            <Search size={14} className="opacity-50" />
+          <h3 className="mb-2 text-sm font-semibold text-gray-800">코스명</h3>
+
+          <label className="flex h-12 items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 transition-colors focus-within:border-amber-800 focus-within:ring-2 focus-within:ring-amber-100">
+            <Search size={18} className="shrink-0 text-gray-400" />
+
             <input
+              className="w-full bg-transparent text-base outline-none placeholder:text-gray-400"
               type="search"
               required
               placeholder="코스명을 검색하세요."
@@ -121,11 +124,11 @@ const Certificates = () => {
           </label>
 
           {suggestions.length > 0 && (
-            <ul className="absolute left-0 right-0 bg-white border rounded shadow mt-1 z-10 max-h-60 overflow-y-auto">
+            <ul className="absolute left-0 right-0 z-10 mt-2 max-h-60 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
               {suggestions.map((course) => (
                 <li
                   key={course.courseId}
-                  className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
+                  className="cursor-pointer px-4 py-3 text-sm transition-colors hover:bg-gray-50"
                   onClick={() => handleSelect(course)}
                 >
                   {course.courseName}
@@ -136,37 +139,40 @@ const Certificates = () => {
         </div>
 
         <div>
-          <h3 className="mb-3 text-base-content">수료증 업로드</h3>
+          <h3 className="mb-2 text-sm font-semibold text-gray-800">
+            수료증 업로드
+          </h3>
+
           <input
             type="file"
             accept="image/*"
-            className="file-input"
+            className="file-input file-input-bordered h-12 w-full rounded-xl border-gray-300"
             onChange={handleFileChange}
             disabled={isPending}
             required
           />
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-2">
           <button
             type="submit"
-            className="btn bg-amber-900 text-white hover:bg-amber-950"
+            className="btn h-10 min-h-10 rounded-xl bg-amber-900 px-6 text-sm font-medium text-white transition-colors hover:bg-amber-800 disabled:opacity-50"
             disabled={isLoading || isPending || certificateMutation.isPending}
           >
             제출
           </button>
         </div>
-        <div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-sm text-gray-600 leading-relaxed flex items-start gap-2">
-          <BadgeInfo
-            className="text-gray-500 mt-[2px] min-w-[20px]"
-            size={18}
-          />
-          <div className="flex flex-col">
-            <span>
-              제출한 수료증 이미지와 코스명은 <b>고용24</b>의 부트캠프 정보와
-              비교해 인증됩니다.
-            </span>
-            <span>일치하지 않을 경우 인증이 반려될 수 있습니다.</span>
+
+        <div className="flex items-start gap-2 rounded-xl border border-amber-100 bg-amber-50 p-4">
+          <BadgeInfo size={18} className="mt-0.5 shrink-0 text-amber-700" />
+
+          <div className="space-y-1 text-sm leading-6 text-gray-700">
+            <p>
+              제출한 수료증 이미지와 코스명은
+              <strong className="font-semibold">고용24</strong>의 부트캠프
+              정보와 비교해 인증됩니다.
+            </p>
+            <p>일치하지 않을 경우 인증이 반려될 수 있습니다.</p>
           </div>
         </div>
       </div>
