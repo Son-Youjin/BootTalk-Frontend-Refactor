@@ -1,28 +1,21 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense } from "react";
 import SearchSection from "@/components/common/SearchSection";
 import FilterButtons from "@/components/feature/main/FilterButtons";
 import BootcampList from "@/components/feature/main/BootcampList";
 import { useGetBootcampCategories } from "@/hooks/main-page/useGetBootcampCategories";
 import MobileHomeSearch from "@/components/mobile/MobileHomeSearch";
 import MobileHeader from "@/components/mobile/MobileHeader";
+import { useDebounce } from "@/hooks/chat/useDebounce";
 
 export default function Home() {
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string>
   >({});
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [debouncedKeyword, setDebouncedKeyword] = useState("");
+  const debouncedKeyword = useDebounce(searchKeyword, 300);
   const { data: categories = [] } = useGetBootcampCategories();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedKeyword(searchKeyword);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchKeyword]);
 
   return (
     <main>

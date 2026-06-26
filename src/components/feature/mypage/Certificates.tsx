@@ -1,15 +1,16 @@
 import { axiosDefault } from "@/api/axiosInstance";
 import { END_POINT } from "@/constants/endPoint";
+import { useDebounce } from "@/hooks/chat/useDebounce";
 import { useFileUpload } from "@/hooks/my-page/useFileUpload";
 import { Course } from "@/types/response";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BadgeInfo, Search } from "lucide-react";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const fetchCourses = async (query: string): Promise<Course[]> => {
   const res = await axiosDefault.get(
-    `${END_POINT.COURSES}?query=${encodeURIComponent(query)}`
+    `${END_POINT.COURSES}?query=${encodeURIComponent(query)}`,
   );
   return res.data;
 };
@@ -24,18 +25,10 @@ const fetchCertificate = async (data: {
 
 const Certificates = () => {
   const [query, setQuery] = useState<string>("");
+  const debouncedQuery = useDebounce(query, 300);
   const [suggestions, setSuggestions] = useState<Course[]>([]);
-  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [certificateFile, setCertificateFile] = useState<string | null>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [query]);
 
   const { data: coursesData, isLoading } = useQuery<Course[]>({
     queryKey: ["courses", debouncedQuery],
@@ -81,7 +74,7 @@ const Certificates = () => {
 
       // 파일 입력 필드 초기화
       const fileInput = document.querySelector(
-        'input[type="file"]'
+        'input[type="file"]',
       ) as HTMLInputElement;
       if (fileInput) fileInput.value = "";
     },
@@ -164,9 +157,15 @@ const Certificates = () => {
           </button>
         </div>
         <div className="bg-gray-50 border border-gray-200 rounded-md p-4 text-sm text-gray-600 leading-relaxed flex items-start gap-2">
-          <BadgeInfo className="text-gray-500 mt-[2px] min-w-[20px]" size={18} />
+          <BadgeInfo
+            className="text-gray-500 mt-[2px] min-w-[20px]"
+            size={18}
+          />
           <div className="flex flex-col">
-            <span>제출한 수료증 이미지와 코스명은 <b>고용24</b>의 부트캠프 정보와 비교해 인증됩니다.</span>
+            <span>
+              제출한 수료증 이미지와 코스명은 <b>고용24</b>의 부트캠프 정보와
+              비교해 인증됩니다.
+            </span>
             <span>일치하지 않을 경우 인증이 반려될 수 있습니다.</span>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { axiosDefault } from "@/api/axiosInstance";
 import { END_POINT } from "@/constants/endPoint";
+import { useDebounce } from "./chat/useDebounce";
 
 export interface BootcampSuggestion {
   bootcampId: number;
@@ -9,6 +10,7 @@ export interface BootcampSuggestion {
 
 export const useSearchSuggestions = () => {
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 300);
   const [suggestions, setSuggestions] = useState<BootcampSuggestion[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,17 +20,21 @@ export const useSearchSuggestions = () => {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (query.trim().length === 0) {
+      if (debouncedQuery.trim().length === 0) {
         setSuggestions([]);
         setIsOpen(false);
         return;
       }
 
       setIsLoading(true);
+
       try {
         const response = await axiosDefault.get(
-          `${END_POINT.BOOTCAMPS_AUTOCOMPLETE}?query=${encodeURIComponent(query)}`
+          `${END_POINT.BOOTCAMPS_AUTOCOMPLETE}?query=${encodeURIComponent(
+            debouncedQuery,
+          )}`,
         );
+
         setSuggestions(response.data || []);
         setIsOpen(true);
       } catch {
@@ -38,9 +44,8 @@ export const useSearchSuggestions = () => {
       }
     };
 
-    const debounce = setTimeout(fetchSuggestions, 300);
-    return () => clearTimeout(debounce);
-  }, [query]);
+    fetchSuggestions();
+  }, [debouncedQuery]);
 
   // 외부 클릭 감지
   useEffect(() => {
