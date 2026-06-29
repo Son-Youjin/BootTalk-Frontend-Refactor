@@ -7,6 +7,7 @@ import {
   CreditCard,
   AwardIcon,
   GraduationCap,
+  CircleAlert,
 } from "lucide-react";
 import { useGetMyInfo } from "@/hooks/my-page/useGetMyInfo";
 import WithdrawalButton from "./WithdrawalButton";
@@ -36,6 +37,11 @@ const MyPageLayout = ({
       id: "mentor",
       label: "멘토 프로필 관리",
       icon: <GraduationCap size={18} />,
+    },
+    {
+      id: "service",
+      label: "부트톡 이용 가이드",
+      icon: <CircleAlert size={18} />,
     },
   ];
   console.log("레이아웃 이미지", myInfo?.profileImage);
