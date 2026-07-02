@@ -27,7 +27,7 @@ export interface MentorFormFormData {
 }
 
 const jobCategoryOptions = Object.entries(jobCategoryMapping).map(
-  ([eng, kor]) => ({ value: eng, label: kor })
+  ([eng, kor]) => ({ value: eng, label: kor }),
 );
 
 const MentorFormModal: React.FC<MentorFormModalProps> = ({
@@ -42,9 +42,16 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
     isCreatePending,
     isUpdatePending,
   } = useMentorRegistration();
+  const [step, setStep] = useState<1 | 2>(1);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+    }
+  }, [isOpen]);
 
   const userCertifications = useUserStore(
-    (state) => state.user?.certifications
+    (state) => state.user?.certifications,
   );
 
   const DEFAULT_MENTOR_TYPE =
@@ -131,7 +138,7 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
 
   // 소개글 핸들러
   const handleIntroductionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,
@@ -157,7 +164,7 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
     try {
       // 시간 선택 확인
       const hasSelectedTimes = formData.timeSlots.some(
-        (slot) => slot.times.length > 0
+        (slot) => slot.times.length > 0,
       );
       if (!hasSelectedTimes) {
         toast.error("최소 한 개 이상의 가능한 시간을 선택해주세요.");
@@ -172,7 +179,7 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
 
       // 필터링된 시간 슬롯 (빈 배열 제거)
       const filteredTimeSlots = formData.timeSlots.filter(
-        (slot) => slot.times.length > 0
+        (slot) => slot.times.length > 0,
       );
 
       const availableTimes: Record<string, string[]> = {};
@@ -212,11 +219,11 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
       toast.error(
         mode === "create"
           ? "멘토 등록 중 오류가 발생했습니다."
-          : "멘토 정보 수정 중 오류가 발생했습니다."
+          : "멘토 정보 수정 중 오류가 발생했습니다.",
       );
       console.error(
         mode === "create" ? "Registration error:" : "Update error:",
-        error
+        error,
       );
     }
   };
@@ -226,94 +233,152 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
     mode === "create" ? "커피챗 멘토 등록" : "멘토 프로필 수정";
   const submitButtonText = mode === "create" ? "등록하기" : "수정하기";
 
+  const handleNext = () => {
+    if (!formData.info.jobType) {
+      toast.error("직무를 선택해주세요.");
+      return;
+    }
+
+    if (formData.info.introduction.trim().length < 10) {
+      toast.error("소개글은 최소 10자 이상 작성해주세요.");
+      return;
+    }
+
+    setStep(2);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} size="lg">
-      <form className="space-y-4 " onSubmit={handleSubmit}>
-        {/* 직무 선택 */}
-        <div className="form-control">
-          <label className="label text-black flex justify-start">
-            <UserSearch size={18} className="text-black" />
-            <span className="font-medium">직무 선택</span>
-          </label>
-          <select
-            className="select select-bordered w-full rounded-lg"
-            value={formData.info.jobType}
-            onChange={handleJobCategoryChange}
-            required
-          >
-            <option value="" disabled>
-              직무를 선택해주세요
-            </option>
-            {jobCategoryOptions.map(({ value, label }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6">
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* 진행 상태 */}
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <div>
+              <p className="text-lg font-semibold text-gray-900">
+                {step === 1 ? "기본 정보" : "상담 가능 시간"}
+              </p>
+            </div>
 
-        {/* 현업자 체크박스 */}
-        <div className="form-control">
-          <label className="cursor-pointer justify-start label flex">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-xs checkbox-neutral"
-              checked={formData.info.mentorType === "PROFESSIONAL"}
-              onChange={handleProfessionalChange}
-            />
-            <span className="font-medium text-black">
-              현업 종사자인 경우에만 체크해주세요.
+            <span className="text-sm font-medium text-gray-400">
+              {step} / 2
             </span>
-          </label>
-        </div>
-
-        {/* 소개글 */}
-        <div className="form-control flex flex-col">
-          <label className="label text-black flex justify-start">
-            <PencilLine size={18} className="text-black" />
-            <span className="font-medium">멘토 소개글</span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered h-24 w-full mt-1 rounded-lg"
-            placeholder="멘티에게 보여질 자기소개와 도움을 줄 수 있는 영역에 대해 작성해주세요. (최소 10자 이상)"
-            value={formData.info.introduction}
-            onChange={handleIntroductionChange}
-            required
-          />
-          <div className="text-sm text-right text-gray-500 mt-1">
-            {formData.info.introduction.length} / 500자
-          </div>
-        </div>
-
-        {/* 요일별 시간 선택 */}
-        <div className="space-y-2">
-          <div className="label flex justify-start">
-            <Clock size={18} className="text-black" />
-            <span className="font-medium text-black">멘토링 가능 시간</span>
           </div>
 
-          {/* TimeSlotSelector 컴포넌트 사용 */}
-          <TimeSlotSelector
-            timeSlots={formData.timeSlots}
-            onChange={handleTimeSlotChange}
-          />
-        </div>
+          {/* STEP 1 */}
+          {step === 1 && (
+            <>
+              {/* 직무 */}
+              <div>
+                <label className="mb-3 block text-sm font-semibold text-gray-800">
+                  직무 선택
+                </label>
 
-        {/* 등록 버튼 */}
-        <div className="pt-2 flex justify-end">
-          <button
-            type="submit"
-            className="btn bg-amber-900  text-white rounded-lg"
-            disabled={isPending}
-          >
-            {isPending
-              ? mode === "create"
-                ? "등록 중..."
-                : "수정 중..."
-              : submitButtonText}
-          </button>
-        </div>
-      </form>
+                <select
+                  className="select select-bordered h-12 w-full rounded-xl border-gray-300 bg-white text-sm"
+                  value={formData.info.jobType}
+                  onChange={handleJobCategoryChange}
+                  required
+                >
+                  <option value="" disabled>
+                    직무를 선택해주세요
+                  </option>
+
+                  {jobCategoryOptions.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 현업 종사자 */}
+              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 bg-stone-50 px-4 py-4 transition-colors hover:bg-stone-100">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-sm mt-0.5"
+                  checked={formData.info.mentorType === "PROFESSIONAL"}
+                  onChange={handleProfessionalChange}
+                />
+
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">
+                    현업 종사자
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-500">
+                    현재 관련 업계에서 근무 중인 경우 선택해주세요.
+                  </p>
+                </div>
+              </label>
+
+              {/* 소개글 */}
+              <div>
+                <label className="mb-3 block text-sm font-semibold text-gray-800">
+                  멘토 소개글
+                </label>
+
+                <textarea
+                  className="h-32 md:h-36 w-full resize-none rounded-xl border border-gray-300 bg-white p-4 text-sm leading-6 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none"
+                  placeholder="멘티에게 보여질 자기소개와 도움을 줄 수 있는 영역에 대해 작성해주세요. (최소 10자 이상)"
+                  value={formData.info.introduction}
+                  onChange={handleIntroductionChange}
+                  required
+                />
+
+                <div className="mt-2 text-right text-xs text-gray-400">
+                  {formData.info.introduction.length} / 500
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                className="h-12 w-full rounded-xl bg-amber-900 text-sm font-semibold text-white transition-colors hover:bg-amber-800"
+              >
+                다음
+              </button>
+            </>
+          )}
+
+          {/* STEP 2 */}
+          {step === 2 && (
+            <>
+              <div>
+                <label className="mb-3 block text-sm font-semibold text-gray-800">
+                  멘토링 가능 시간
+                </label>
+
+                <TimeSlotSelector
+                  timeSlots={formData.timeSlots}
+                  onChange={handleTimeSlotChange}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="h-12 flex-1 rounded-xl border border-gray-300 bg-white font-medium text-gray-700 transition hover:bg-gray-50"
+                >
+                  이전
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="h-12 flex-1 rounded-xl bg-amber-900 font-semibold text-white transition-colors hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isPending
+                    ? mode === "create"
+                      ? "등록 중..."
+                      : "수정 중..."
+                    : submitButtonText}
+                </button>
+              </div>
+            </>
+          )}
+        </form>
+      </div>
     </Modal>
   );
 };
