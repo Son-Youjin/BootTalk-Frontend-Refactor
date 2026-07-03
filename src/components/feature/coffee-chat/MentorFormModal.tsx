@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Clock, PencilLine, UserSearch } from "lucide-react";
 
 import useMentorRegistration from "@/hooks/coffee-chat/useMentorRegistration";
 import TimeSlotSelector, { DayOfWeek, TimeSlot } from "./TimeSlotSelectorProps";
@@ -255,7 +254,7 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div>
               <p className="text-lg font-semibold text-gray-900">
-                {step === 1 ? "기본 정보" : "상담 가능 시간"}
+                {step === 1 ? "기본 정보" : "멘토링 가능 시간"}
               </p>
             </div>
 
@@ -344,10 +343,6 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
           {step === 2 && (
             <>
               <div>
-                <label className="mb-3 block text-sm font-semibold text-gray-800">
-                  멘토링 가능 시간
-                </label>
-
                 <TimeSlotSelector
                   timeSlots={formData.timeSlots}
                   onChange={handleTimeSlotChange}

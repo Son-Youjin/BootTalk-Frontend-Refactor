@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { AlertCircle, Clock, X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
+import toast from "react-hot-toast";
 
 export type DayOfWeek = "월" | "화" | "수" | "목" | "금" | "토" | "일";
 
@@ -22,7 +23,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
   const days: DayOfWeek[] = ["월", "화", "수", "목", "금", "토", "일"];
 
   // 현재 확장된 요일
-  const [expandedDay, setExpandedDay] = useState<DayOfWeek>("월");
+  const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>(["월"]);
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const date = new Date();
     date.setHours(12, 0, 0, 0);
@@ -56,25 +57,23 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
 
     // 시간 추가
     const updatedTimeSlots = [...timeSlots];
-    const slotIndex = updatedTimeSlots.findIndex(
-      (slot) => slot.day === expandedDay
-    );
+    selectedDays.forEach((day) => {
+      const slotIndex = updatedTimeSlots.findIndex((slot) => slot.day === day);
 
-    if (slotIndex >= 0) {
-      // 이미 존재하는 요일이면 시간 추가
-      if (!updatedTimeSlots[slotIndex].times.includes(timeString)) {
-        updatedTimeSlots[slotIndex] = {
-          ...updatedTimeSlots[slotIndex],
-          times: [...updatedTimeSlots[slotIndex].times, timeString].sort(),
-        };
+      if (slotIndex >= 0) {
+        if (!updatedTimeSlots[slotIndex].times.includes(timeString)) {
+          updatedTimeSlots[slotIndex] = {
+            ...updatedTimeSlots[slotIndex],
+            times: [...updatedTimeSlots[slotIndex].times, timeString].sort(),
+          };
+        }
+      } else {
+        updatedTimeSlots.push({
+          day,
+          times: [timeString],
+        });
       }
-    } else {
-      // 요일이 없으면 새로 추가
-      updatedTimeSlots.push({
-        day: expandedDay,
-        times: [timeString],
-      });
-    }
+    });
 
     onChange(updatedTimeSlots);
   };
@@ -103,139 +102,117 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
   };
 
   // 현재 확장된 요일의 시간 슬롯
-  const currentDayTimeSlot = timeSlots.find(
-    (slot) => slot.day === expandedDay
-  ) || { day: expandedDay, times: [] };
-
-  // 총 선택된 시간 수
-  const selectedCount = timeSlots.reduce(
-    (count, slot) => count + slot.times.length,
-    0
-  );
+  const excludedTimes = timeSlots
+    .filter((slot) => selectedDays.includes(slot.day))
+    .flatMap((slot) => slot.times)
+    .filter((time, index, arr) => arr.indexOf(time) === index)
+    .map(parseTimeString);
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* 날짜 선택기 */}
-      <div className="w-full bg-white rounded-lg shadow-md p-4 mb-4">
-        <div className="flex items-center mb-3">
-          <Clock size={18} className="text-black mr-2" />
-          <span className="font-bold">시간 선택</span>
+    <div className="mx-auto max-w-3xl space-y-6">
+      {/* 시간 추가 */}
+      <section className="rounded-xl">
+        <h2 className="text-base font-semibold text-gray-900">시간 추가</h2>
+
+        <p className="mb-4 text-xs text-gray-500">
+          여러 요일을 선택하면 한 번에 추가됩니다.
+        </p>
+
+        {/* 요일 선택 */}
+        <div className="mb-4 grid grid-cols-7 gap-2">
+          {days.map((day) => (
+            <button
+              key={day}
+              type="button"
+              onClick={() => {
+                if (selectedDays.includes(day) && selectedDays.length === 1) {
+                  toast.error("최소 하나의 요일을 선택해주세요.");
+                  return;
+                }
+
+                setSelectedDays((prev) =>
+                  prev.includes(day)
+                    ? prev.filter((d) => d !== day)
+                    : [...prev, day],
+                );
+              }}
+              className={`flex h-10 items-center justify-center rounded-lg border text-sm font-medium transition-colors
+              ${
+                selectedDays.includes(day)
+                  ? "border-amber-700 bg-amber-700 text-white"
+                  : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+
+        <DatePicker
+          className="input input-bordered h-12 w-full rounded-lg"
+          selected={selectedDate}
+          onChange={handleTimeChange}
+          showTimeSelect
+          showTimeSelectOnly
+          timeIntervals={30}
+          timeCaption="시간"
+          dateFormat="HH:mm"
+          timeFormat="HH:mm"
+          excludeTimes={excludedTimes}
+          placeholderText="시간 선택"
+          popperClassName="react-datepicker-right"
+          popperPlacement="right-start"
+          shouldCloseOnSelect={false}
+        />
+      </section>
+
+      {/* 선택된 시간 */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 ">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-gray-900">선택된 시간</h2>
+
           <button
-            className="btn btn-neutral btn-outline btn-xs ml-4"
+            type="button"
             onClick={clearAll}
+            className="btn btn-ghost btn-sm h-8 min-h-8 px-2 text-gray-500 border-none hover:scale-105 hover:bg-red-50 hover:text-red-600"
           >
-            전체 초기화
+            <Trash2 size={16} />
           </button>
         </div>
-        <div className="flex">
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleTimeChange}
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={30}
-            timeCaption="시간"
-            dateFormat="HH:mm"
-            timeFormat="HH:mm"
-            className="input border rounded p-2"
-            excludeTimes={currentDayTimeSlot.times.map(parseTimeString)}
-            placeholderText="시간 선택"
-            popperClassName="react-datepicker-right"
-            popperPlacement="right-start"
-            shouldCloseOnSelect={false}
-          />
-        </div>
-        <p className="text-xs text-gray-500 mt-2 flex items-center">
-          <AlertCircle size={12} className="mr-1" />
-          요일 선택 후 시간을 선택해주세요.
-        </p>
-      </div>
 
-      {/* 요일 선택 */}
-      <div className="w-full bg-white rounded-lg shadow-md p-4 mb-4">
-        {days.map((day) => (
-          <div key={day} className="mb-2 border rounded-lg overflow-hidden">
-            <div
-              className="p-3 bg-gray-50 flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-colors"
-              onClick={() =>
-                setExpandedDay(
-                  expandedDay === day ? (null as unknown as DayOfWeek) : day
-                )
-              }
-            >
-              <div className="font-bold">{day}요일</div>
-              <div className="flex items-center">
-                <span className="mr-4 text-gray-600">
-                  {getSelectedTimesCount(day)} 시간 선택됨
-                </span>
-                <span
-                  className="transform transition-transform duration-200 inline-block"
-                  style={{
-                    transform:
-                      expandedDay === day ? "rotate(180deg)" : "rotate(0deg)",
-                  }}
-                >
-                  ▼
-                </span>
-              </div>
-            </div>
-
-            {expandedDay === day && (
-              <div className="p-3">
-                {currentDayTimeSlot.times.length > 0 ? (
-                  <div className="grid grid-cols-4 gap-2">
-                    {currentDayTimeSlot.times.map((time) => (
-                      <div
-                        key={`${day}-${time}`}
-                        className="bg-amber-800 text-white text-xs p-2 rounded border border-gray-200"
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>{time}</span>
-                          <button
-                            onClick={() => handleRemoveTime(day, time)}
-                            className="ml-1 hover:text-red-200"
-                          >
-                            <X size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center h-16 text-gray-500 text-sm">
-                    <AlertCircle size={16} className="mr-2" />
-                    아직 선택된 시간이 없습니다
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* 선택된 시간 요약 */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-bold mb-2">
-          선택된 시간: {selectedCount}개 시간대
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
           {days.map((day) => (
-            <div key={day} className="mb-4">
-              <div className="font-bold mb-1">{day}요일</div>
-              <div>
+            <div key={day} className="bg-base-200 p-4 rounded-lg">
+              <div className="mb-3 flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-800">
+                  {day}요일
+                </span>
+              </div>
+
+              <div className="flex min-h-[28px] flex-wrap gap-2">
                 {getSelectedTimesCount(day) > 0 ? (
                   timeSlots
                     .find((slot) => slot.day === day)
                     ?.times.map((time) => (
-                      <span
+                      <div
                         key={`selected-${day}-${time}`}
-                        className="inline-block bg-white text-amber-800 rounded-full px-2 py-1 text-xs mr-1 mb-1 border-gray-200 border"
+                        className="flex items-center gap-1 rounded-full border border-gray-300 bg-white px-3 py-1"
                       >
-                        {time}
-                      </span>
+                        <span className="text-xs font-medium text-amber-800">
+                          {time}
+                        </span>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTime(day, time)}
+                          className="rounded-full p-0.5 text-amber-800 transition hover:bg-red-50 hover:text-red-600"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
                     ))
                 ) : (
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-xs text-gray-400 italic">
                     선택된 시간 없음
                   </span>
                 )}
@@ -243,7 +220,7 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 };
