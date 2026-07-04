@@ -53,3 +53,18 @@ export const getBootcampDuration = (startDate: string, endDate: string) => {
 
   return `${weeks}주`;
 };
+
+// 시간을 HH:mm 형식의 문자열로 변환
+export const formatTimeToString = (date: Date): string => {
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+// 문자열을 Date 객체로 변환 (비교용)
+export const parseTimeString = (timeStr: string): Date => {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
