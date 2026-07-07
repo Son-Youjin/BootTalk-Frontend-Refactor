@@ -12,7 +12,7 @@ export interface MentorInfoData {
   time: Record<string, string[]>;
 }
 
-export interface TimeSlot {
+export interface MentorAvailableTime {
   day: string;
   times: string[];
 }

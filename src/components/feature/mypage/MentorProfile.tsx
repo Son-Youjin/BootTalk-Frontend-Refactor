@@ -1,9 +1,9 @@
 import Modal from "@/components/common/modal/CommonModal";
 import { dayMapping } from "@/constants/dayMapping";
 import useMentorRegistration from "@/hooks/coffee-chat/useMentorRegistration";
-import React, { useState } from "react";
+import { useState } from "react";
 import MentorFormModal from "../coffee-chat/MentorFormModal";
-import { TimeSlot } from "@/types/request";
+import { MentorAvailableTime } from "@/types/request";
 import { jobCategoryMapping } from "@/constants/jobCategory";
 import { mentorCategory } from "@/constants/mentorCategory";
 
@@ -26,7 +26,7 @@ const MentorProfile = () => {
   const [isDeleted, setIsDeleted] = useState(false);
 
   const reverseDayMapping: Record<string, string> = Object.fromEntries(
-    Object.entries(dayMapping).map(([ko, en]) => [en, ko])
+    Object.entries(dayMapping).map(([ko, en]) => [en, ko]),
   );
 
   const handleDeleteClick = () => {
@@ -121,24 +121,26 @@ const MentorProfile = () => {
       <div className="mb-6">
         <h3 className="font-medium text-gray-900 mb-2">상담 가능 시간</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Object.entries(mentorData.time as TimeSlot).map(([day, times]) => (
-            <div key={day} className="bg-base-200 p-4 rounded-lg">
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                {reverseDayMapping[day]}요일
-              </p>
+          {Object.entries(mentorData.time as MentorAvailableTime).map(
+            ([day, times]) => (
+              <div key={day} className="bg-base-200 p-4 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 mb-2">
+                  {reverseDayMapping[day]}요일
+                </p>
 
-              <div className="flex flex-wrap gap-2">
-                {times.map((time: string, index: string) => (
-                  <span
-                    key={index}
-                    className="bg-white text-amber-800 text-xs px-3 py-1 rounded-full border border-gray-200"
-                  >
-                    {time}
-                  </span>
-                ))}
+                <div className="flex flex-wrap gap-2">
+                  {times.map((time: string, index: string) => (
+                    <span
+                      key={index}
+                      className="bg-white text-amber-800 text-xs px-3 py-1 rounded-full border border-gray-200"
+                    >
+                      {time}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ),
+          )}
         </div>
       </div>
 
