@@ -3,6 +3,10 @@ import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import type { Review } from "@/types/response";
+import {
+  DayOfWeek,
+  TimeSlot,
+} from "@/components/feature/coffee-chat/TimeSlotSelectorProps";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -67,4 +71,17 @@ export const parseTimeString = (timeStr: string): Date => {
   const date = new Date();
   date.setHours(hours, minutes, 0, 0);
   return date;
+};
+
+// 기본 타임슬롯 생성 함수
+export const createDefaultTimeSlots = (): TimeSlot[] => {
+  return [
+    { day: "월" as DayOfWeek, times: [] },
+    { day: "화" as DayOfWeek, times: [] },
+    { day: "수" as DayOfWeek, times: [] },
+    { day: "목" as DayOfWeek, times: [] },
+    { day: "금" as DayOfWeek, times: [] },
+    { day: "토" as DayOfWeek, times: [] },
+    { day: "일" as DayOfWeek, times: [] },
+  ];
 };

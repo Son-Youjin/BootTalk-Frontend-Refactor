@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import useMentorRegistration from "@/hooks/coffee-chat/useMentorRegistration";
-import TimeSlotSelector, { DayOfWeek, TimeSlot } from "./TimeSlotSelectorProps";
+import { DayOfWeek, TimeSlot } from "./TimeSlotSelectorProps";
 import Modal from "@/components/common/modal/CommonModal";
 import { jobCategoryMapping } from "@/constants/jobCategory";
 import { dayMapping } from "@/constants/dayMapping";
 import { MentorInfoData } from "@/types/request";
 import { useUserStore } from "@/store/useUserStore";
 import toast from "react-hot-toast";
+import { createDefaultTimeSlots } from "@/lib/utils";
+import MentorBasicInfoStep from "./mentor/MentorBasicInfoStep";
+import MentorAvailableTimeStep from "./mentor/MentorAvailableTimeStep";
 
 interface MentorFormModalProps {
   isOpen: boolean;
@@ -58,19 +60,6 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
       ? "GRADUATE"
       : "GENERAL";
 
-  // 기본 타임슬롯 생성 함수
-  const createDefaultTimeSlots = (): TimeSlot[] => {
-    return [
-      { day: "월" as DayOfWeek, times: [] },
-      { day: "화" as DayOfWeek, times: [] },
-      { day: "수" as DayOfWeek, times: [] },
-      { day: "목" as DayOfWeek, times: [] },
-      { day: "금" as DayOfWeek, times: [] },
-      { day: "토" as DayOfWeek, times: [] },
-      { day: "일" as DayOfWeek, times: [] },
-    ];
-  };
-
   const [formData, setFormData] = useState<MentorFormFormData>({
     info: {
       jobType: "",
@@ -114,13 +103,13 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
 
   // 직군 선택 핸들러
   const handleJobCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       info: {
-        ...formData.info,
+        ...prev.info,
         jobType: e.target.value,
       },
-    });
+    }));
   };
 
   // 현업자 체크박스 핸들러
@@ -246,6 +235,8 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
     setStep(2);
   };
 
+  const loadingButtonText = mode === "create" ? "등록 중..." : "수정 중...";
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={modalTitle} size="lg">
       <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6">
@@ -265,112 +256,26 @@ const MentorFormModal: React.FC<MentorFormModalProps> = ({
 
           {/* STEP 1 */}
           {step === 1 && (
-            <>
-              {/* 직무 */}
-              <div>
-                <label className="mb-3 block text-sm font-semibold text-gray-800">
-                  직무 선택
-                </label>
-
-                <select
-                  className="select select-bordered h-12 w-full rounded-xl border-gray-300 bg-white text-sm"
-                  value={formData.info.jobType}
-                  onChange={handleJobCategoryChange}
-                  required
-                >
-                  <option value="" disabled>
-                    직무를 선택해주세요
-                  </option>
-
-                  {jobCategoryOptions.map(({ value, label }) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* 현업 종사자 */}
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 bg-stone-50 px-4 py-4 transition-colors hover:bg-stone-100">
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-sm mt-0.5"
-                  checked={formData.info.mentorType === "PROFESSIONAL"}
-                  onChange={handleProfessionalChange}
-                />
-
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">
-                    현업 종사자
-                  </p>
-
-                  <p className="mt-1 text-xs text-gray-500">
-                    현재 관련 업계에서 근무 중인 경우 선택해주세요.
-                  </p>
-                </div>
-              </label>
-
-              {/* 소개글 */}
-              <div>
-                <label className="mb-3 block text-sm font-semibold text-gray-800">
-                  멘토 소개글
-                </label>
-
-                <textarea
-                  className="h-32 md:h-36 w-full resize-none rounded-xl border border-gray-300 bg-white p-4 text-sm leading-6 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none"
-                  placeholder="멘티에게 보여질 자기소개와 도움을 줄 수 있는 영역에 대해 작성해주세요. (최소 10자 이상)"
-                  value={formData.info.introduction}
-                  onChange={handleIntroductionChange}
-                  required
-                />
-
-                <div className="mt-2 text-right text-xs text-gray-400">
-                  {formData.info.introduction.length} / 500
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleNext}
-                className="h-12 w-full rounded-xl bg-amber-900 text-sm font-semibold text-white transition-colors hover:bg-amber-800"
-              >
-                다음
-              </button>
-            </>
+            <MentorBasicInfoStep
+              formData={formData}
+              jobCategoryOptions={jobCategoryOptions}
+              onJobCategoryChange={handleJobCategoryChange}
+              onProfessionalChange={handleProfessionalChange}
+              onIntroductionChange={handleIntroductionChange}
+              onNext={handleNext}
+            />
           )}
 
           {/* STEP 2 */}
           {step === 2 && (
-            <>
-              <div>
-                <TimeSlotSelector
-                  timeSlots={formData.timeSlots}
-                  onChange={handleTimeSlotChange}
-                />
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setStep(1)}
-                  className="h-12 flex-1 rounded-xl border border-gray-300 bg-white font-medium text-gray-700 transition hover:bg-gray-50"
-                >
-                  이전
-                </button>
-
-                <button
-                  type="submit"
-                  disabled={isPending}
-                  className="h-12 flex-1 rounded-xl bg-amber-900 font-semibold text-white transition-colors hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {isPending
-                    ? mode === "create"
-                      ? "등록 중..."
-                      : "수정 중..."
-                    : submitButtonText}
-                </button>
-              </div>
-            </>
+            <MentorAvailableTimeStep
+              timeSlots={formData.timeSlots}
+              onTimeSlotChange={handleTimeSlotChange}
+              onPrev={() => setStep(1)}
+              isPending={isPending}
+              loadingButtonText={loadingButtonText}
+              submitButtonText={submitButtonText}
+            />
           )}
         </form>
       </div>
