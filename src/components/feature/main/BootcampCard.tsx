@@ -45,7 +45,7 @@ const BootcampCard = ({
     >
       {/* 교육 기관명 + 교육 과정명 */}
       <div className="flex flex-col gap-2">
-        <span className="text-xs text-gray-400">{trainingCenterName}</span>
+        <span className="text-xs text-gray-500">{trainingCenterName}</span>
 
         <h2 className="text-[16px] font-semibold leading-[1.35] text-gray-900 line-clamp-2">
           {bootcampName}

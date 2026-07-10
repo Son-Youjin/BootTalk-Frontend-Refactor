@@ -60,6 +60,7 @@ const Header = () => {
             <button
               className="btn btn-ghost md:hidden"
               onClick={() => setIsDrawerOpen(true)}
+              aria-label="메뉴 열기"
             >
               <Menu size={24} />
             </button>

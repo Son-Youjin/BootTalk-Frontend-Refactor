@@ -44,6 +44,7 @@ export default function MobileHomeSearch({
             type="button"
             className="relative ml-2 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100"
             onClick={() => setIsFilterOpen(true)}
+            aria-label="필터링"
           >
             <Settings2 className="h-5 w-5 text-gray-600" />
             {activeFilterCount > 0 && (

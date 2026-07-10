@@ -22,12 +22,12 @@ const MobileBottomNav = () => {
               >
                 <Icon
                   size={20}
-                  className={isActive ? "text-slate-900" : "text-gray-400"}
+                  className={isActive ? "text-slate-900" : "text-gray-500"}
                 />
 
                 <span
                   className={
-                    isActive ? "font-semibold text-slate-900" : "text-gray-400"
+                    isActive ? "font-semibold text-slate-900" : "text-gray-500"
                   }
                 >
                   {item.label}
