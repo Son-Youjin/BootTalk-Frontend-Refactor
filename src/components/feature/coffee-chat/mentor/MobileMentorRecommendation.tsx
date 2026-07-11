@@ -7,11 +7,18 @@ import { useMentorList } from "@/hooks/coffee-chat/useMentorList";
 import useOutsideClick from "@/hooks/useOutsideClick";
 import MentorsList from "./MentorsList";
 import { shuffleArray } from "@/lib/utils";
+import { Mentor } from "@/types/response";
+import { useUserStore } from "@/store/useUserStore";
+import ChatRequestModal from "./ChatRequestModal";
 
 export default function MobileMentorRecommendation() {
   const router = useRouter();
   const { mentorList } = useMentorList("all");
+  const { user } = useUserStore();
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(tooltipRef, () => {
@@ -21,6 +28,16 @@ export default function MobileMentorRecommendation() {
   const randomMentors = useMemo(() => {
     return shuffleArray(mentorList ?? []).slice(0, 2);
   }, [mentorList]);
+
+  const handleChatRequest = (mentor: Mentor) => {
+    setSelectedMentor(mentor);
+    setIsChatModalOpen(true);
+  };
+
+  const closeChatModal = () => {
+    setIsChatModalOpen(false);
+    setSelectedMentor(null);
+  };
 
   return (
     <section className="relative mt-6">
@@ -64,7 +81,19 @@ export default function MobileMentorRecommendation() {
         </button>
       </div>
 
-      <MentorsList mentorList={randomMentors} />
+      <MentorsList
+        mentorList={randomMentors}
+        userId={user?.userId ?? 0}
+        onChatRequest={handleChatRequest}
+      />
+
+      {isChatModalOpen && selectedMentor && (
+        <ChatRequestModal
+          isOpen
+          mentor={selectedMentor}
+          onClose={closeChatModal}
+        />
+      )}
     </section>
   );
 }
