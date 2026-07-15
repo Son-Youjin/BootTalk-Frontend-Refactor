@@ -27,7 +27,6 @@ const Modal: React.FC<CommonModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = "17px";
     } else {
       document.body.style.overflow = "unset";
       document.body.style.paddingRight = "";
