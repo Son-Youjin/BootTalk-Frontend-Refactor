@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { headerNavItems } from "@/constants/headerNavItem";
 import { useLogout } from "@/hooks/useLogout";
+import WithdrawalConfirmModal from "../feature/mypage/WithdrawalConfirmModal";
 
 const MobileDrawerMenu = dynamic(
   () => import("@/components/mobile/MobileDrawerMenu"),
@@ -31,9 +32,18 @@ const NotificationDropdown = dynamic(
 
 const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
   const { user, isAuthenticated, setUser } = useUserStore();
   const pathname = usePathname();
   const logout = useLogout();
+
+  const handleWithdrawalClick = () => {
+    setIsDrawerOpen(false);
+
+    setTimeout(() => {
+      setIsWithdrawalModalOpen(true);
+    }, 200);
+  };
 
   useDrawerScrollLock();
 
@@ -161,8 +171,14 @@ const Header = () => {
         <MobileDrawerMenu
           pathname={pathname}
           closeDrawer={() => setIsDrawerOpen(false)}
+          onWithdrawalClick={handleWithdrawalClick}
         />
       </div>
+
+      <WithdrawalConfirmModal
+        isOpen={isWithdrawalModalOpen}
+        onClose={() => setIsWithdrawalModalOpen(false)}
+      />
     </>
   );
 };

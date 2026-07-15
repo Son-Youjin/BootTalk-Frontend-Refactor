@@ -12,9 +12,14 @@ import { useLogout } from "@/hooks/useLogout";
 interface MobileDrawerMenuProps {
   pathname: string;
   closeDrawer: () => void;
+  onWithdrawalClick: () => void;
 }
 
-const MobileDrawerMenu = ({ pathname, closeDrawer }: MobileDrawerMenuProps) => {
+const MobileDrawerMenu = ({
+  pathname,
+  closeDrawer,
+  onWithdrawalClick,
+}: MobileDrawerMenuProps) => {
   const { isAuthenticated } = useUserStore();
   const { myInfo, isMyInfoLoading, isMyInfoError } = useGetMyInfo();
   const logout = useLogout();
@@ -99,7 +104,10 @@ const MobileDrawerMenu = ({ pathname, closeDrawer }: MobileDrawerMenuProps) => {
             </a>
           </li>
           <li>
-            <WithdrawalButton className="flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-rose-500 hover:bg-gray-100" />
+            <WithdrawalButton
+              onClick={onWithdrawalClick}
+              className="flex items-center gap-3 rounded-xl px-4 py-3 font-medium text-rose-500 hover:bg-gray-100"
+            />
           </li>
         </ul>
       </div>

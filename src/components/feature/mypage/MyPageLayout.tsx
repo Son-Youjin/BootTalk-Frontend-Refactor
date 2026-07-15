@@ -16,12 +16,14 @@ interface MyPageLayoutProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   children: React.ReactNode;
+  onWithdrawalClick: () => void;
 }
 
 const MyPageLayout = ({
   activeTab,
   onTabChange,
   children,
+  onWithdrawalClick,
 }: MyPageLayoutProps) => {
   const { myInfo, isMyInfoLoading, isMyInfoError } = useGetMyInfo();
 
@@ -102,7 +104,10 @@ const MyPageLayout = ({
 
             {/* 회원탈퇴 버튼 */}
             <div className="p-4 border-t border-gray-100">
-              <WithdrawalButton className="flex items-center gap-2 px-4 py-2 w-full text-gray-500 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 border border-transparent hover:border-red-100" />
+              <WithdrawalButton
+                onClick={onWithdrawalClick}
+                className="flex items-center gap-2 px-4 py-2 w-full text-gray-500 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 border border-transparent hover:border-red-100"
+              />
             </div>
           </div>
         </div>

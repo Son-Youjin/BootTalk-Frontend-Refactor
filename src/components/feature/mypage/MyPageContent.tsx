@@ -8,9 +8,11 @@ import PointHistory from "@/components/feature/mypage/PointHistory";
 import ProfileEdit from "@/components/feature/mypage/ProfileEdit";
 import ServiceGuide from "@/components/feature/mypage/ServiceGuide";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import WithdrawalConfirmModal from "./WithdrawalConfirmModal";
 
 export default function MyPageContent() {
+  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -43,9 +45,18 @@ export default function MyPageContent() {
 
   return (
     <Suspense fallback={<div>로딩 중...</div>}>
-      <MyPageLayout activeTab={tab} onTabChange={handleTabChange}>
+      <MyPageLayout
+        activeTab={tab}
+        onTabChange={handleTabChange}
+        onWithdrawalClick={() => setIsWithdrawalModalOpen(true)}
+      >
         {renderTabContent()}
       </MyPageLayout>
+
+      <WithdrawalConfirmModal
+        isOpen={isWithdrawalModalOpen}
+        onClose={() => setIsWithdrawalModalOpen(false)}
+      />
     </Suspense>
   );
 }
