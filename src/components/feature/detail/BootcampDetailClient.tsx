@@ -32,9 +32,9 @@ const BootcampDetailClient = ({ id }: Props) => {
 
   return (
     <>
-      <main className="mx-auto max-w-screen-xl px-5 py-8 sm:px-6 sm:py-10">
+      <main className="mx-auto max-w-screen-xl">
         {/* 제목 영역 */}
-        <div className="mb-8 mt-6 overflow-hidden">
+        <div className="mb-8 overflow-hidden">
           <h1 className="text-2xl font-bold leading-snug text-amber-950">
             {data.bootcampName}
           </h1>
