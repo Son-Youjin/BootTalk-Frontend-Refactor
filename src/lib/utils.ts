@@ -85,3 +85,25 @@ export const createDefaultTimeSlots = (): TimeSlot[] => {
     { day: "일" as DayOfWeek, times: [] },
   ];
 };
+
+export const selectedDateText = (selectedDate: Date | null) => {
+  return selectedDate ? format(selectedDate, "yyyy.MM.dd") : "-";
+};
+
+export const createCoffeeChatDateTime = (
+  selectedDate: Date,
+  selectedTime: string,
+) => {
+  const [hour, minute] = selectedTime.split(":").map(Number);
+
+  const startDateTime = new Date(selectedDate);
+  startDateTime.setHours(hour, minute, 0);
+
+  const endDateTime = new Date(startDateTime);
+  endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+  return {
+    coffeeChatStartTime: format(startDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
+    coffeeChatEndTime: format(endDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
+  };
+};

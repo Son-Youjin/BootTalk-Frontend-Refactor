@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Mentor } from "@/types/response";
 import Modal from "@/components/common/modal/CommonModal";
-import DatePicker from "react-datepicker";
-import { ko } from "date-fns/locale/ko";
-import { CalendarDays, Clock, MessageCircle } from "lucide-react";
 import { useMentorApplication } from "@/hooks/coffee-chat/useMentorApplication";
 import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import styles from "@/components/feature/coffee-chat/mentor/ChatRequestModal.module.css";
 import { MentorApplicationData } from "@/types/request";
 import toast from "react-hot-toast";
+import ChatRequestScheduleStep from "./ChatRequestScheduleStep";
+import ChatRequestMessageStep from "./ChatRequestMessageStep";
+import { createCoffeeChatDateTime } from "@/lib/utils";
 
 interface ChatRequestModalProps {
   isOpen: boolean;
@@ -27,6 +26,30 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
   const [message, setMessage] = useState<string>("");
   const { mentorApplicationTime, isLoading, requestCoffeeChat, isSubmitting } =
     useMentorApplication(String(mentor?.coffeeChatInfoId));
+  const [step, setStep] = useState<1 | 2>(1);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedDate(new Date());
+      setSelectedTime(null);
+      setMessage("");
+      setStep(1);
+    }
+  }, [isOpen]);
+
+  const handleNext = () => {
+    if (!selectedTime) {
+      toast.error("시간을 선택해주세요.");
+      return;
+    }
+
+    setStep(2);
+  };
+
+  const handleDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    setSelectedTime(null);
+  };
 
   // 날짜 문자열 배열 추출
   const availableDateStrings = Object.keys(mentorApplicationTime || {});
@@ -46,8 +69,6 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
     ? mentorApplicationTime?.[selectedDateKey] || []
     : [];
 
-  console.log("날짜별 시간:", availableTimes);
-
   if (!isOpen || !mentor) return null;
 
   // 폼 제출 핸들러
@@ -64,27 +85,17 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
       return;
     }
 
-    const [hour, minute] = selectedTime.split(":").map(Number);
-
-    const startDateTime = new Date(selectedDate);
-    startDateTime.setHours(hour, minute, 0);
-
-    const endDateTime = new Date(startDateTime);
-    endDateTime.setMinutes(startDateTime.getMinutes() + 30);
-
-    const startTimeStr = format(startDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-    const endTimeStr = format(endDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+    const { coffeeChatStartTime, coffeeChatEndTime } = createCoffeeChatDateTime(
+      selectedDate,
+      selectedTime,
+    );
 
     const requestData: MentorApplicationData = {
       coffeeChatInfoId: mentor.coffeeChatInfoId,
       content: message,
-      coffeeChatStartTime: startTimeStr,
-      coffeeChatEndTime: endTimeStr,
+      coffeeChatStartTime,
+      coffeeChatEndTime,
     };
-
-    console.log("시작시간:", startTimeStr);
-
-    console.log("신청시간 데이터", requestData);
 
     requestCoffeeChat(requestData, {
       onSuccess: () => {
@@ -104,83 +115,46 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg" title="커피챗 신청">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* 날짜 선택 */}
-        <div className="form-control">
-          <div className="flex items-center gap-2 mb-2 bg-white">
-            <CalendarDays size={18} />
-            날짜 선택
+      <div className="px-5 pt-4 pb-5 md:px-6 md:pt-5 md:pb-6">
+        <form className="space-y-5" onSubmit={handleSubmit}>
+          {/* 진행 상태 */}
+          <div className="flex items-end justify-between border-b border-gray-100 pb-3">
+            <p className="text-lg font-semibold text-gray-900">
+              {step === 1 ? "날짜 및 시간 선택" : "신청 내용"}
+            </p>
+
+            <span className="text-sm font-medium text-gray-400">
+              {step} / 2
+            </span>
           </div>
-          <div className={styles.datepickerWrapper}>
-            <DatePicker
-              filterDate={isDateAvailable}
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              inline
-              locale={ko}
+
+          {/* STEP 1 */}
+          {step === 1 && (
+            <ChatRequestScheduleStep
+              selectedDate={selectedDate}
+              selectedTime={selectedTime}
+              availableTimes={availableTimes}
+              isDateAvailable={isDateAvailable}
+              handleDateChange={handleDateChange}
+              setSelectedTime={setSelectedTime}
+              handleNext={handleNext}
             />
-          </div>
-        </div>
+          )}
 
-        {/* 시간 선택 */}
-        <div className="form-control">
-          <div className="mb-2 flex items-center gap-2">
-            <Clock size={18} />
-            시간 선택
-          </div>
-          <div className="grid grid-cols-6 gap-2 h-24 overflow-y-auto">
-            {selectedDate && availableTimes.length > 0 ? (
-              availableTimes.map((time: string) => (
-                <button
-                  key={time}
-                  type="button"
-                  className={`btn transition-all ${
-                    selectedTime === time
-                      ? "bg-amber-900 text-white font-bold"
-                      : "btn-outline hover:bg-blue-100"
-                  }`}
-                  onClick={() => setSelectedTime(time)}
-                >
-                  {time}
-                </button>
-              ))
-            ) : (
-              <div className="col-span-6 flex items-center justify-center text-gray-500 bg-gray-100 h-24 rounded-lg">
-                선택한 날짜에 가능한 시간이 없습니다.
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* 메세지 작성 */}
-        <div className="form-control flex flex-col">
-          <label className="label text-black">
-            <MessageCircle size={18} />
-            <span>궁금한 점이나 이야기하고 싶은 주제를 적어주세요!</span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered h-24 w-full mt-1 rounded-lg"
-            placeholder="예: 커리어 방향이 고민돼요"
-            maxLength={500}
-            required
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <div className="text-sm text-right text-gray-500 mt-1">
-            {message.length} / 500자
-          </div>
-        </div>
-
-        {/* 제출 버튼 */}
-        <div className="form-control text-right">
-          <button
-            className="btn bg-amber-900 text-white btn-md rounded-lg"
-            type="submit"
-            disabled={isLoading || isSubmitting}
-          >
-            신청하기
-          </button>
-        </div>
-      </form>
+          {/* STEP 2 */}
+          {step === 2 && (
+            <ChatRequestMessageStep
+              selectedDate={selectedDate}
+              selectedTime={selectedTime}
+              message={message}
+              setMessage={setMessage}
+              handlePrev={() => setStep(1)}
+              isLoading={isLoading}
+              isSubmitting={isSubmitting}
+            />
+          )}
+        </form>
+      </div>
     </Modal>
   );
 };

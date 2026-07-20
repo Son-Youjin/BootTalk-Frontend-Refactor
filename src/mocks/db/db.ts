@@ -1,3 +1,10 @@
+import { addDays, format } from "date-fns";
+
+const today = new Date();
+const day1 = format(today, "yyyy-MM-dd");
+const day2 = format(addDays(today, 1), "yyyy-MM-dd");
+const day3 = format(addDays(today, 3), "yyyy-MM-dd");
+
 export const DB = {
   example: [{ id: 1, name: "홍길동" }],
 
@@ -326,21 +333,12 @@ export const DB = {
   },
 
   mentorApplicationTime: {
-    "2025-04-09": ["10:00"],
-    "2025-04-14": [
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-    ],
-    "2025-04-16": ["10:00", "18:00"],
-    "2025-05-07": ["18:00"],
+    availableChatTimes: {
+      [day1]: ["10:00", "10:30"],
+      [day2]: ["13:00", "13:30", "14:00"],
+      [day3]: ["18:00"],
+    },
   },
-
   chatRoomList: [
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440000",
