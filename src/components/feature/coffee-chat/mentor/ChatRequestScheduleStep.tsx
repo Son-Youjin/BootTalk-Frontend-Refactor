@@ -25,8 +25,8 @@ export default function ChatRequestScheduleStep({
   return (
     <>
       {/* 날짜 */}
-      <section className="space-y-3">
-        <div className="rounded-xl bg-white p-3">
+      <section className="space-y-6">
+        <div className="rounded-xl bg-white text-center mb-4">
           <div className={styles.datepickerWrapper}>
             <DatePicker
               filterDate={isDateAvailable}
@@ -37,11 +37,9 @@ export default function ChatRequestScheduleStep({
             />
           </div>
         </div>
-      </section>
 
-      {/* 시간 */}
-      <section className="space-y-3">
-        <label className="text-sm font-medium text-gray-900">
+        {/* 시간 */}
+        <label className="mb-2 block text-sm font-semibold text-gray-900">
           상담 가능 시간
         </label>
 
@@ -52,10 +50,10 @@ export default function ChatRequestScheduleStep({
                 key={time}
                 type="button"
                 onClick={() => setSelectedTime(time)}
-                className={`h-11 rounded-xl border text-sm font-medium transition ${
+                className={`h-10 rounded-xl border text-sm font-medium transition ${
                   selectedTime === time
-                    ? "border-amber-900 bg-amber-900 text-white"
-                    : "border-gray-200 bg-white hover:bg-gray-50"
+                    ? "border-2 border-amber-900 bg-white text-amber-900 shadow-sm"
+                    : "border border-gray-200 bg-white hover:border-gray-300 transition-all"
                 }`}
               >
                 {time}
@@ -70,11 +68,11 @@ export default function ChatRequestScheduleStep({
       </section>
 
       {/* 버튼 */}
-      <div className="flex justify-end pt-5">
+      <div className="flex justify-end pt-4">
         <button
           type="button"
           onClick={handleNext}
-          className="h-12 rounded-xl bg-amber-900 px-6 text-sm font-medium text-white transition hover:bg-amber-800"
+          className="h-12 w-full rounded-xl bg-amber-900 text-sm font-medium text-white transition-colors hover:bg-amber-800"
         >
           다음
         </button>
