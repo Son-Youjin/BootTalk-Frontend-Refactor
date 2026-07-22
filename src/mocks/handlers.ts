@@ -449,6 +449,21 @@ export const handlers = [
     return HttpResponse.json(chatRoom, {});
   }),
 
+  http.get(END_POINT.CHAT_MESSAGE(":roomUuid"), ({ params }) => {
+    const roomUuid = params.roomUuid as string;
+
+    const chatRoom = DB.chatRoomList.find((room) => room.roomUuid === roomUuid);
+
+    if (!chatRoom) {
+      return HttpResponse.json(
+        { error: "채팅방을 찾을 수 없습니다." },
+        { status: 404 },
+      );
+    }
+
+    return HttpResponse.json(chatRoom.messages);
+  }),
+
   // 관리자 페이지 핸들러 ------------------------------------------------------------
   http.get(END_POINT.ADMIN_CERTIFICATION, () => {
     return HttpResponse.json({

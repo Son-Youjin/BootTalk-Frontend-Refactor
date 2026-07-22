@@ -352,53 +352,173 @@ export const DB = {
   chatRoomList: [
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440000",
-      mentorName: "김멘토",
-      menteeName: "홍길동",
-      reservationAt: "2025-04-15T03:00:00",
-      expiresAt: "2025-04-15T03:30:00",
-      isActive: true,
-      mentorId: 1,
-      menteeId: 2,
+
+      mentor: {
+        userId: 1,
+        name: "김멘토",
+        profileImage: "/profile-default.png",
+      },
+
+      mentee: {
+        userId: 2,
+        name: "홍길동",
+        profileImage: "/profile-default.png",
+      },
+
+      reservationAt: "2026-07-20T03:00:00",
+      endAt: "2026-07-20T03:30:00",
+      isActive: false,
+
+      messages: [
+        {
+          id: 1,
+          senderId: 1,
+          content: "안녕하세요. 멘토입니다.",
+          createdAt: "2026-07-20T03:01:00",
+        },
+        {
+          id: 2,
+          senderId: 2,
+          content: "안녕하세요!",
+          createdAt: "2026-07-20T03:02:00",
+        },
+      ],
     },
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440002",
-      mentorName: "최선생",
-      menteeName: "김지훈",
-      reservationAt: "2025-04-20T18:00:00",
-      expiresAt: "2025-04-20T18:30:00",
+
+      mentor: {
+        userId: 3,
+        name: "최선생",
+        profileImage: "/profile-default.png",
+      },
+
+      mentee: {
+        userId: 4,
+        name: "김지훈",
+        profileImage: "/profile-default.png",
+      },
+
+      reservationAt: "2026-07-20T18:00:00",
+      endAt: "2026-07-20T18:30:00",
       isActive: false,
-      mentorId: 3,
-      menteeId: 4,
+
+      messages: [
+        {
+          id: 1,
+          senderId: 1,
+          content: "안녕하세요. 최선생입니다.",
+          createdAt: "2026-07-20T18:01:00",
+        },
+        {
+          id: 2,
+          senderId: 2,
+          content: "안녕하세요!",
+          createdAt: "2026-07-20T18:02:00",
+        },
+      ],
     },
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440004",
-      mentorName: "이박사",
-      menteeName: "박준영",
-      reservationAt: "2025-04-21T10:00:00",
-      expiresAt: "2025-04-21T10:30:00",
+
+      mentor: {
+        userId: 5,
+        name: "이박사",
+        profileImage: "/profile-default.png",
+      },
+
+      mentee: {
+        userId: 6,
+        name: "박준영",
+        profileImage: "/profile-default.png",
+      },
+
+      reservationAt: "2026-07-21T10:00:00",
+      endAt: "2026-07-21T10:30:00",
       isActive: false,
-      mentorId: 5,
-      menteeId: 6,
+
+      messages: [
+        {
+          id: 1,
+          senderId: 1,
+          content: "안녕하세요. 이박사 멘토입니다.",
+          createdAt: "2026-07-21T10:01:00",
+        },
+        {
+          id: 2,
+          senderId: 2,
+          content: "안녕하세요! 박준영입니다.",
+          createdAt: "2026-07-21T10:02:00",
+        },
+      ],
     },
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440001",
-      mentorName: "박교수",
-      menteeName: "조현우",
-      reservationAt: "2025-03-20T20:30:00",
-      expiresAt: "2025-03-20T21:30:00",
+
+      mentor: {
+        userId: 7,
+        name: "박교수",
+        profileImage: "/profile-default.png",
+      },
+
+      mentee: {
+        userId: 8,
+        name: "조현우",
+        profileImage: "/profile-default.png",
+      },
+
+      reservationAt: "2026-07-21T20:00:00",
+      endAt: "2026-07-21T20:30:00",
       isActive: false,
-      mentorId: 7,
-      menteeId: 8,
+
+      messages: [
+        {
+          id: 1,
+          senderId: 1,
+          content: "안녕하세요. 박교수 멘토입니다.",
+          createdAt: "2026-07-21T20:01:00",
+        },
+        {
+          id: 2,
+          senderId: 2,
+          content: "안녕하세요! 조현우입니다.",
+          createdAt: "2026-07-21T20:02:00",
+        },
+      ],
     },
     {
       roomUuid: "550e8400-e29b-41d4-a716-446655440005",
-      mentorName: "김멘토",
-      menteeName: "최지원",
-      reservationAt: "2025-03-28T16:30:00",
-      expiresAt: "2025-03-28T17:30:00",
-      isActive: false,
-      mentorId: 9,
-      menteeId: 10,
+
+      mentor: {
+        userId: 9,
+        name: "김멘토",
+        profileImage: "/profile-default.png",
+      },
+
+      mentee: {
+        userId: 10,
+        name: "최지원",
+        profileImage: "/profile-default.png",
+      },
+
+      reservationAt: "2026-07-22T16:00:00",
+      endAt: "2026-07-22T16:30:00",
+      isActive: true,
+
+      messages: [
+        {
+          id: 1,
+          senderId: 1,
+          content: "안녕하세요. 멘토입니다.",
+          createdAt: "2026-07-22T16:01:00",
+        },
+        {
+          id: 2,
+          senderId: 2,
+          content: "안녕하세요! 최지원입니다.",
+          createdAt: "2026-07-22T16:02:00",
+        },
+      ],
     },
   ],
 
