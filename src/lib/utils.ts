@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import type { Review } from "@/types/response";
+import type { ChatRoom, Review } from "@/types/response";
 import {
   DayOfWeek,
   TimeSlot,
@@ -106,4 +106,15 @@ export const createCoffeeChatDateTime = (
     coffeeChatStartTime: format(startDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
     coffeeChatEndTime: format(endDateTime, "yyyy-MM-dd'T'HH:mm:ss"),
   };
+};
+
+export const getStatusText = (chatRoom: ChatRoom) => {
+  const now = new Date();
+  const endAt = new Date(chatRoom.endAt);
+  const reservationAt = new Date(chatRoom.reservationAt);
+
+  if (endAt < now) return `종료일: ${formatDate(chatRoom.endAt)}`;
+  if (reservationAt > now)
+    return `예약일: ${formatDate(chatRoom.reservationAt)}`;
+  return "현재 진행 중입니다.";
 };

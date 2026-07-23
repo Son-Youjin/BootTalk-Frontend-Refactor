@@ -1,6 +1,6 @@
 interface MobileHeaderProps {
   title: string;
-  subTitle: string;
+  subTitle?: string;
 }
 
 export default function MobileHeader({ title, subTitle }: MobileHeaderProps) {
