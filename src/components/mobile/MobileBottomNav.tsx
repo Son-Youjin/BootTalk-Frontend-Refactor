@@ -7,8 +7,13 @@ import { usePathname } from "next/navigation";
 const MobileBottomNav = () => {
   const pathname = usePathname();
 
+  // 채팅방에서는 BottomNav 숨김
+  if (pathname.startsWith("/chat/")) {
+    return null;
+  }
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 mx-auto max-w-[768px] z-50 w-full border-t border-gray-200 bg-[#F8F7F5] md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 mx-auto w-full max-w-[768px] border-t border-gray-200 bg-[#F8F7F5] md:hidden">
       <ul className="flex h-16 items-center justify-around">
         {mobileBottomNavItems.map((item) => {
           const Icon = item.icon;
@@ -18,7 +23,7 @@ const MobileBottomNav = () => {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="flex flex-col items-center gap-1 text-xs py-2"
+                className="flex flex-col items-center gap-1 py-2 text-xs"
               >
                 <Icon
                   size={20}

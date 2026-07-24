@@ -13,5 +13,9 @@ export default function Page() {
     return <div>채팅방을 불러오는 중...</div>;
   }
 
-  return <MobileChatRoom selectedChat={selectedChat} />;
+  return (
+    <div className="-m-6 -mb-20 md:m-0">
+      <MobileChatRoom selectedChat={selectedChat} />
+    </div>
+  );
 }

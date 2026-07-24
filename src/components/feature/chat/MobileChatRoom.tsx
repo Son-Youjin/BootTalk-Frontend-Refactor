@@ -29,23 +29,24 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
   } = useChatRoom({ selectedChat });
 
   return (
-    <div className="flex h-dvh flex-col bg-white">
+    <div className="flex h-[calc(100svh-8rem)] flex-col overflow-hidden">
       {/* 헤더 */}
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-4 py-3">
+      <header className="flex h-14 items-center border-b bg-white px-4">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.back()}
-            className="btn btn-ghost btn-sm btn-circle"
+            className="btn btn-ghost btn-circle btn-sm h-8 min-h-8 w-8"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} />
           </button>
 
           <div>
-            <h2 className="font-semibold">
+            <h2 className="text-base font-semibold leading-tight">
               {amIMentee ? mentorName : menteeName}
             </h2>
-            <p className="text-xs text-gray-500">
+
+            <p className="text-xs leading-tight text-gray-500">
               {remainingMinutes > 0
                 ? `${remainingMinutes}분 남음`
                 : "종료된 채팅"}
@@ -55,9 +56,9 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
       </header>
 
       {/* 메세지 */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 px-4 py-4">
+      <div className="min-h-0 flex-1 overflow-y-auto bg-gray-50 px-4 py-4">
         {!isInitialized && !messages.length && isLoading ? (
-          <div className="flex h-full items-center justify-center text-gray-500">
+          <div className="flex h-full items-center justify-center text-sm text-gray-500">
             메시지를 불러오는 중...
           </div>
         ) : (
@@ -86,13 +87,15 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
               return (
                 <div
                   key={msg.id ?? index}
-                  className={`mb-3 flex ${
+                  className={`mb-2 flex ${
                     mine ? "justify-end" : "justify-start"
                   }`}
                 >
                   <div
-                    className={`max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
-                      mine ? "bg-blue-500 text-white" : "bg-white border"
+                    className={`max-w-[76%] rounded-3xl px-4 py-2 text-sm leading-5 ${
+                      mine
+                        ? "bg-blue-500 text-white"
+                        : "border border-gray-200 bg-white"
                     }`}
                   >
                     {msg.content}
@@ -107,16 +110,19 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
       </div>
 
       {/* 타이핑 */}
-      <div className="h-5 px-4 text-xs text-gray-500">
+      <div className="h-6 bg-gray-50 px-4 text-xs leading-6 text-gray-500">
         {isPartnerTyping &&
           `${amIMentee ? mentorName : menteeName}님이 입력 중입니다...`}
       </div>
 
       {/* 입력창 */}
-      <form onSubmit={handleSendMessage} className="border-t bg-white p-3">
-        <div className="flex gap-2">
+      <form
+        onSubmit={handleSendMessage}
+        className="border-t bg-white p-4 pb-[calc(env(safe-area-inset-bottom)+12px)]"
+      >
+        <div className="flex items-center gap-2">
           <input
-            className="input input-bordered flex-1"
+            className="input input-bordered h-12 flex-1 rounded-xl px-4 text-sm"
             value={message}
             onChange={handleInputChange}
             placeholder="메시지를 입력하세요."
@@ -124,7 +130,7 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
           />
 
           <button
-            className="btn btn-primary"
+            className="btn btn-primary h-12 min-h-12 rounded-xl px-4 text-sm font-medium"
             disabled={!selectedChat.isActive || !connected}
           >
             전송
