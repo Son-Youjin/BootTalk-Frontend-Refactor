@@ -1,6 +1,17 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { useGetChatList } from "@/hooks/chat/useGetChatList";
 import MobileChatRoom from "@/components/feature/chat/MobileChatRoom";
 
-// TODO: 모바일 채팅
 export default function Page() {
-  return <MobileChatRoom />;
+  const { roomUuid } = useParams();
+  const { chatRoomList = [] } = useGetChatList();
+  const selectedChat = chatRoomList.find((chat) => chat.roomUuid === roomUuid);
+
+  if (!selectedChat) {
+    return <div>채팅방을 불러오는 중...</div>;
+  }
+
+  return <MobileChatRoom selectedChat={selectedChat} />;
 }

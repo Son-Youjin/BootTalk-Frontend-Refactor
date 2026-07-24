@@ -6,7 +6,7 @@ import ChatRoomList from "./ChatRoomList";
 import { useRouter } from "next/navigation";
 import MobileHeader from "@/components/mobile/MobileHeader";
 
-export default function MobileChatList() {
+export default function MobileChat() {
   const router = useRouter();
   const userId = useUserStore((state) => state.user?.userId);
   const { chatRoomList = [] } = useGetChatList();

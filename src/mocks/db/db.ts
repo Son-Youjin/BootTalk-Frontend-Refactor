@@ -405,14 +405,14 @@ export const DB = {
 
       messages: [
         {
-          id: 1,
-          senderId: 1,
+          id: 3,
+          senderId: 3,
           content: "안녕하세요. 최선생입니다.",
           createdAt: "2026-07-20T18:01:00",
         },
         {
-          id: 2,
-          senderId: 2,
+          id: 4,
+          senderId: 4,
           content: "안녕하세요!",
           createdAt: "2026-07-20T18:02:00",
         },
@@ -439,14 +439,14 @@ export const DB = {
 
       messages: [
         {
-          id: 1,
-          senderId: 1,
+          id: 5,
+          senderId: 5,
           content: "안녕하세요. 이박사 멘토입니다.",
           createdAt: "2026-07-21T10:01:00",
         },
         {
-          id: 2,
-          senderId: 2,
+          id: 6,
+          senderId: 6,
           content: "안녕하세요! 박준영입니다.",
           createdAt: "2026-07-21T10:02:00",
         },
@@ -473,16 +473,16 @@ export const DB = {
 
       messages: [
         {
-          id: 1,
-          senderId: 1,
-          content: "안녕하세요. 박교수 멘토입니다.",
+          id: 8,
+          senderId: 8,
+          content: "안녕하세요! 조현우입니다.",
           createdAt: "2026-07-21T20:01:00",
         },
         {
-          id: 2,
-          senderId: 2,
-          content: "안녕하세요! 조현우입니다.",
-          createdAt: "2026-07-21T20:02:00",
+          id: 7,
+          senderId: 7,
+          content: "안녕하세요. 박교수 멘토입니다.",
+          createdAt: "2026-07-21T20:03:00",
         },
       ],
     },
@@ -507,16 +507,16 @@ export const DB = {
 
       messages: [
         {
-          id: 1,
-          senderId: 1,
-          content: "안녕하세요. 멘토입니다.",
-          createdAt: "2026-07-22T16:01:00",
-        },
-        {
-          id: 2,
-          senderId: 2,
+          id: 10,
+          senderId: 10,
           content: "안녕하세요! 최지원입니다.",
           createdAt: "2026-07-22T16:02:00",
+        },
+        {
+          id: 9,
+          senderId: 9,
+          content: "안녕하세요. 멘토입니다.",
+          createdAt: "2026-07-22T16:01:00",
         },
       ],
     },

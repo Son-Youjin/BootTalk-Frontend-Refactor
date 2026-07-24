@@ -19,7 +19,7 @@ export interface ChatMessage {
   type: string;
 }
 
-const ChatRoomContainer = ({ selectedChat }: ChatRoomPageProps) => {
+export default function useChatRoom({ selectedChat }: ChatRoomPageProps) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -61,7 +61,7 @@ const ChatRoomContainer = ({ selectedChat }: ChatRoomPageProps) => {
             console.log(
               `상대방 타이핑 상태 변경: ${
                 typingData.typing ? "입력 중" : "입력 중지"
-              }`
+              }`,
             );
             setIsPartnerTyping(typingData.typing);
           }
@@ -108,6 +108,8 @@ const ChatRoomContainer = ({ selectedChat }: ChatRoomPageProps) => {
     const diff = end.getTime() - now.getTime();
     return Math.floor(diff / (1000 * 60));
   };
+
+  const remainingMinutes = getRemainingMinutes(selectedChat.endAt);
 
   // 메세지 입력 처리 함수
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -191,107 +193,24 @@ const ChatRoomContainer = ({ selectedChat }: ChatRoomPageProps) => {
       clearTimeout(typingTimeoutRef.current);
     }
   };
+  return {
+    message,
+    messages,
+    isInitialized,
+    isLoading,
+    isPartnerTyping,
+    connected,
 
-  return (
-    <div className="h-full flex flex-col bg-white rounded-lg border border-gray-100 shadow-sm">
-      {/* 채팅방 헤더 */}
-      <div className="p-3 border-b flex justify-between items-center">
-        <div>
-          <h3 className="font-medium">{amIMentee ? mentorName : menteeName}</h3>
-        </div>
-        <div className="text-xs text-gray-500">
-          {getRemainingMinutes(selectedChat.endAt) > 0
-            ? `${getRemainingMinutes(selectedChat.endAt)}분 남음`
-            : "종료"}
-        </div>
-      </div>
+    messagesEndRef,
 
-      {/* 채팅 메시지 영역 */}
-      <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
-        {!isInitialized && !messages.length && isLoading ? (
-          <div className="flex justify-center items-center h-full">
-            <p className="text-gray-500">메시지를 불러오는 중...</p>
-          </div>
-        ) : (
-          <>
-            {messages.map((msg, index) => {
-              if (msg.type === "SYSTEM") {
-                return (
-                  <div
-                    key={msg.id || `msg-${index}`}
-                    className="flex justify-center my-4"
-                  >
-                    <div className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs">
-                      {msg.content}
-                    </div>
-                  </div>
-                );
-              }
-              return (
-                <div
-                  key={msg.id || `msg-${index}`}
-                  className={`mb-3 ${
-                    msg.senderId === Number(userId) ? "text-right" : "text-left"
-                  }`}
-                >
-                  <div
-                    className={`inline-block max-w-xs sm:max-w-sm rounded-lg p-2 ${
-                      msg.senderId === Number(userId)
-                        ? "bg-blue-500 text-white"
-                        : "bg-white border border-gray-200"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.content}</p>
-                  </div>
-                </div>
-              );
-            })}
+    amIMentee,
+    mentorName,
+    menteeName,
 
-            {/* 스크롤 위치를 위한 빈 div 요소 */}
-            <div ref={messagesEndRef} />
-          </>
-        )}
-      </div>
+    remainingMinutes,
 
-      {/* 메시지 입력 영역 */}
-      <form onSubmit={handleSendMessage} className="px-3 pt-4 border-t flex">
-        <input
-          type="text"
-          className="flex-1 border rounded-l-lg px-3 py-2 disabled:opacity-40"
-          placeholder="메시지를 입력"
-          value={message}
-          onChange={handleInputChange}
-          disabled={
-            !selectedChat.isActive || (selectedChat.isActive && !connected)
-          }
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 transition-colors disabled:bg-gray-300"
-          disabled={
-            !selectedChat.isActive || (selectedChat.isActive && !connected)
-          }
-        >
-          전송
-        </button>
-      </form>
-
-      {/* 상대방이 타이핑 중일 때 표시 */}
-
-      <div className="text-left text-xs pl-3 h-4">
-        {isPartnerTyping ? (
-          <div className="text-gray-500">
-            <span className="loading loading-dots loading-xs"></span>
-            <span className="ml-1">
-              {amIMentee ? mentorName : menteeName} 님이 입력하고 있어요...
-            </span>
-          </div>
-        ) : (
-          <div className="h-full"></div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default ChatRoomContainer;
+    setMessage,
+    handleInputChange,
+    handleSendMessage,
+  };
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import DesktopChat from "@/components/feature/chat/DesktopChat";
-import MobileChatList from "@/components/feature/chat/MobileChatList";
+import MobileChat from "@/components/feature/chat/MobileChat";
 
 export default function ChatPage() {
   return (
@@ -11,7 +11,7 @@ export default function ChatPage() {
       </div>
 
       <div className="md:hidden">
-        <MobileChatList />
+        <MobileChat />
       </div>
     </>
   );

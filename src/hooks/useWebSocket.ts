@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/components/feature/chat/ChatRoomContainer";
+import { ChatMessage } from "@/components/feature/chat/DesktopChatRoom";
 import { getCookie } from "@/lib/cookie";
 import { Client } from "@stomp/stompjs";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -60,7 +60,7 @@ export const useWebSocket = ({
         });
       }
     },
-    [roomUuid]
+    [roomUuid],
   );
 
   useEffect(() => {
