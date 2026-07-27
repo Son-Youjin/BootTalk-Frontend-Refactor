@@ -27,6 +27,7 @@ export default function useChatRoom({ selectedChat }: ChatRoomPageProps) {
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasMountedRef = useRef(false);
 
   const userId = useUserStore((state) => state.user?.userId) || 0;
   const amIMentee = selectedChat.mentee.userId === userId;
@@ -86,12 +87,20 @@ export default function useChatRoom({ selectedChat }: ChatRoomPageProps) {
     }
   }, [selectedChat.roomUuid, selectedChat.isActive, previousMessages]);
 
-  // 새 메시지가 추가될 때마다 스크롤을 아래로 이동
+  // 최초 진입 시에는 스크롤X 이후 메시지가 추가될 때만 아래로 이동
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
     }
-  }, [messages, isInitialized, isPartnerTyping]);
+
+    if (messages.length === 0) return;
+
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages]);
 
   useEffect(() => {
     const timeoutId = typingTimeoutRef.current;
