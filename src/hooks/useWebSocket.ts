@@ -1,4 +1,4 @@
-import { ChatMessage } from "@/components/feature/chat/DesktopChatRoom";
+import { ChatMessage } from "@/hooks/chat/useChatRoom";
 import { getCookie } from "@/lib/cookie";
 import { Client } from "@stomp/stompjs";
 import { useCallback, useEffect, useRef, useState } from "react";
