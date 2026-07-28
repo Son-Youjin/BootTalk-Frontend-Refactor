@@ -25,7 +25,7 @@ const DesktopChatRoom = ({ selectedChat }: DesktopChatRoomProps) => {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-sm">
       {/* 채팅방 헤더 */}
-      <div className="flex items-center justify-between border-b p-3">
+      <div className="flex items-center justify-between border-b px-4 py-3">
         <h3 className="font-medium">{amIMentee ? mentorName : menteeName}</h3>
 
         <span className="text-xs text-gray-500">
@@ -34,7 +34,7 @@ const DesktopChatRoom = ({ selectedChat }: DesktopChatRoomProps) => {
       </div>
 
       {/* 채팅 메시지 영역 */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-4">
+      <div className="flex-1 overflow-y-auto bg-gray-50 px-4 py-5">
         {!isInitialized && !messages.length && isLoading ? (
           <div className="flex h-full items-center justify-center">
             <p className="text-gray-500">메시지를 불러오는 중...</p>
@@ -65,10 +65,10 @@ const DesktopChatRoom = ({ selectedChat }: DesktopChatRoomProps) => {
               return (
                 <div
                   key={msg.id ?? `msg-${index}`}
-                  className={`mb-3 ${mine ? "text-right" : "text-left"}`}
+                  className={`mb-4 ${mine ? "text-right" : "text-left"}`}
                 >
                   <div
-                    className={`inline-block max-w-xs sm:max-w-sm rounded-3xl p-2 ${
+                    className={`inline-block max-w-md rounded-3xl px-4 py-2 ${
                       mine
                         ? "bg-blue-500 text-white"
                         : "border border-gray-200 bg-white"
@@ -105,7 +105,7 @@ const DesktopChatRoom = ({ selectedChat }: DesktopChatRoomProps) => {
       >
         <input
           type="text"
-          className="h-11 flex-1 rounded-xl border px-4 disabled:opacity-40"
+          className="h-12 flex-1 rounded-xl border px-4 disabled:opacity-40"
           placeholder="메시지를 입력"
           value={message}
           onChange={handleInputChange}
@@ -113,7 +113,7 @@ const DesktopChatRoom = ({ selectedChat }: DesktopChatRoomProps) => {
         />
         <button
           type="submit"
-          className="h-11 rounded-xl bg-blue-500 px-5 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300"
+          className="h-12 rounded-xl bg-blue-500 px-5 text-white transition-colors hover:bg-blue-600 disabled:bg-gray-300"
           disabled={!selectedChat.isActive || !connected}
         >
           전송

@@ -32,7 +32,7 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
     <div className="flex h-[calc(100svh-8rem)] flex-col overflow-hidden">
       {/* 헤더 */}
       <header className="flex h-14 items-center border-b bg-white px-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => router.back()}
@@ -55,7 +55,7 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
         </div>
       </header>
 
-      {/* 메세지 */}
+      {/* 메시지 */}
       <div className="min-h-0 flex-1 overflow-y-auto bg-gray-50 px-4 py-4">
         {!isInitialized && !messages.length && isLoading ? (
           <div className="flex h-full items-center justify-center text-sm text-gray-500">
@@ -70,7 +70,7 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
                     key={msg.id ?? index}
                     className="my-4 flex justify-center"
                   >
-                    <div className="rounded-full bg-gray-200 px-3 py-1 text-xs text-gray-600">
+                    <div className="rounded-full bg-gray-200 px-4 py-2 text-xs text-gray-600">
                       {msg.content}
                     </div>
                   </div>
@@ -87,7 +87,7 @@ export default function MobileChatRoom({ selectedChat }: MobileChatRoomProps) {
               return (
                 <div
                   key={msg.id ?? index}
-                  className={`mb-2 flex ${
+                  className={`mb-4 flex ${
                     mine ? "justify-end" : "justify-start"
                   }`}
                 >

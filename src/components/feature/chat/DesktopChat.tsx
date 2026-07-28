@@ -23,8 +23,8 @@ export default function DesktopChat() {
 
   return (
     <div className="container mx-auto my-8 px-4">
-      <h2 className="text-2xl font-bold mb-6">채팅</h2>
-      <div className="flex flex-col md:flex-row h-[600px] gap-4">
+      <h2 className="mb-6 text-2xl font-bold">채팅</h2>
+      <div className="flex h-[640px] gap-4">
         {/* 왼쪽: 채팅 목록 */}
         <ChatRoomList
           chatRoomList={chatRoomList}
@@ -33,7 +33,7 @@ export default function DesktopChat() {
         />
 
         {/* 오른쪽: 채팅방 */}
-        <div className="w-full h-[400px] md:h-full md:w-2/3 overflow-hidden border border-gray-100 rounded-lg shadow-sm">
+        <div className="h-full w-2/3 overflow-hidden rounded-lg border border-gray-100 shadow-sm">
           {selectedChat ? (
             <DesktopChatRoom selectedChat={selectedChat} key={selectedChatId} />
           ) : (

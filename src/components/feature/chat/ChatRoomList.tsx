@@ -10,7 +10,6 @@ interface ChatRoomListProps {
   isMobile?: boolean;
 }
 
-// TODO: 모바일 사이즈 조절
 export default function ChatRoomList({
   chatRoomList,
   userId,
@@ -22,12 +21,12 @@ export default function ChatRoomList({
       className={
         isMobile
           ? "w-full"
-          : "w-full h-[200px] md:h-full md:w-1/3 overflow-hidden border border-gray-100 rounded-lg shadow-sm"
+          : "w-full h-[280px] md:h-full md:w-1/3 overflow-hidden border border-gray-100 rounded-lg shadow-sm"
       }
     >
-      <div className={isMobile ? "space-y-3" : "h-full overflow-y-auto"}>
+      <div className={isMobile ? "" : "h-full overflow-y-auto"}>
         {chatRoomList.length > 0 ? (
-          <div className={isMobile ? "space-y-3" : "space-y-2 px-2"}>
+          <div className={isMobile ? "space-y-2" : "space-y-2 px-2 py-2"}>
             {chatRoomList.map((chatRoom) => (
               <div
                 key={chatRoom.roomUuid}
@@ -46,7 +45,7 @@ export default function ChatRoomList({
                   {/* 프로필 */}
                   <div
                     className={`rounded-full overflow-hidden flex-shrink-0 ${
-                      isMobile ? "w-12 h-12 mr-4" : "w-10 h-10 mr-3"
+                      isMobile ? "w-10 h-10 mr-3" : "w-10 h-10 mr-3"
                     }`}
                   >
                     <Image
@@ -58,8 +57,8 @@ export default function ChatRoomList({
                             "/profile-default.png"
                       }
                       alt="프로필"
-                      width={48}
-                      height={48}
+                      width={40}
+                      height={40}
                       className="w-full h-full object-cover"
                       onClick={(e) => e.stopPropagation()}
                       onError={(e) => {
@@ -84,7 +83,7 @@ export default function ChatRoomList({
 
                       <span
                         className={`flex-shrink-0 ${
-                          isMobile ? "text-[11px]" : "text-xs"
+                          isMobile ? "text-xs" : "text-xs"
                         } ${
                           chatRoom.isActive ? "text-blue-500" : "text-gray-500"
                         }`}
