@@ -2,14 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 import { coffeeChatTabs } from "@/constants/coffeeChatTabs";
-
-import ApprovedListTab from "@/components/feature/coffee-chat/my-chat/ApprovedListTab";
-import SentListTab from "@/components/feature/coffee-chat/my-chat/SentListTab";
-import ReceivedListTab from "@/components/feature/coffee-chat/my-chat/ReceivedListTab";
 import FindMentorsButton from "./mentor/FindMentorsButton";
 import MobileMentorRecommendation from "./mentor/MobileMentorRecommendation";
+import dynamic from "next/dynamic";
 
 type TabType = "approved" | "sent" | "received";
+
+const ApprovedListTab = dynamic(
+  () => import("@/components/feature/coffee-chat/my-chat/ApprovedListTab"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
+
+const SentListTab = dynamic(
+  () => import("@/components/feature/coffee-chat/my-chat/SentListTab"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
+
+const ReceivedListTab = dynamic(
+  () => import("@/components/feature/coffee-chat/my-chat/ReceivedListTab"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 const MobileCoffeeChat = () => {
   const [activeTab, setActiveTab] = useState<TabType | null>(null);
@@ -61,7 +82,7 @@ const MobileCoffeeChat = () => {
         <div className="mb-4 flex items-center gap-2">
           <p className="text-[16px] font-semibold text-gray-900">내 커피챗</p>
 
-          <span className="text-[16px] text-gray-400">포인트 : 2P</span>
+          <span className="text-[16px] text-gray-500">포인트 : 2P</span>
         </div>
 
         <div className="flex gap-2">
@@ -76,7 +97,7 @@ const MobileCoffeeChat = () => {
               ${
                 activeTab === tab.id
                   ? "bg-gray-200 text-gray-900"
-                  : "bg-gray-100 text-gray-500"
+                  : "bg-gray-100 text-gray-700"
               }
             `}
             >

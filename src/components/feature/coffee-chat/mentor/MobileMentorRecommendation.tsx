@@ -9,7 +9,12 @@ import MentorsList from "./MentorsList";
 import { shuffleArray } from "@/lib/utils";
 import { Mentor } from "@/types/response";
 import { useUserStore } from "@/store/useUserStore";
-import ChatRequestModal from "./ChatRequestModal";
+import dynamic from "next/dynamic";
+
+const ChatRequestModal = dynamic(() => import("./ChatRequestModal"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function MobileMentorRecommendation() {
   const router = useRouter();
@@ -57,6 +62,7 @@ export default function MobileMentorRecommendation() {
           <div ref={tooltipRef} className="relative">
             <button
               type="button"
+              aria-label="멘토 추천 기준 보기"
               onClick={() => setIsTooltipOpen((prev) => !prev)}
               className="flex items-center"
             >

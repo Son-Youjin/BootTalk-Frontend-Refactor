@@ -24,9 +24,9 @@ export default function MentorCard({
   return (
     <div className=" flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-center gap-2">
-        <h4 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900">
           {mentor.mentorName}
-        </h4>
+        </h3>
 
         <span
           className={`
