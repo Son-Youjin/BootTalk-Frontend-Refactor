@@ -33,8 +33,8 @@ export default function ChatRoomList({
                 onClick={() => handleChatSelect(chatRoom.roomUuid)}
                 className={`cursor-pointer rounded-xl border transition-all ${
                   chatRoom.isActive
-                    ? "bg-white border-gray-200"
-                    : "bg-stone-100 border-gray-200 text-gray-500"
+                    ? "bg-white border-gray-200 text-gray-900"
+                    : "bg-stone-100 border-gray-100 text-gray-600"
                 } ${
                   isMobile
                     ? "p-4 shadow-sm active:scale-[0.98]"
