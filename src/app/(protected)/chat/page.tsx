@@ -1,7 +1,14 @@
 "use client";
 
-import DesktopChat from "@/components/feature/chat/DesktopChat";
-import MobileChat from "@/components/feature/chat/MobileChat";
+import dynamic from "next/dynamic";
+
+const DesktopChat = dynamic(
+  () => import("@/components/feature/chat/DesktopChat"),
+);
+
+const MobileChat = dynamic(
+  () => import("@/components/feature/chat/MobileChat"),
+);
 
 export default function ChatPage() {
   return (
@@ -9,7 +16,6 @@ export default function ChatPage() {
       <div className="hidden md:block">
         <DesktopChat />
       </div>
-
       <div className="md:hidden">
         <MobileChat />
       </div>

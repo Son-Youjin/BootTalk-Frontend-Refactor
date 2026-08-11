@@ -34,7 +34,7 @@ export default function ChatRoomList({
                 className={`cursor-pointer rounded-xl border transition-all ${
                   chatRoom.isActive
                     ? "bg-white border-gray-200"
-                    : "bg-gray-50 border-gray-200 text-gray-400"
+                    : "bg-stone-100 border-gray-200 text-gray-500"
                 } ${
                   isMobile
                     ? "p-4 shadow-sm active:scale-[0.98]"
@@ -71,7 +71,7 @@ export default function ChatRoomList({
                   {/* 텍스트 */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <h4
+                      <h1
                         className={`truncate font-semibold ${
                           isMobile ? "text-base" : "text-sm"
                         }`}
@@ -79,7 +79,7 @@ export default function ChatRoomList({
                         {chatRoom.mentor.userId === userId
                           ? chatRoom.mentee.name
                           : chatRoom.mentor.name}
-                      </h4>
+                      </h1>
 
                       <span
                         className={`flex-shrink-0 ${
