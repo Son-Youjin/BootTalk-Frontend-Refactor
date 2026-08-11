@@ -22,6 +22,7 @@ export default function SelectJob({
       </label>
 
       <select
+        id="job-select"
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value || undefined)}
         className="w-full h-12 rounded-full border border-gray-200 bg-white px-5 text-sm shadow-sm appearance-none"
