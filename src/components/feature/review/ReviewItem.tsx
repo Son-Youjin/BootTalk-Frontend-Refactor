@@ -51,7 +51,7 @@ export default function ReviewItem({
       </p>
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-400 truncate">
+        <p className="text-sm text-gray-500 truncate">
           {showUserName
             ? `${review.userName} | ${review.createdAt}`
             : review.createdAt}
@@ -60,7 +60,7 @@ export default function ReviewItem({
         {actionType === "report" ? (
           <button
             onClick={handleReport}
-            className="shrink-0 px-2 py-1 text-sm text-gray-400 hover:text-red-400"
+            className="shrink-0 px-2 py-1 text-sm text-gray-500 hover:text-red-400"
           >
             신고
           </button>

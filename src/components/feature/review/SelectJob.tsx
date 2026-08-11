@@ -17,6 +17,10 @@ export default function SelectJob({
 }: SelectJobProps) {
   return (
     <div className="relative w-full max-w-md mx-auto mb-6">
+      <label htmlFor="job-select" className="sr-only">
+        직무 선택
+      </label>
+
       <select
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value || undefined)}
