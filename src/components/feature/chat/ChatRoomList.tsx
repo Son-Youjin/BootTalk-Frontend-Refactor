@@ -34,7 +34,7 @@ export default function ChatRoomList({
                 className={`cursor-pointer rounded-xl border transition-all ${
                   chatRoom.isActive
                     ? "bg-white border-gray-200 text-gray-900"
-                    : "bg-stone-100 border-gray-100 text-gray-600"
+                    : "bg-stone-50 border-gray-100 text-gray-600"
                 } ${
                   isMobile
                     ? "p-4 shadow-sm active:scale-[0.98]"
@@ -83,9 +83,9 @@ export default function ChatRoomList({
 
                       <span
                         className={`flex-shrink-0 ${
-                          isMobile ? "text-xs" : "text-xs"
+                          isMobile ? "text-sm" : "text-sm"
                         } ${
-                          chatRoom.isActive ? "text-blue-500" : "text-gray-500"
+                          chatRoom.isActive ? "text-blue-500" : "text-gray-600"
                         }`}
                       >
                         {chatRoom.isActive
@@ -97,8 +97,8 @@ export default function ChatRoomList({
                     </div>
 
                     <p
-                      className={`mt-1 truncate text-gray-500 ${
-                        isMobile ? "text-sm" : "text-xs"
+                      className={`mt-1 truncate text-gray-600 ${
+                        isMobile ? "text-sm" : "text-sm"
                       }`}
                     >
                       {getStatusText(chatRoom)}
