@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { useMentorList } from "@/hooks/coffee-chat/useMentorList";
 import { Mentor } from "@/types/response";
-import ChatRequestModal from "./ChatRequestModal";
 import { useUserStore } from "@/store/useUserStore";
 import MentorsList from "./MentorsList";
 import useMentorFilter from "@/hooks/coffee-chat/useMentorFilter";
 import MentorJobFilter from "./MentorJobFilter";
+import dynamic from "next/dynamic";
+
+const ChatRequestModal = dynamic(() => import("./ChatRequestModal"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const FindMentors = () => {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);

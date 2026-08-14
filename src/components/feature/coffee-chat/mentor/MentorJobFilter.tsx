@@ -11,6 +11,10 @@ export default function MentorJobFilter({
 }: MentorJobFilterProps) {
   return (
     <div className="relative w-full max-w-md mx-auto">
+      <label htmlFor="mentor-job-filter" className="sr-only">
+        멘토 직무 필터
+      </label>
+
       <select
         value={value}
         onChange={onChange}
