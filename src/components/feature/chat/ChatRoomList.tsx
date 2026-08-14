@@ -85,7 +85,7 @@ export default function ChatRoomList({
                         className={`flex-shrink-0 ${
                           isMobile ? "text-sm" : "text-sm"
                         } ${
-                          chatRoom.isActive ? "text-blue-500" : "text-gray-600"
+                          chatRoom.isActive ? "text-blue-600" : "text-gray-600"
                         }`}
                       >
                         {chatRoom.isActive
