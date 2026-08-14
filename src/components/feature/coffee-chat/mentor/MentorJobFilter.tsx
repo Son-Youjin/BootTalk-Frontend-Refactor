@@ -16,6 +16,7 @@ export default function MentorJobFilter({
       </label>
 
       <select
+        id="mentor-job-filter"
         value={value}
         onChange={onChange}
         className="w-full h-12 rounded-full border border-gray-200 bg-white px-5 text-base text-center shadow-sm appearance-none"
