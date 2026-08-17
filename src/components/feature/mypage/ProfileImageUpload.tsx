@@ -64,6 +64,7 @@ const ProfileImageUpload: React.FC<ProfileImageUploadProps> = ({
         <button
           className="absolute bottom-0 right-0 bg-amber-900 text-white p-1.5 md:p-2 rounded-full shadow-md cursor-pointer"
           type="button"
+          aria-label="프로필 사진 변경"
           onClick={handleImageClick}
           disabled={isPending}
         >

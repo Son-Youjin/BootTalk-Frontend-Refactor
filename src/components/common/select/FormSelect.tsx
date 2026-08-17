@@ -23,6 +23,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
   return (
     <div className="space-y-2">
       <select
+        aria-label={placeholder}
         className={`select ${className || ""}`}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
