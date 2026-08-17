@@ -2,10 +2,18 @@ import Modal from "@/components/common/modal/CommonModal";
 import { dayMapping } from "@/constants/dayMapping";
 import useMentorRegistration from "@/hooks/coffee-chat/useMentorRegistration";
 import { useState } from "react";
-import MentorFormModal from "../coffee-chat/MentorFormModal";
 import { MentorAvailableTime } from "@/types/request";
 import { jobCategoryMapping } from "@/constants/jobCategory";
 import { mentorCategory } from "@/constants/mentorCategory";
+import dynamic from "next/dynamic";
+
+const MentorFormModal = dynamic(
+  () => import("../coffee-chat/MentorFormModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 const MentorProfile = () => {
   const {
@@ -65,19 +73,23 @@ const MentorProfile = () => {
   // 멘토 정보가 없거나 삭제된 경우
   if (!isMentorExists || isDeleted) {
     return (
-      <div className="text-center  bg-base-100">
-        <h2 className="text-xl font-semibold text-gray-800 mb-2 mt-6">
+      <div className="text-center bg-base-100">
+        <h2 className="mt-6 mb-2 text-xl font-semibold text-gray-800">
           멘토 정보가 없습니다
         </h2>
-        <p className="text-gray-600 mb-6">
+
+        <p className="mb-8 text-gray-600">
           아직 멘토로 등록하지 않았거나 정보가 삭제되었습니다.
         </p>
+
         <button
-          className="btn bg-amber-900 hover:bg-amber-950 text-white font-medium transition-colors"
+          type="button"
           onClick={handleEditClick}
+          className="h-12 rounded-xl bg-amber-900 px-6 text-sm font-medium text-white transition-colors hover:bg-amber-950"
         >
           멘토 등록
         </button>
+
         <MentorFormModal
           isOpen={isEditModalOpen}
           onClose={handleCloseEditModal}
@@ -144,17 +156,20 @@ const MentorProfile = () => {
         </div>
       </div>
 
-      <div className="flex justify-end mt-6 space-x-3">
+      <div className="mt-8 flex justify-end gap-3">
         <button
-          className="btn btn-outline"
+          type="button"
           disabled={isDeletePending}
           onClick={handleDeleteClick}
+          className="h-12 rounded-xl border border-gray-200 bg-white px-5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:opacity-50"
         >
           {isDeletePending ? "삭제 중..." : "멘토 삭제"}
         </button>
+
         <button
-          className="btn bg-amber-900 hover:bg-amber-950 text-white font-medium transition-colors"
+          type="button"
           onClick={handleEditClick}
+          className="h-12 rounded-xl bg-amber-900 px-5 text-sm font-medium text-white transition-colors hover:bg-amber-950"
         >
           프로필 수정
         </button>
