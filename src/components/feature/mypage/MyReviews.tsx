@@ -5,13 +5,28 @@ import { useGetMyInfo } from "@/hooks/my-page/useGetMyInfo";
 import { axiosDefault } from "@/api/axiosInstance";
 import { END_POINT } from "@/constants/endPoint";
 import { useState } from "react";
-import ReviewModal from "@/components/feature/review/ReviewModal";
-import WriteReviewButton from "@/components/feature/review/WriteReviewButton";
 import Modal from "@/components/common/modal/CommonModal";
 import type { ReviewBootcamp, Review } from "@/types/response";
 import type { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import ReviewItem from "../review/ReviewItem";
+import dynamic from "next/dynamic";
+
+const WriteReviewButton = dynamic(
+  () => import("@/components/feature/review/WriteReviewButton"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
+
+const ReviewModal = dynamic(
+  () => import("@/components/feature/review/ReviewModal"),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 export default function MyReviews() {
   const {
