@@ -54,9 +54,9 @@ export default function ServiceGuide() {
             </div>
 
             <div className="p-5">
-              <h4 className="text-lg font-semibold text-gray-900">
+              <h1 className="text-lg font-semibold text-gray-900">
                 {guide.title}
-              </h4>
+              </h1>
 
               <p className="mt-2 text-sm leading-6 text-gray-600">
                 {guide.description}
