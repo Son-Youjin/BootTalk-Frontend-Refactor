@@ -1,6 +1,6 @@
 import { Search, Settings2 } from "lucide-react";
-import MobileFilterDrawer from "./MobileFilterDrawer";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 interface MobileHomeSearchProps {
   selectedFilters: Record<string, string>;
@@ -12,6 +12,11 @@ interface MobileHomeSearchProps {
   searchKeyword: string;
   setSearchKeyword: React.Dispatch<React.SetStateAction<string>>;
 }
+
+const MobileFilterDrawer = dynamic(() => import("./MobileFilterDrawer"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function MobileHomeSearch({
   selectedFilters,
