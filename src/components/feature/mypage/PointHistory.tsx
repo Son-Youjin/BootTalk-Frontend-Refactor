@@ -13,7 +13,7 @@ const PointHistory = () => {
   if (!pointHistory || pointHistory.length === 0)
     return <div>포인트 내역이 없습니다.</div>;
 
-  console.log(pointHistory);
+  const DateFormatter = new Intl.DateTimeFormat("ko-KR");
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
@@ -49,7 +49,7 @@ const PointHistory = () => {
                 </td>
 
                 <td className="px-2 py-4 text-[11px] text-gray-500">
-                  {new Date(point.createdAt).toLocaleDateString("ko-KR")}
+                  {DateFormatter.format(new Date(point.createdAt))}
                 </td>
 
                 <td
