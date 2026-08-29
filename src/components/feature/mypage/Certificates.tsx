@@ -139,11 +139,15 @@ const Certificates = () => {
         </div>
 
         <div>
-          <h3 className="mb-2 text-sm font-semibold text-gray-800">
+          <label
+            htmlFor="certificate-upload"
+            className="mb-2 block text-sm font-semibold text-gray-800"
+          >
             수료증 업로드
-          </h3>
+          </label>
 
           <input
+            id="certificate-upload"
             type="file"
             accept="image/*"
             className="file-input file-input-bordered h-12 w-full rounded-xl border-gray-300"
