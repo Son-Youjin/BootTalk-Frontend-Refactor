@@ -16,7 +16,7 @@ const SocialLogin = () => {
   return (
     <main className="mx-auto flex w-full max-w-md flex-col items-center px-6 pt-44 md:pt-28">
       <Image
-        src="/logo.png"
+        src="/logo.svg"
         alt="BootTalk"
         width={280}
         height={80}
