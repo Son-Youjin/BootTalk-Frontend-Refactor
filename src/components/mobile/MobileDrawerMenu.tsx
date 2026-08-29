@@ -34,49 +34,49 @@ const MobileDrawerMenu = ({
       <div className="flex-1 overflow-y-auto p-6">
         {/* 프로필 카드 */}
         {isAuthenticated && myInfo && (
-          <div className="flex items-center gap-3 rounded-2xl border border-gray-200 p-4 mb-8">
-            <Image
-              src="/profile-default.png"
-              alt="프로필"
-              width={48}
-              height={48}
-              className="rounded-full"
-            />
+          <>
+            <div className="flex items-center gap-3 rounded-2xl border border-gray-200 p-4 mb-8">
+              <Image
+                src="/profile-default.png"
+                alt="프로필"
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
 
-            <div>
-              <div className="font-bold">{myInfo.name}님</div>
-              <div className="text-sm text-gray-500">
-                포인트 : {myInfo.currentPoint}P
+              <div>
+                <div className="font-bold">{myInfo.name}님</div>
+                <div className="text-sm text-gray-500">
+                  포인트 : {myInfo.currentPoint}P
+                </div>
               </div>
             </div>
-          </div>
+
+            {/* 프로필 메뉴 */}
+            <p className="text-sm text-gray-400 mb-3">프로필</p>
+            <ul className="space-y-2">
+              {mobileDrawerProfileItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`flex items-center rounded-xl px-4 py-3 font-medium hover:bg-gray-100 ${
+                        pathname === item.href ? "bg-gray-100" : ""
+                      }`}
+                      onClick={closeDrawer}
+                    >
+                      <Icon size={20} className="mr-2" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="my-6" />
+          </>
         )}
-
-        {/* 프로필 메뉴 */}
-        <p className="text-sm text-gray-400 mb-3">프로필</p>
-
-        <ul className="space-y-2">
-          {mobileDrawerProfileItems.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`flex items-center rounded-xl px-4 py-3 font-medium hover:bg-gray-100 ${
-                    pathname === item.href ? "bg-gray-100" : ""
-                  }`}
-                  onClick={closeDrawer}
-                >
-                  <Icon size={20} className="mr-2" />
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-
-        <div className="my-6" />
 
         {/* 설정 / 지원 */}
         <p className="text-sm text-gray-400 mt-6 mb-3">설정 / 지원</p>

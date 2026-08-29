@@ -149,7 +149,7 @@ const Header = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="hidden md:block flex items-center gap-2">
                   <Link
                     href="/login"
                     className="btn bg-base-100 border-none text-sm hover:text-amber-950 transition-colors"
