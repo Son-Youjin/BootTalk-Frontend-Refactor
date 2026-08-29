@@ -7,9 +7,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FormSelect from "../../common/select/FormSelect";
-import ProfileImageUpload from "./ProfileImageUpload";
 import { ProfileFormData } from "@/types/request";
 import { careerCategory } from "@/constants/careerCategory";
+import dynamic from "next/dynamic";
+
+const ProfileImageUpload = dynamic(() => import("./ProfileImageUpload"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const ProfileEdit = () => {
   const { myInfo, isMyInfoLoading, isMyInfoError } = useGetMyInfo();
