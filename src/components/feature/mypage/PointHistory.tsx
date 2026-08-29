@@ -57,7 +57,7 @@ const PointHistory = () => {
                     point.pointTypeName.includes("적립") ||
                     point.pointTypeName.includes("환불")
                       ? "text-blue-600"
-                      : "text-red-500"
+                      : "text-red-600"
                   }`}
                 >
                   {(point.pointTypeName.includes("적립") ||
