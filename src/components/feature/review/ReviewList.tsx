@@ -4,10 +4,12 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { useGetReviews } from "@/hooks/reviews/useGetReviews";
 import ReviewItem from "./ReviewItem";
 import type { Review as ResponseReview } from "@/types/response";
-import SelectJob from "./SelectJob";
 import ReviewFilterButtons from "./ReviewFilterButtons";
 import useFilterOptions from "@/hooks/reviews/useFilterOptions";
 import EmptyState from "@/components/common/EmptyState";
+import dynamic from "next/dynamic";
+
+const SelectJob = dynamic(() => import("./SelectJob"));
 
 export default function ReviewList() {
   const [filters, setFilters] = useState<{ category?: string; date?: string }>(

@@ -1,12 +1,15 @@
 "use client";
 
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
-import CoffeeChatActionModal from "./CoffeeChatActionModal";
 import SentCoffeeChatCard from "./tabsActions/SentCoffeeChatCard";
 import { useSentCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
 import Loading from "./tabsActions/Loading";
 import ErrorReload from "./tabsActions/ErrorReload";
 import { useCoffeeChatCardAction } from "@/hooks/coffee-chat/useCoffeeChatCardAction";
+
+import dynamic from "next/dynamic";
+
+const CoffeeChatActionModal = dynamic(() => import("./CoffeeChatActionModal"));
 
 const SentListTab = () => {
   const { data: sentList, isLoading, isError } = useSentCoffeeChats();

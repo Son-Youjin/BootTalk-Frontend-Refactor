@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
 import clsx from "clsx";
 
 const CoffeeChatTabNavigation = () => {
@@ -23,7 +22,7 @@ const CoffeeChatTabNavigation = () => {
           "flex-1 py-2 px-4 rounded-md transition-all",
           isActive("/coffee-chat")
             ? "bg-white shadow-sm font-medium"
-            : "text-gray-600 hover:bg-gray-200"
+            : "text-gray-600 hover:bg-gray-200",
         )}
         onClick={() => router.push("/coffee-chat")}
       >
@@ -35,7 +34,7 @@ const CoffeeChatTabNavigation = () => {
           "flex-1 py-2 px-4 rounded-md transition-all",
           isActive("/coffee-chat/my")
             ? "bg-white shadow-sm font-medium"
-            : "text-gray-600 hover:bg-gray-200"
+            : "text-gray-600 hover:bg-gray-200",
         )}
         onClick={() => router.push("/coffee-chat/my")}
       >

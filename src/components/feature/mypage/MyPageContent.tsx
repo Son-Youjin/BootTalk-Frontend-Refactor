@@ -1,15 +1,27 @@
 "use client";
 
-import Certificates from "@/components/feature/mypage/Certificates";
-import MentorProfile from "@/components/feature/mypage/MentorProfile";
 import MyPageLayout from "@/components/feature/mypage/MyPageLayout";
-import MyReviews from "@/components/feature/mypage/MyReviews";
-import PointHistory from "@/components/feature/mypage/PointHistory";
 import ProfileEdit from "@/components/feature/mypage/ProfileEdit";
-import ServiceGuide from "@/components/feature/mypage/ServiceGuide";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import WithdrawalConfirmModal from "./WithdrawalConfirmModal";
+import dynamic from "next/dynamic";
+
+const MyReviews = dynamic(
+  () => import("@/components/feature/mypage/MyReviews"),
+);
+const Certificates = dynamic(
+  () => import("@/components/feature/mypage/Certificates"),
+);
+const PointHistory = dynamic(
+  () => import("@/components/feature/mypage/PointHistory"),
+);
+const MentorProfile = dynamic(
+  () => import("@/components/feature/mypage/MentorProfile"),
+);
+const ServiceGuide = dynamic(
+  () => import("@/components/feature/mypage/ServiceGuide"),
+);
 
 export default function MyPageContent() {
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);

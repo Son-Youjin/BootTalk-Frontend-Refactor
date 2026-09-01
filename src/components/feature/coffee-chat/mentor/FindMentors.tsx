@@ -4,13 +4,14 @@ import { Mentor } from "@/types/response";
 import { useUserStore } from "@/store/useUserStore";
 import MentorsList from "./MentorsList";
 import useMentorFilter from "@/hooks/coffee-chat/useMentorFilter";
-import MentorJobFilter from "./MentorJobFilter";
 import dynamic from "next/dynamic";
 
 const ChatRequestModal = dynamic(() => import("./ChatRequestModal"), {
   ssr: false,
   loading: () => null,
 });
+
+const MentorJobFilter = dynamic(() => import("./MentorJobFilter"));
 
 const FindMentors = () => {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);

@@ -3,9 +3,22 @@
 import { useState } from "react";
 import { useGetChatList } from "@/hooks/chat/useGetChatList";
 
-import DesktopChatRoom from "@/components/feature/chat/DesktopChatRoom";
 import { useUserStore } from "@/store/useUserStore";
 import ChatRoomList from "@/components/feature/chat/ChatRoomList";
+
+import dynamic from "next/dynamic";
+
+const DesktopChatRoom = dynamic(
+  () => import("@/components/feature/chat/DesktopChatRoom"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full items-center justify-center text-gray-400">
+        채팅방을 불러오는 중...
+      </div>
+    ),
+  },
+);
 
 export default function DesktopChat() {
   const { chatRoomList = [] } = useGetChatList();

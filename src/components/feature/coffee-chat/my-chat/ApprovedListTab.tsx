@@ -5,7 +5,9 @@ import ErrorReload from "./tabsActions/ErrorReload";
 import { useApprovedCoffeeChats } from "@/hooks/coffee-chat/ useCoffeeChats";
 import ApprovedCard from "./tabsActions/ApprovedCard";
 import { useCoffeeChatActions } from "@/hooks/coffee-chat/useCoffeeChatActions";
-import CoffeeChatActionModal from "./CoffeeChatActionModal";
+import dynamic from "next/dynamic";
+
+const CoffeeChatActionModal = dynamic(() => import("./CoffeeChatActionModal"));
 
 const ApprovedListTab = () => {
   const { data: approvedList, isLoading, isError } = useApprovedCoffeeChats();

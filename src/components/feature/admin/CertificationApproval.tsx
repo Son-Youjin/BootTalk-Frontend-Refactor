@@ -5,9 +5,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useGetCertificationList } from "@/hooks/admin/useGetCertificationList";
 import { usePatchCertificationStatus } from "@/hooks/admin/usePatchCertificationStatus";
 import PaginationControls from "./PaginationControls";
-import ImageModal from "./ImageModal";
 import CertificationCard from "./CertificationCard";
 import { Certification } from "@/types/response";
+import dynamic from "next/dynamic";
+
+const ImageModal = dynamic(() => import("./ImageModal"));
 
 const CertificationApproval = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,7 +30,7 @@ const CertificationApproval = () => {
 
   const paginated = filtered.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleStatusChange = (id: number, status: Certification["status"]) => {
@@ -38,7 +40,7 @@ const CertificationApproval = () => {
 
     queryClient.setQueryData<Certification[]>(
       ["admin-certifications"],
-      (old) => old?.filter((cert) => cert.certificationId !== id) || []
+      (old) => old?.filter((cert) => cert.certificationId !== id) || [],
     );
 
     patchStatus(
@@ -47,10 +49,10 @@ const CertificationApproval = () => {
         onError: () => {
           queryClient.setQueryData(
             ["admin-certifications"],
-            previousCertifications
+            previousCertifications,
           );
         },
-      }
+      },
     );
   };
 
