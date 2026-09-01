@@ -79,7 +79,7 @@ const Header = () => {
           <div className="flex justify-center">
             <Link href="/">
               <Image
-                src="/logo.PNG"
+                src="/logo.svg"
                 alt="로고"
                 width={160}
                 height={20}
