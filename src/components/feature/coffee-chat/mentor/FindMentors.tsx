@@ -5,6 +5,7 @@ import { useUserStore } from "@/store/useUserStore";
 import MentorsList from "./MentorsList";
 import useMentorFilter from "@/hooks/coffee-chat/useMentorFilter";
 import dynamic from "next/dynamic";
+import LoginRequired from "@/components/common/LoginRequired";
 
 const ChatRequestModal = dynamic(() => import("./ChatRequestModal"), {
   ssr: false,
@@ -17,6 +18,7 @@ const FindMentors = () => {
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
   const [isChatModalOpen, setIsChatModalOpen] = useState<boolean>(false);
 
+  const { isAuthenticated } = useUserStore();
   const { jobTypeFilter, handleFilterChange } = useMentorFilter();
   const { mentorList, isLoading, isError } = useMentorList(jobTypeFilter);
 
@@ -30,6 +32,10 @@ const FindMentors = () => {
   const closeChatModal = () => {
     setIsChatModalOpen(false);
   };
+
+  if (!isAuthenticated) {
+    return <LoginRequired />;
+  }
 
   if (isLoading) {
     return <div>로딩 중...</div>;

@@ -2,6 +2,8 @@ import Image from "next/image";
 import { ChatRoom } from "@/types/response";
 import { CHAT_STATUS } from "@/constants/chat";
 import { getStatusText } from "@/lib/utils";
+import { useUserStore } from "@/store/useUserStore";
+import LoginRequired from "@/components/common/LoginRequired";
 
 interface ChatRoomListProps {
   chatRoomList: ChatRoom[];
@@ -16,6 +18,12 @@ export default function ChatRoomList({
   handleChatSelect,
   isMobile = false,
 }: ChatRoomListProps) {
+  const { isAuthenticated } = useUserStore();
+
+  if (!isAuthenticated) {
+    return <LoginRequired />;
+  }
+
   return (
     <div
       className={

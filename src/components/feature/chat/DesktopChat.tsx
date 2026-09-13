@@ -7,6 +7,7 @@ import { useUserStore } from "@/store/useUserStore";
 import ChatRoomList from "@/components/feature/chat/ChatRoomList";
 
 import dynamic from "next/dynamic";
+import LoginRequired from "@/components/common/LoginRequired";
 
 const DesktopChatRoom = dynamic(
   () => import("@/components/feature/chat/DesktopChatRoom"),
@@ -22,6 +23,7 @@ const DesktopChatRoom = dynamic(
 
 export default function DesktopChat() {
   const { chatRoomList = [] } = useGetChatList();
+  const { isAuthenticated } = useUserStore();
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
 
   const userId = useUserStore((state) => state.user?.userId);
@@ -33,6 +35,10 @@ export default function DesktopChat() {
   const handleChatSelect = (roomUuid: string) => {
     setSelectedChatId(roomUuid);
   };
+
+  if (!isAuthenticated) {
+    return <LoginRequired />;
+  }
 
   return (
     <div className="container mx-auto my-8 px-4">

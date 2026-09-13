@@ -10,26 +10,14 @@ type TabType = "approved" | "sent" | "received";
 
 const ApprovedListTab = dynamic(
   () => import("@/components/feature/coffee-chat/my-chat/ApprovedListTab"),
-  {
-    ssr: false,
-    loading: () => null,
-  },
 );
 
 const SentListTab = dynamic(
   () => import("@/components/feature/coffee-chat/my-chat/SentListTab"),
-  {
-    ssr: false,
-    loading: () => null,
-  },
 );
 
 const ReceivedListTab = dynamic(
   () => import("@/components/feature/coffee-chat/my-chat/ReceivedListTab"),
-  {
-    ssr: false,
-    loading: () => null,
-  },
 );
 
 const MobileCoffeeChat = () => {
