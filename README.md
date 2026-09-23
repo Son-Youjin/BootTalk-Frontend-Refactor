@@ -62,10 +62,10 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/1f190050-1499-41c1-9817-df97ef07ba86" width="350px" alt="필터링">
+      <img src="https://github.com/user-attachments/assets/1f190050-1499-41c1-9817-df97ef07ba86" width="280px" alt="필터링">
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="350px;" alt="검색"><br />
+      <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="280px;" alt="검색"><br />
     </td>
   </tr>
 </table>
