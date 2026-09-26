@@ -65,7 +65,7 @@
       <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="280" alt="검색"><br />
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/bb791298-a58a-4985-8c0c-2e1c924dfd31" width="280" alt="필터링">
+      <img src="https://github.com/user-attachments/assets/2b88e14b-c2dc-435f-84dc-88d2c8105ca7" width="280" alt="필터링">
     </td>
   </tr>
 </table>
