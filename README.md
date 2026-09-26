@@ -65,7 +65,7 @@
       <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="280" alt="검색"><br />
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/1f190050-1499-41c1-9817-df97ef07ba86" width="280" alt="필터링">
+      <img src="https://github.com/user-attachments/assets/bb791298-a58a-4985-8c0c-2e1c924dfd31" width="280" alt="필터링">
     </td>
   </tr>
 </table>
@@ -80,7 +80,7 @@
       <img src="https://github.com/user-attachments/assets/82a78692-946d-44cd-b7f0-2b63c8dbbc08" width="280" alt="멘토 찾기"><br />
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/7f82038a-1480-4c03-99a6-27b908f48a8c" width="280;" alt="커피챗 신청"><br />
+      <img src="https://github.com/user-attachments/assets/7f82038a-1480-4c03-99a6-27b908f48a8c" width="280" alt="커피챗 신청"><br />
     </td>
   </tr>
 </table>
