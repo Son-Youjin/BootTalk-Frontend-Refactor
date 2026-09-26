@@ -57,30 +57,15 @@
 
 <table>
   <tr>
-    <th align="center">✨ 필터링</th>
     <th align="center">✨ 검색</th>
+    <th align="center">✨ 필터링</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/1f190050-1499-41c1-9817-df97ef07ba86" width="280px" alt="필터링">
+      <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="280" alt="검색"><br />
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/f9ed83f8-4be0-4ca1-8458-10669209ce2d" width="280px;" alt="검색"><br />
-    </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <th align="center">✨ 이미지 업로드</th>
-    <th align="center">✨ 리뷰 작성</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/872cb032-5d03-4748-a568-e6f9101a4455" width="250px;" alt="이미지 업로드"><br />
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/e00caed7-5d24-44b6-9908-70ac42746850" width="250px;" alt="리뷰 작성"><br />
+      <img src="https://github.com/user-attachments/assets/1f190050-1499-41c1-9817-df97ef07ba86" width="280" alt="필터링">
     </td>
   </tr>
 </table>
@@ -92,26 +77,25 @@
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/1fd0d897-9789-4d4c-a378-418b42611647" width="250px;" alt="멘토 찾기"><br />
+      <img src="https://github.com/user-attachments/assets/82a78692-946d-44cd-b7f0-2b63c8dbbc08" width="280" alt="멘토 찾기"><br />
     </td>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/31a13fdf-5dbc-4be7-b0ac-93275b3d1f31" width="250px;" alt="커피챗 신청"><br />
+      <img src="https://github.com/user-attachments/assets/7f82038a-1480-4c03-99a6-27b908f48a8c" width="280;" alt="커피챗 신청"><br />
     </td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <th align="center">✨ 커피챗 승인</th>
+    <th align="center">✨ 내 커피챗</th>
     <th align="center">✨ 채팅</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://github.com/user-attachments/assets/73cf4963-8f77-4d68-b84f-75ee26868695" width="250px;" alt="커피챗 승인"><br />
+      <img src="https://github.com/user-attachments/assets/4b053b29-d696-499c-8262-dce83c7797f7" width="280" alt="커피챗 승인"><br />
     </td>
     <td align="center">
-      <!-- 새로 촬영한 채팅 GIF/이미지 URL -->
-      <img src="새로운 이미지 URL" width="250px;" alt="채팅"><br />
+      <img src="https://github.com/user-attachments/assets/91333a91-9761-4448-a937-35303782f573" width="280" alt="채팅"><br />
     </td>
   </tr>
 </table>
